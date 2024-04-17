@@ -1,0 +1,13 @@
+{
+  "id": "com.matextrem.tickertap",
+  "version": "0.0.0",
+  "name": "TickerTap",
+  "description": "Your personal stock market plugin",
+  "author": "Mati Dastugue",
+  "category": "Hello",
+  "monitor": {
+    "windows": [],
+    "mac": []
+  },
+  "url": "https://github.com/matextrem/plugin"
+}
