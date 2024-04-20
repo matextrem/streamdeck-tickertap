@@ -6,6 +6,11 @@ A Stream Deck plugin to visualize real-time stock values
 )](https://marketplace.elgato.com/product/ticker-tap)
 [![publish-package](https://img.shields.io/github/v/release/matextrem/streamdeck-tickertap?logo=github&label=plugin
 )](https://github.com/matextrem/streamdeck-tickertap/releases/latest)
+[![LICENSE](https://img.shields.io/github/license/matextrem/streamdeck-tickertap)]([https://github.com/matextrem/streamdeck-tickertap/releases/latest](https://github.com/matextrem/streamdeck-tickertap/blob/main/LICENSE.md))
+[![Buy Me A Coffee](https://img.shields.io/badge/-Buy_me_a%C2%A0coffee-gray?logo=buy-me-a-coffee)](https://www.buymeacoffee.com/matextrem)
+
+
+
 
 
 <img src="https://i.ibb.co/DLXBjBj/gallery-previews-01.png" width="1024" />
