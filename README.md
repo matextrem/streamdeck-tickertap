@@ -2,7 +2,8 @@
 
 A Stream Deck plugin to visualize real-time stock values
 
-[![elgato-marketplace](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fmp-gateway.elgato.com%2Fproducts%3Fname%3DDIM%2520Stream%2520Deck&logo=elgato&query=%24.results.*.download_count&label=Elgato%20Marketplace)](https://marketplace.elgato.com/product/ticker-tap)
+[![elgato-marketplace](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fmp-gateway.elgato.com%2Fproducts%3Fname%3Dtickertap&query=%24.results.*.download_count&logo=elgato&label=Elgato%20Marketplace
+)](https://marketplace.elgato.com/product/ticker-tap)
 [![publish-package](https://img.shields.io/github/v/release/matextrem/streamdeck-tickertap?label=plugin&logo=github)](https://github.com/matextrem/streamdeck-tickertap/releases/latest)
 
 
