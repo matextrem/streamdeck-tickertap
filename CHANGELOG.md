@@ -11,6 +11,9 @@ Prefix your message with one of the following:
 - [Security] in case of vulnerabilities.
 -->
 
-## v0.0.1 - 2024-04-20
+## v1.0.0 - 2024-04-20
 
-- Initial release.
+[Added] Visualize any real-time stock values.
+[Added] Quickly access to the stock's prices you follow..
+[Added] Ticker field supports any stock from [Finvinz](https://finviz.com/).
+[Added] New frequency field let you choose how often the stock prices are fetched.
