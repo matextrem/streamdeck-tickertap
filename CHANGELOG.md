@@ -11,6 +11,6 @@ Prefix your message with one of the following:
 - [Security] in case of vulnerabilities.
 -->
 
-## Unreleased
+## v0.0.1 - 2024-04-20
 
 - Initial release.

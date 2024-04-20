@@ -1,10 +1,10 @@
 {
   "id": "com.matextrem.tickertap",
-  "version": "0.0.0",
-  "name": "TickerTap",
+  "version": "0.0.1",
+  "name": "Ticker Tap",
   "description": "Your personal stock market plugin",
   "author": "Mati Dastugue",
-  "category": "Hello",
+  "category": "Ticker Tap",
   "monitor": {
     "windows": [],
     "mac": []
