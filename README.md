@@ -1,4 +1,4 @@
-# Ticker Tap
+# TICKERTAP
 
 A Stream Deck plugin to visualize real-time stock values
 
