@@ -1388,6 +1388,21 @@ div {
   min-width: 200px;
 }
 
+.max65 {
+  flex-basis: 65%;
+  flex-grow: 0;
+}
+
+.max60 {
+  flex-basis: 60%;
+  flex-grow: 0;
+}
+
+.max50 {
+  flex-basis: 50%;
+  flex-grow: 0;
+}
+
 .max40 {
   flex-basis: 40%;
   flex-grow: 0;

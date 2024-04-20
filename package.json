@@ -1,8 +1,21 @@
 {
   "private": true,
   "license": "MIT",
+  "author": {
+    "name": "Mati Dastugue",
+    "email": "matiasdastugue@gmail.com"
+  },
   "dependencies": {
     "@fnando/streamdeck": "*",
+    "canvas": "2.10.2",
     "typescript": "*"
+  },
+  "scripts": {
+    "dev": "watchman-make -p 'src/**/*' '*.json' --run 'npx @fnando/streamdeck bundle --dev'",
+    "release": "npx @fnando/streamdeck release --version",
+    "postinstall": "patch-package"
+  },
+  "devDependencies": {
+    "patch-package": "^8.0.0"
   }
 }

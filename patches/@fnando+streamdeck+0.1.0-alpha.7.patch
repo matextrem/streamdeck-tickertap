@@ -1,0 +1,524 @@
+diff --git a/node_modules/@fnando/streamdeck/dist/Action.d.ts b/node_modules/@fnando/streamdeck/dist/Action.d.ts
+index 20d1436..4153892 100644
+--- a/node_modules/@fnando/streamdeck/dist/Action.d.ts
++++ b/node_modules/@fnando/streamdeck/dist/Action.d.ts
+@@ -2,6 +2,7 @@ import { ActionEvents } from "./events";
+ import { State, StateProps } from "./State";
+ import { Target } from "./Target";
+ import type { Plugin } from "./Plugin";
++import { Encoder } from "./Encoder";
+ export declare class Action<SettingsType = unknown, GlobalSettingsType = SettingsType> extends ActionEvents {
+     name: string;
+     tooltip: string;
+@@ -11,6 +12,11 @@ export declare class Action<SettingsType = unknown, GlobalSettingsType = Setting
+     plugin: Plugin;
+     context: string;
+     device: string;
++    encoder: Encoder;
++    keyPad: boolean;
++    enableUserTitle: boolean;
++    isVisibleInActionsList: boolean;
++    disableCachingImages: boolean;
+     constructor(params: {
+         name: string;
+         inspectorName?: string;
+@@ -22,17 +28,20 @@ export declare class Action<SettingsType = unknown, GlobalSettingsType = Setting
+     toManifest(): Record<string, unknown>;
+     get id(): string;
+     send(payload: unknown): void;
+-    setTitle(input: unknown, { target, state }?: {
++    setTitle(input: unknown, { target, state, context, }?: {
+         target: Target;
+         state?: number;
++        context: string;
+     }): void;
+-    setImage(input: string, { target, state }?: {
++    setImage(input: string, { target, state, context, }?: {
+         target: Target;
+         state?: number;
++        context: string;
+     }): void;
+-    showAlert({ target, state }?: {
++    showAlert({ target, state, context, }?: {
+         target: Target;
+         state?: number;
++        context: string;
+     }): void;
+     setSettings(payload: SettingsType): void;
+     getSettings(): void;
+@@ -41,10 +50,13 @@ export declare class Action<SettingsType = unknown, GlobalSettingsType = Setting
+     logMessage(message: string): void;
+     sendToPropertyInspector(payload: unknown): void;
+     openURL(url: string): void;
+-    showOK({ target, state }?: {
++    showOK({ target, state, context, }?: {
+         target: Target;
+         state?: number;
++        context: string;
+     }): void;
+     setState(state: number): void;
+     switchToProfile(profile: string): void;
++    setFeedback(payload: Record<string, unknown>): void;
++    setFeedbackLayout(layout: string): void;
+ }
+diff --git a/node_modules/@fnando/streamdeck/dist/Action.js b/node_modules/@fnando/streamdeck/dist/Action.js
+index 6818273..114e37e 100644
+--- a/node_modules/@fnando/streamdeck/dist/Action.js
++++ b/node_modules/@fnando/streamdeck/dist/Action.js
+@@ -15,6 +15,11 @@ class Action extends events_1.ActionEvents {
+         this.plugin = undefined;
+         this.context = "";
+         this.device = "";
++        this.encoder = undefined;
++        this.keyPad = true;
++        this.enableUserTitle = true;
++        this.isVisibleInActionsList = true;
++        this.disableCachingImages = false;
+         this.name = params.name;
+         this.tooltip = (_a = params.tooltip) !== null && _a !== void 0 ? _a : "";
+         this.hasMultiActionSupport = (_b = params.hasMultiActionSupport) !== null && _b !== void 0 ? _b : true;
+@@ -25,12 +30,21 @@ class Action extends events_1.ActionEvents {
+         return `${this.plugin.id}.${this.constructor.name.toLowerCase()}`;
+     }
+     toManifest() {
++        var _a;
+         const snippet = {
+             Icon: `images/actions/${this.constructor.name}`,
+             UUID: this.uuid,
+             Name: this.name + (__DEV__ ? " (dev)" : ""),
+             States: this.states.map((s) => s.toManifest()),
+         };
++        const controllers = [];
++        if (this.encoder !== undefined) {
++            controllers.push("Encoder");
++        }
++        if (this.keyPad === true) {
++            controllers.push("KeyPad");
++        }
++        snippet.Controllers = controllers;
+         const optionals = [
+             [
+                 "PropertyInspectorPath",
+@@ -43,6 +57,18 @@ class Action extends events_1.ActionEvents {
+                 this.hasMultiActionSupport === false,
+                 this.hasMultiActionSupport,
+             ],
++            ["Encoder", this.encoder !== undefined, (_a = this.encoder) === null || _a === void 0 ? void 0 : _a.toManifest()],
++            [
++                "UserTitleEnabled",
++                this.enableUserTitle === false,
++                this.enableUserTitle,
++            ],
++            [
++                "VisibleInActionsList",
++                this.isVisibleInActionsList === false,
++                this.isVisibleInActionsList,
++            ],
++            ["DisableCaching", this.disableCachingImages, this.disableCachingImages],
+         ];
+         optionals.forEach(([prop, condition, value]) => {
+             if (condition) {
+@@ -58,12 +84,13 @@ class Action extends events_1.ActionEvents {
+         this.debug("Sending event:", payload);
+         this.plugin.send(payload);
+     }
+-    setTitle(input, { target = Target_1.Target.both, state } = {
++    setTitle(input, { target = Target_1.Target.both, state, context, } = {
+         target: Target_1.Target.both,
++        context: this.context,
+     }) {
+         this.send({
+             event: "setTitle",
+-            context: this.context,
++            context: context,
+             payload: {
+                 title: String(input),
+                 target,
+@@ -71,12 +98,13 @@ class Action extends events_1.ActionEvents {
+             },
+         });
+     }
+-    setImage(input, { target = Target_1.Target.both, state } = {
++    setImage(input, { target = Target_1.Target.both, state, context, } = {
+         target: Target_1.Target.both,
++        context: this.context,
+     }) {
+         this.send({
+             event: "setImage",
+-            context: this.context,
++            context,
+             payload: {
+                 image: String(input),
+                 target,
+@@ -84,12 +112,13 @@ class Action extends events_1.ActionEvents {
+             },
+         });
+     }
+-    showAlert({ target = Target_1.Target.both, state } = {
++    showAlert({ target = Target_1.Target.both, state, context, } = {
+         target: Target_1.Target.both,
++        context: this.context,
+     }) {
+         this.send({
+             event: "showAlert",
+-            context: this.context,
++            context,
+             payload: {
+                 target,
+                 state,
+@@ -144,12 +173,13 @@ class Action extends events_1.ActionEvents {
+             payload: { url },
+         });
+     }
+-    showOK({ target = Target_1.Target.both, state } = {
++    showOK({ target = Target_1.Target.both, state, context, } = {
+         target: Target_1.Target.both,
++        context: this.context,
+     }) {
+         this.plugin.send({
+             event: "showOk",
+-            context: this.context,
++            context,
+             payload: {
+                 target,
+                 state,
+@@ -171,6 +201,22 @@ class Action extends events_1.ActionEvents {
+             payload: { profile },
+         });
+     }
++    setFeedback(payload) {
++        this.send({
++            event: "setFeedback",
++            context: this.context,
++            payload,
++        });
++    }
++    setFeedbackLayout(layout) {
++        this.send({
++            event: "setFeedbackLayout",
++            context: this.context,
++            payload: {
++                layout,
++            },
++        });
++    }
+ }
+ exports.Action = Action;
+ //# sourceMappingURL=Action.js.map
+\ No newline at end of file
+diff --git a/node_modules/@fnando/streamdeck/dist/Action.js.map b/node_modules/@fnando/streamdeck/dist/Action.js.map
+index 7f62b14..9d84972 100644
+--- a/node_modules/@fnando/streamdeck/dist/Action.js.map
++++ b/node_modules/@fnando/streamdeck/dist/Action.js.map
+@@ -1 +1 @@
+-{"version":3,"file":"Action.js","sourceRoot":"","sources":["../src/Action.ts"],"names":[],"mappings":"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"}
+\ No newline at end of file
++{"version":3,"file":"Action.js","sourceRoot":"","sources":["../src/Action.ts"],"names":[],"mappings":"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"}
+\ No newline at end of file
+diff --git a/node_modules/@fnando/streamdeck/dist/Encoder.d.ts b/node_modules/@fnando/streamdeck/dist/Encoder.d.ts
+new file mode 100644
+index 0000000..592270f
+--- /dev/null
++++ b/node_modules/@fnando/streamdeck/dist/Encoder.d.ts
+@@ -0,0 +1,13 @@
++export declare class Encoder {
++    background?: string;
++    icon?: string;
++    layout?: string;
++    stackColor?: string;
++    onRotateDescription?: string;
++    onPushDescription?: string;
++    onTouchDescription?: string;
++    onLongTouchDescription?: string;
++    toManifest(): Record<string, unknown>;
++    private buildTriggerDescription;
++    private evaluateOptionalValues;
++}
+diff --git a/node_modules/@fnando/streamdeck/dist/Encoder.js b/node_modules/@fnando/streamdeck/dist/Encoder.js
+new file mode 100644
+index 0000000..3487204
+--- /dev/null
++++ b/node_modules/@fnando/streamdeck/dist/Encoder.js
+@@ -0,0 +1,57 @@
++"use strict";
++Object.defineProperty(exports, "__esModule", { value: true });
++exports.Encoder = void 0;
++class Encoder {
++    toManifest() {
++        const snippet = {
++            background: this.background,
++            Icon: this.icon,
++            layout: this.layout,
++            StackColor: this.stackColor,
++            TriggerDescription: {
++                Rotate: this.onRotateDescription,
++                Push: this.onPushDescription,
++                Touch: this.onTouchDescription,
++                LongTouch: this.onLongTouchDescription,
++            },
++        };
++        const optionals = [
++            ["background", this.background, this.background],
++            ["Icon", this.icon, this.icon],
++            ["layout", this.layout, this.layout],
++            ["StackColor", this.stackColor, this.stackColor],
++            ["StackColor", this.stackColor, this.stackColor],
++            [
++                "TriggerDescription",
++                this.onRotateDescription ||
++                    this.onPushDescription ||
++                    this.onTouchDescription ||
++                    this.onLongTouchDescription,
++                this.buildTriggerDescription(),
++            ],
++        ];
++        this.evaluateOptionalValues(optionals, snippet);
++        return snippet;
++    }
++    buildTriggerDescription() {
++        const snippet = {};
++        const optionals = [
++            ["Rotate", this.onRotateDescription, this.onRotateDescription],
++            ["Push", this.onPushDescription, this.onPushDescription],
++            ["Touch", this.onTouchDescription, this.onTouchDescription],
++            ["LongTouch", this.onLongTouchDescription, this.onLongTouchDescription],
++        ];
++        this.evaluateOptionalValues(optionals, snippet);
++        return snippet;
++    }
++    evaluateOptionalValues(optionals, object) {
++        optionals.forEach(([prop, condition, value]) => {
++            if (condition) {
++                object[prop] = value;
++            }
++        });
++        return object;
++    }
++}
++exports.Encoder = Encoder;
++//# sourceMappingURL=Encoder.js.map
+\ No newline at end of file
+diff --git a/node_modules/@fnando/streamdeck/dist/Encoder.js.map b/node_modules/@fnando/streamdeck/dist/Encoder.js.map
+new file mode 100644
+index 0000000..b22ef18
+--- /dev/null
++++ b/node_modules/@fnando/streamdeck/dist/Encoder.js.map
+@@ -0,0 +1 @@
++{"version":3,"file":"Encoder.js","sourceRoot":"","sources":["../src/Encoder.ts"],"names":[],"mappings":";;;AAIA,MAAa,OAAO;IAyDX,UAAU;QACf,MAAM,OAAO,GAA4B;YACvC,UAAU,EAAE,IAAI,CAAC,UAAU;YAC3B,IAAI,EAAE,IAAI,CAAC,IAAI;YACf,MAAM,EAAE,IAAI,CAAC,MAAM;YACnB,UAAU,EAAE,IAAI,CAAC,UAAU;YAC3B,kBAAkB,EAAE;gBAClB,MAAM,EAAE,IAAI,CAAC,mBAAmB;gBAChC,IAAI,EAAE,IAAI,CAAC,iBAAiB;gBAC5B,KAAK,EAAE,IAAI,CAAC,kBAAkB;gBAC9B,SAAS,EAAE,IAAI,CAAC,sBAAsB;aACvC;SACF,CAAC;QAEF,MAAM,SAAS,GAAiC;YAC9C,CAAC,YAAY,EAAE,IAAI,CAAC,UAAU,EAAE,IAAI,CAAC,UAAU,CAAC;YAChD,CAAC,MAAM,EAAE,IAAI,CAAC,IAAI,EAAE,IAAI,CAAC,IAAI,CAAC;YAC9B,CAAC,QAAQ,EAAE,IAAI,CAAC,MAAM,EAAE,IAAI,CAAC,MAAM,CAAC;YACpC,CAAC,YAAY,EAAE,IAAI,CAAC,UAAU,EAAE,IAAI,CAAC,UAAU,CAAC;YAChD,CAAC,YAAY,EAAE,IAAI,CAAC,UAAU,EAAE,IAAI,CAAC,UAAU,CAAC;YAChD;gBACE,oBAAoB;gBACpB,IAAI,CAAC,mBAAmB;oBACtB,IAAI,CAAC,iBAAiB;oBACtB,IAAI,CAAC,kBAAkB;oBACvB,IAAI,CAAC,sBAAsB;gBAC7B,IAAI,CAAC,uBAAuB,EAAE;aAC/B;SACF,CAAC;QAEF,IAAI,CAAC,sBAAsB,CAAC,SAAS,EAAE,OAAO,CAAC,CAAC;QAChD,OAAO,OAAO,CAAC;IACjB,CAAC;IAEO,uBAAuB;QAC7B,MAAM,OAAO,GAA4B,EAAE,CAAC;QAE5C,MAAM,SAAS,GAAiC;YAC9C,CAAC,QAAQ,EAAE,IAAI,CAAC,mBAAmB,EAAE,IAAI,CAAC,mBAAmB,CAAC;YAC9D,CAAC,MAAM,EAAE,IAAI,CAAC,iBAAiB,EAAE,IAAI,CAAC,iBAAiB,CAAC;YACxD,CAAC,OAAO,EAAE,IAAI,CAAC,kBAAkB,EAAE,IAAI,CAAC,kBAAkB,CAAC;YAC3D,CAAC,WAAW,EAAE,IAAI,CAAC,sBAAsB,EAAE,IAAI,CAAC,sBAAsB,CAAC;SACxE,CAAC;QAEF,IAAI,CAAC,sBAAsB,CAAC,SAAS,EAAE,OAAO,CAAC,CAAC;QAChD,OAAO,OAAO,CAAC;IACjB,CAAC;IAEO,sBAAsB,CAC5B,SAAuC,EACvC,MAA+B;QAE/B,SAAS,CAAC,OAAO,CAAC,CAAC,CAAC,IAAI,EAAE,SAAS,EAAE,KAAK,CAAC,EAAE,EAAE;YAC7C,IAAI,SAAS,EAAE;gBACb,MAAM,CAAC,IAAI,CAAC,GAAG,KAAK,CAAC;aACtB;QACH,CAAC,CAAC,CAAC;QAEH,OAAO,MAAM,CAAC;IAChB,CAAC;CACF;AArHD,0BAqHC"}
+\ No newline at end of file
+diff --git a/node_modules/@fnando/streamdeck/dist/Layout.d.ts b/node_modules/@fnando/streamdeck/dist/Layout.d.ts
+new file mode 100644
+index 0000000..0cb4f3e
+--- /dev/null
++++ b/node_modules/@fnando/streamdeck/dist/Layout.d.ts
+@@ -0,0 +1,56 @@
++export declare class Layout {
++    static readonly ICON_LAYOUT: string;
++    static readonly CANVAS_LAYOUT: string;
++    static readonly VALUE_LAYOUT: string;
++    static readonly INDICATOR_LAYOUT: string;
++    static readonly GRADIENT_INDICATOR_LAYOUT: string;
++    static readonly DOUBLE_INDICATOR_LAYOUT: string;
++    id: string;
++    items: [LayoutItem?];
++    constructor(id: string);
++    insertPlaccard(item: PlaccardItem): void;
++    insertPixmap(item: PixmapItem): void;
++    insertBar(item: BarItem): void;
++    insertGbar(item: GbarItem): void;
++    insertText(item: TextItem): void;
++}
++type LayoutItem = {
++    key: string;
++    type: string;
++    rect: [number, number, number, number];
++    zOrder?: number;
++    enabled?: boolean;
++    opacity?: number;
++    background?: string;
++};
++type PlaccardItem = LayoutItem;
++type PixmapItem = LayoutItem & {
++    value: string;
++};
++type BarItem = LayoutItem & {
++    value: string;
++    subtype?: 0 | 1 | 2 | 3 | 4;
++    border_w?: number;
++    bar_bg_c?: string;
++    bar_border_c?: string;
++    bar_fill_c?: string;
++};
++type GbarItem = LayoutItem & {
++    value: string;
++    subtype?: 0 | 1 | 2 | 3 | 4;
++    border_w?: number;
++    bar_bg_c?: string;
++    bar_border_c?: string;
++    bar_h?: number;
++};
++type TextItem = LayoutItem & {
++    value: string;
++    font?: TextItemFont;
++    color?: string;
++    alignment?: "left" | "center" | "right";
++};
++type TextItemFont = {
++    size?: number;
++    weight?: number;
++};
++export {};
+diff --git a/node_modules/@fnando/streamdeck/dist/Layout.js b/node_modules/@fnando/streamdeck/dist/Layout.js
+new file mode 100644
+index 0000000..1d7ea6d
+--- /dev/null
++++ b/node_modules/@fnando/streamdeck/dist/Layout.js
+@@ -0,0 +1,32 @@
++"use strict";
++Object.defineProperty(exports, "__esModule", { value: true });
++exports.Layout = void 0;
++class Layout {
++    constructor(id) {
++        this.items = [];
++        this.id = id;
++    }
++    insertPlaccard(item) {
++        this.items.push(Object.assign(Object.assign({}, item), { type: "placcard" }));
++    }
++    insertPixmap(item) {
++        this.items.push(Object.assign(Object.assign({}, item), { type: "pixmap" }));
++    }
++    insertBar(item) {
++        this.items.push(Object.assign(Object.assign({}, item), { type: "bar" }));
++    }
++    insertGbar(item) {
++        this.items.push(Object.assign(Object.assign({}, item), { type: "gbar" }));
++    }
++    insertText(item) {
++        this.items.push(Object.assign(Object.assign({}, item), { type: "text" }));
++    }
++}
++exports.Layout = Layout;
++Layout.ICON_LAYOUT = "$X1";
++Layout.CANVAS_LAYOUT = "$A0";
++Layout.VALUE_LAYOUT = "$A1";
++Layout.INDICATOR_LAYOUT = "$B1";
++Layout.GRADIENT_INDICATOR_LAYOUT = "$B2";
++Layout.DOUBLE_INDICATOR_LAYOUT = "$C1";
++//# sourceMappingURL=Layout.js.map
+\ No newline at end of file
+diff --git a/node_modules/@fnando/streamdeck/dist/Layout.js.map b/node_modules/@fnando/streamdeck/dist/Layout.js.map
+new file mode 100644
+index 0000000..a05514c
+--- /dev/null
++++ b/node_modules/@fnando/streamdeck/dist/Layout.js.map
+@@ -0,0 +1 @@
++{"version":3,"file":"Layout.js","sourceRoot":"","sources":["../src/Layout.ts"],"names":[],"mappings":";;;AAQA,MAAa,MAAM;IAkDjB,YAAY,EAAU;QAFf,UAAK,GAAkB,EAAE,CAAC;QAG/B,IAAI,CAAC,EAAE,GAAG,EAAE,CAAC;IACf,CAAC;IAEM,cAAc,CAAC,IAAkB;QACtC,IAAI,CAAC,KAAK,CAAC,IAAI,iCAAM,IAAI,KAAE,IAAI,EAAE,UAAU,IAAG,CAAC;IACjD,CAAC;IAEM,YAAY,CAAC,IAAgB;QAClC,IAAI,CAAC,KAAK,CAAC,IAAI,iCAAM,IAAI,KAAE,IAAI,EAAE,QAAQ,IAAG,CAAC;IAC/C,CAAC;IAEM,SAAS,CAAC,IAAa;QAC5B,IAAI,CAAC,KAAK,CAAC,IAAI,iCAAM,IAAI,KAAE,IAAI,EAAE,KAAK,IAAG,CAAC;IAC5C,CAAC;IAEM,UAAU,CAAC,IAAc;QAC9B,IAAI,CAAC,KAAK,CAAC,IAAI,iCAAM,IAAI,KAAE,IAAI,EAAE,MAAM,IAAG,CAAC;IAC7C,CAAC;IAEM,UAAU,CAAC,IAAc;QAC9B,IAAI,CAAC,KAAK,CAAC,IAAI,iCAAM,IAAI,KAAE,IAAI,EAAE,MAAM,IAAG,CAAC;IAC7C,CAAC;;AAxEH,wBAyEC;AApEiB,kBAAW,GAAW,KAAK,CAAC;AAM5B,oBAAa,GAAW,KAAK,CAAC;AAM9B,mBAAY,GAAW,KAAK,CAAC;AAM7B,uBAAgB,GAAW,KAAK,CAAC;AAOjC,gCAAyB,GAAW,KAAK,CAAC;AAM1C,8BAAuB,GAAW,KAAK,CAAC"}
+\ No newline at end of file
+diff --git a/node_modules/@fnando/streamdeck/dist/events.d.ts b/node_modules/@fnando/streamdeck/dist/events.d.ts
+index f4e5bed..989e19f 100644
+--- a/node_modules/@fnando/streamdeck/dist/events.d.ts
++++ b/node_modules/@fnando/streamdeck/dist/events.d.ts
+@@ -14,6 +14,14 @@ export interface ActionEvent<T = unknown> extends StreamDeckEvent {
+     state: number;
+     userDesiredState: number;
+ }
++export interface DialActionEvent<T = unknown> extends StreamDeckEvent {
++    context: string;
++    settings: T;
++    coordinates: {
++        column: number;
++        row: number;
++    };
++}
+ export interface DidReceiveGlobalSettingsEvent<T = unknown> {
+     event: string;
+     settings: T;
+@@ -31,6 +39,17 @@ export type KeyDownEvent<T = unknown> = ActionEvent<T>;
+ export type KeyUpEvent<T = unknown> = ActionEvent<T>;
+ export type WillAppearEvent<T = unknown> = ActionEvent<T>;
+ export type WillDisappearEvent<T = unknown> = ActionEvent<T>;
++export type TouchTapEvent<T = unknown> = DialActionEvent<T> & {
++    tapPos: number[];
++    hold: boolean;
++};
++export type DialPressEvent<T = unknown> = DialActionEvent<T> & {
++    pressed: boolean;
++};
++export type DialRotateEvent<T = unknown> = DialActionEvent<T> & {
++    pressed: boolean;
++    ticks: number;
++};
+ export interface TitleParametersDidChangeEvent<T = unknown> extends StreamDeckEvent {
+     coordinates: Coordinates;
+     settings: T;
+@@ -86,6 +105,9 @@ export declare class ActionEvents extends Events {
+     handlePropertyInspectorDidAppear(event: PropertyInspectorDidAppearEvent): void;
+     handlePropertyInspectorDidDisappear(event: PropertyInspectorDidDisappearEvent): void;
+     handleSendToPlugin(event: SendToPluginEvent): void;
++    handleTouchTap(event: TouchTapEvent): void;
++    handleDialPress(event: DialPressEvent): void;
++    handleDialRotate(event: DialRotateEvent): void;
+ }
+ export declare class InspectorEvents<SettingsType = unknown, GlobalSettingsType = SettingsType> extends Events<SettingsType, GlobalSettingsType> {
+     handleSendToPropertyInspector(event: SendToPropertyInspectorEvent): void;
+diff --git a/node_modules/@fnando/streamdeck/dist/events.js b/node_modules/@fnando/streamdeck/dist/events.js
+index d46560a..75480a7 100644
+--- a/node_modules/@fnando/streamdeck/dist/events.js
++++ b/node_modules/@fnando/streamdeck/dist/events.js
+@@ -61,6 +61,15 @@ class ActionEvents extends Events {
+     handleSendToPlugin(event) {
+         this.debug("Received sendToPlugin event:", event);
+     }
++    handleTouchTap(event) {
++        this.debug("Received touchTap event:", event);
++    }
++    handleDialPress(event) {
++        this.debug("Received dialPress event:", event);
++    }
++    handleDialRotate(event) {
++        this.debug("Received dialRotate event:", event);
++    }
+ }
+ exports.ActionEvents = ActionEvents;
+ class InspectorEvents extends Events {
+diff --git a/node_modules/@fnando/streamdeck/dist/events.js.map b/node_modules/@fnando/streamdeck/dist/events.js.map
+index 68fbabc..c862e6f 100644
+--- a/node_modules/@fnando/streamdeck/dist/events.js.map
++++ b/node_modules/@fnando/streamdeck/dist/events.js.map
+@@ -1 +1 @@
+-{"version":3,"file":"events.js","sourceRoot":"","sources":["../src/events.ts"],"names":[],"mappings":";;;AA2EA,MAAa,MAAM;IACjB,KAAK,CAAC,GAAG,IAAe;QAEtB,OAAO,CAAC,GAAG,CAAC,IAAI,IAAI,CAAC,WAAW,CAAC,IAAI,GAAG,EAAE,GAAG,IAAI,CAAC,CAAC;IACrD,CAAC;IAOD,aAAa,CAAC,MAAe;IAE7B,CAAC;IAOD,8BAA8B,CAC5B,KAAwD;QAExD,IAAI,CAAC,KAAK,CAAC,0CAA0C,EAAE,KAAK,CAAC,CAAC;IAChE,CAAC;IAOD,wBAAwB,CAAC,KAA4C;QACnE,IAAI,CAAC,KAAK,CAAC,oCAAoC,EAAE,KAAK,CAAC,CAAC;IAC1D,CAAC;IAMD,wBAAwB;QACtB,IAAI,CAAC,KAAK,CAAC,mCAAmC,CAAC,CAAC;IAClD,CAAC;CACF;AA1CD,wBA0CC;AAED,MAAa,YAGX,SAAQ,MAAwC;IAMhD,8BAA8B,CAC5B,KAAkD;QAElD,IAAI,CAAC,KAAK,CAAC,0CAA0C,EAAE,KAAK,CAAC,CAAC;IAChE,CAAC;IAOD,sBAAsB,CAAC,KAA4B;QACjD,IAAI,CAAC,KAAK,CAAC,kCAAkC,EAAE,KAAK,CAAC,CAAC;IACxD,CAAC;IAOD,yBAAyB,CAAC,KAA+B;QACvD,IAAI,CAAC,KAAK,CAAC,qCAAqC,EAAE,KAAK,CAAC,CAAC;IAC3D,CAAC;IAOD,0BAA0B,CAAC,KAAgC;QACzD,IAAI,CAAC,KAAK,CAAC,sCAAsC,EAAE,KAAK,CAAC,CAAC;IAC5D,CAAC;IAOD,6BAA6B,CAAC,KAAmC;QAC/D,IAAI,CAAC,KAAK,CAAC,yCAAyC,EAAE,KAAK,CAAC,CAAC;IAC/D,CAAC;IAOD,qBAAqB,CAAC,KAAwB;QAC5C,IAAI,CAAC,KAAK,CAAC,iCAAiC,EAAE,KAAK,CAAC,CAAC;IACvD,CAAC;CACF;AA3DD,oCA2DC;AAED,MAAa,YAAa,SAAQ,MAAM;IAMtC,aAAa,CAAC,KAAmB;QAC/B,IAAI,CAAC,KAAK,CAAC,yBAAyB,EAAE,KAAK,CAAC,CAAC;IAC/C,CAAC;IAOD,WAAW,CAAC,KAAiB;QAC3B,IAAI,CAAC,KAAK,CAAC,uBAAuB,EAAE,KAAK,CAAC,CAAC;IAC7C,CAAC;IAOD,gBAAgB,CAAC,KAAsB;QACrC,IAAI,CAAC,KAAK,CAAC,4BAA4B,EAAE,KAAK,CAAC,CAAC;IAClD,CAAC;IAOD,mBAAmB,CAAC,KAAyB;QAC3C,IAAI,CAAC,KAAK,CAAC,+BAA+B,EAAE,KAAK,CAAC,CAAC;IACrD,CAAC;IAOD,gCAAgC,CAC9B,KAAsC;QAEtC,IAAI,CAAC,KAAK,CAAC,4CAA4C,EAAE,KAAK,CAAC,CAAC;IAClE,CAAC;IAOD,mCAAmC,CACjC,KAAyC;QAEzC,IAAI,CAAC,KAAK,CAAC,4CAA4C,EAAE,KAAK,CAAC,CAAC;IAClE,CAAC;IAOD,kBAAkB,CAAC,KAAwB;QACzC,IAAI,CAAC,KAAK,CAAC,8BAA8B,EAAE,KAAK,CAAC,CAAC;IACpD,CAAC;CACF;AAnED,oCAmEC;AAED,MAAa,eAGX,SAAQ,MAAwC;IAMhD,6BAA6B,CAAC,KAAmC;QAC/D,IAAI,CAAC,KAAK,CAAC,yCAAyC,EAAE,KAAK,CAAC,CAAC;IAC/D,CAAC;CACF;AAZD,0CAYC"}
+\ No newline at end of file
++{"version":3,"file":"events.js","sourceRoot":"","sources":["../src/events.ts"],"names":[],"mappings":"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"}
+\ No newline at end of file
+diff --git a/node_modules/@fnando/streamdeck/dist/index.d.ts b/node_modules/@fnando/streamdeck/dist/index.d.ts
+index cc008ea..3939a81 100644
+--- a/node_modules/@fnando/streamdeck/dist/index.d.ts
++++ b/node_modules/@fnando/streamdeck/dist/index.d.ts
+@@ -9,3 +9,5 @@ export * from "./Action";
+ export * from "./State";
+ export * from "./Inspector";
+ export * from "./events";
++export * from "./Encoder";
++export * from "./Layout";
+diff --git a/node_modules/@fnando/streamdeck/dist/index.js b/node_modules/@fnando/streamdeck/dist/index.js
+index cbae271..80cdaec 100644
+--- a/node_modules/@fnando/streamdeck/dist/index.js
++++ b/node_modules/@fnando/streamdeck/dist/index.js
+@@ -19,4 +19,6 @@ __exportStar(require("./Action"), exports);
+ __exportStar(require("./State"), exports);
+ __exportStar(require("./Inspector"), exports);
+ __exportStar(require("./events"), exports);
++__exportStar(require("./Encoder"), exports);
++__exportStar(require("./Layout"), exports);
+ //# sourceMappingURL=index.js.map
+\ No newline at end of file
+diff --git a/node_modules/@fnando/streamdeck/dist/index.js.map b/node_modules/@fnando/streamdeck/dist/index.js.map
+index 7cb93c6..2637886 100644
+--- a/node_modules/@fnando/streamdeck/dist/index.js.map
++++ b/node_modules/@fnando/streamdeck/dist/index.js.map
+@@ -1 +1 @@
+-{"version":3,"file":"index.js","sourceRoot":"","sources":["../src/index.ts"],"names":[],"mappings":";;;;;;;;;;;;;;;;AAeA,2CAAyB;AACzB,2CAAyB;AACzB,0CAAwB;AACxB,8CAA4B;AAC5B,2CAAyB"}
+\ No newline at end of file
++{"version":3,"file":"index.js","sourceRoot":"","sources":["../src/index.ts"],"names":[],"mappings":";;;;;;;;;;;;;;;;AAeA,2CAAyB;AACzB,2CAAyB;AACzB,0CAAwB;AACxB,8CAA4B;AAC5B,2CAAyB;AACzB,4CAA0B;AAC1B,2CAAyB"}
+\ No newline at end of file

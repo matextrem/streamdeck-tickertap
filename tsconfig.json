@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "outDir": "./dist",
+    "lib": ["ES2015", "DOM"],
     "resolveJsonModule": true
   }
 }

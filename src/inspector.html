@@ -1,6 +1,62 @@
 <link rel="stylesheet" type="text/css" href="css/sdpi.css" />
 <link rel="stylesheet" type="text/css" href="css/custom.css" />
 
-<!-- Your content goes here -->
+<div class="sdpi-wrapper">
+  <div class="sdpi-heading">Configuration</div>
+  <div class="sdpi-item">
+    <div class="sdpi-item-label">Ticker</div>
+    <input
+      class="sdpi-item-value"
+      id="ticker"
+      required
+      placeholder="Enter a ticker - e.g. AAPL"
+      style="text-transform: uppercase"
+    />
+  </div>
+  <div class="sdpi-item">
+    <div class="sdpi-item-label">Frequency</div>
+    <select class="sdpi-item-value select" id="frequency">
+      <option value="on-push">On push</option>
+      <option value="5">5 minutes</option>
+      <option value="30">30 minutes</option>
+      <option value="60">1 hour</option>
+    </select>
+  </div>
+  <div class="sdpi-item right">
+    <button disabled class="sdpi-item-value max65" id="save">Save</button>
+  </div>
+
+  <details>
+    <summary>More Info</summary>
+    <p>Ticker field supports Finvinz website: e.g.</p>
+    <p>
+      &nbsp;&nbsp;&bull;AAPL - Apple<br />
+      &nbsp;&nbsp;&bull;GOOGL - Alphabet<br />
+      &nbsp;&nbsp;&bull;MSFT - Microsoft<br />
+      &nbsp;&nbsp;&bull;AMZN - Amazon<br />
+    </p>
+    <p>Frequency: How often the stock prices are fetched</p>
+    <p>
+      &nbsp;&nbsp;&bull;On push - Every time the key button is pressed.<br />
+      &nbsp;&nbsp;&bull;5 minutes - Every 5 minutes.<br />
+      &nbsp;&nbsp;&bull;30 minutes - Every 30 minutes.<br />
+      &nbsp;&nbsp;&bull;1 hour - Hourly.<br />
+    </p>
+  </details>
+  <div class="sdpi-item">
+    <button
+      class="sdpi-item-value"
+      data-url="github.com/matextrem/streamDeck-tickertap/issues/new?assignees=matextrem&labels=bug&template=bug_report.md&title=Bug+report"
+    >
+      Report bug
+    </button>
+    <button
+      class="sdpi-item-value"
+      data-url="github.com/matextrem/streamDeck-tickertap"
+    >
+      Github
+    </button>
+  </div>
+</div>
 
 <script src="inspector.js"></script>
