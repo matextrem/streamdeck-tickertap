@@ -2,12 +2,11 @@
 
 A Stream Deck plugin to visualize real-time stock values
 
-[![publish-package](https://github.com/matextrem/streamdeck-tickertap/actions/workflows/publish-package.yaml/badge.svg)](https://github.com/matextrem/streamdeck-tickertap/actions/workflows/publish-package.yaml)
 [![elgato-marketplace](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fmp-gateway.elgato.com%2Fproducts%3Fname%3DDIM%2520Stream%2520Deck&logo=elgato&query=%24.results.*.download_count&label=Elgato%20Marketplace)](https://marketplace.elgato.com/product/ticker-tap)
 [![publish-package](https://img.shields.io/github/v/release/matextrem/streamdeck-tickertap?label=plugin&logo=github)](https://github.com/matextrem/streamdeck-tickertap/releases/latest)
 
 
-<img src="https://i.ibb.co/BtxLqfr/gallery-previews-01.png" />
+<img src="https://i.ibb.co/DLXBjBj/gallery-previews-01.png" width="1024" />
 
 ## Installation
 1. Visit
@@ -15,8 +14,9 @@ A Stream Deck plugin to visualize real-time stock values
 2. Go to the download folder and open `com.matextrem.tickertap.streamDeckPlugin`.
 
 ## Features
-<img src="https://i.ibb.co/34n8TqS/gallery-previews-03.png" />
-<img src="https://i.ibb.co/hLNMm1d/gallery-previews-02.png" />
+<img src="https://i.ibb.co/rMY2PR9/gallery-previews-03.png"  width="768"/>
+<img src="https://i.ibb.co/Zzgmrjw/gallery-previews-02.png" width="768" />
+
 
 - Visualize any real-time stock values.
 - Quickly access to the stock's prices you follow.
