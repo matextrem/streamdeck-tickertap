@@ -1,10 +1,10 @@
 {
   "id": "com.matextrem.tickertap",
   "version": "1.0.0",
-  "name": "Ticker Tap",
-  "description": "Your personal stock market plugin",
+  "name": "TickerTap",
+  "description": "A Stream Deck plugin to visualize real-time stock values",
   "author": "Mati Dastugue",
-  "category": "Ticker Tap",
+  "category": "TickerTap",
   "monitor": {
     "windows": [],
     "mac": []
