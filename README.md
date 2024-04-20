@@ -16,9 +16,21 @@ A Stream Deck plugin to visualize real-time stock values
 <img src="https://i.ibb.co/DLXBjBj/gallery-previews-01.png" width="1024" />
 
 ## Installation
-1. Visit
-   <https://github.com/matextrem/streamdeck-tickertap/raw/main/release/com.matextrem.tickertap.streamDeckPlugin>
-2. Go to the download folder and open `com.matextrem.tickertap.streamDeckPlugin`.
+
+You can install the TickerTap plugin for StreamDeck by following one of the two methods described below:
+
+### Option 1: Manual Download
+1. Visit the following URL to download the latest version of the plugin:
+   [Download TickerTap](https://github.com/matextrem/streamdeck-tickertap/raw/main/release/com.matextrem.tickertap.streamDeckPlugin)
+2. After the download is complete, navigate to your downloads folder.
+3. Double-click on `com.matextrem.tickertap.streamDeckPlugin` to install the plugin on your Stream Deck.
+
+### Option 2: Click on the Download Button
+Click on the button below to download the latest version of the plugin directly:
+
+<a href="https://github.com/matextrem/streamdeck-tickertap/raw/main/release/com.matextrem.tickertap.streamDeckPlugin">
+    <img src="https://i.ibb.co/JHPBTBX/install-button.png" alt="Download TickerTap" width="400" >
+</a>
 
 ## Features
 <img src="https://i.ibb.co/rMY2PR9/gallery-previews-03.png"  width="768"/>
