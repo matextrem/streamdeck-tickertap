@@ -41,7 +41,7 @@ Click on the button below to download the latest version of the plugin directly:
 - Quickly access to the stock's prices you follow.
 - Support any stock from [Finvinz.](https://finviz.com)
 
-  
+ **NO API KEY IS NEEDED! 🎊**
 ## Usage
 
 - Ticker field supports Finvinz website: e.g.
