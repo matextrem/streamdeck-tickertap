@@ -2,18 +2,12 @@
 
 A Stream Deck plugin to visualize real-time stock values
 
-[![elgato-marketplace](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fmp-gateway.elgato.com%2Fproducts%3Fname%3Dtickertap&query=%24.results.*.download_count&logo=elgato&label=Elgato%20Marketplace
-)](https://marketplace.elgato.com/product/ticker-tap)
-[![publish-package](https://img.shields.io/github/v/release/matextrem/streamdeck-tickertap?logo=github&label=plugin
-)](https://github.com/matextrem/streamdeck-tickertap/releases/latest)
-[![LICENSE](https://img.shields.io/github/license/matextrem/streamdeck-tickertap)]([https://github.com/matextrem/streamdeck-tickertap/releases/latest](https://github.com/matextrem/streamdeck-tickertap/blob/main/LICENSE.md))
+[![elgato-marketplace](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fmp-gateway.elgato.com%2Fproducts%3Fname%3Dtickertap&query=%24.results.*.download_count&logo=elgato&label=Elgato%20Marketplace)](https://marketplace.elgato.com/product/ticker-tap)
+[![publish-package](https://img.shields.io/github/v/release/matextrem/streamdeck-tickertap?logo=github&label=plugin)](https://github.com/matextrem/streamdeck-tickertap/releases/latest)
+[![LICENSE](https://img.shields.io/github/license/matextrem/streamdeck-tickertap)](<[https://github.com/matextrem/streamdeck-tickertap/releases/latest](https://github.com/matextrem/streamdeck-tickertap/blob/main/LICENSE.md)>)
 [![Buy Me A Coffee](https://img.shields.io/badge/-Buy_me_a%C2%A0coffee-gray?logo=buy-me-a-coffee)](https://www.buymeacoffee.com/matextrem)
 
-
-
-
-
-<img src="https://i.ibb.co/DLXBjBj/gallery-previews-01.png" width="1024" />
+<img src="src/images/previews/gallery-previews-01.png" width="1024" />
 
 ## Installation
 
@@ -33,9 +27,9 @@ Click on the button below to download the latest version of the plugin directly:
 </a>
 
 ## Features
-<img src="https://i.ibb.co/rMY2PR9/gallery-previews-03.png"  width="768"/>
-<img src="https://i.ibb.co/Zzgmrjw/gallery-previews-02.png" width="768" />
 
+<img src="src/images/previews/gallery-previews-03.png"  width="768"/>
+<img src="src/images/previews/gallery-previews-02.png" width="768" />
 
 - Visualize any real-time stock values.
 - Quickly access to the stock's prices you follow.
@@ -50,10 +44,10 @@ Click on the button below to download the latest version of the plugin directly:
   - **MSFT** - Microsoft
   - **AMZN** - Amazon
 - Frequency: How often the stock prices are fetched: e.g.
-  - **On push** - *Every time the key button is pressed (default)*.
-  - **5 minutes** - *Every 5 minutes*.
-  - **30 minutes** - *Every 30 minutes*.
-  - **1 hour** - *Hourly*.
+  - **On push** - _Every time the key button is pressed (default)_.
+  - **5 minutes** - _Every 5 minutes_.
+  - **30 minutes** - _Every 30 minutes_.
+  - **1 hour** - _Hourly_.
 
 ## Maintainers
 
