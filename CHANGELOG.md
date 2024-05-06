@@ -19,6 +19,6 @@ Prefix your message with one of the following:
 [Added] New frequency field let you choose how often the stock prices are fetched.
 
 
-## Unreleased
+## v1.1.0 - 2024-05-06
 
 [Added] Added new support for the following finance types: Forex, Commodities and Futures.
