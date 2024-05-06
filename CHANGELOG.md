@@ -18,7 +18,6 @@ Prefix your message with one of the following:
 [Added] Ticker field supports any stock from [Finvinz](https://finviz.com/).
 [Added] New frequency field let you choose how often the stock prices are fetched.
 
-
 ## v1.1.0 - 2024-05-06
 
 [Added] Added new support for the following finance types: Forex, Commodities and Futures.
