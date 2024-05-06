@@ -14,12 +14,14 @@ A Stream Deck plugin to visualize real-time stock values
 You can install the TickerTap plugin for StreamDeck by following one of the two methods described below:
 
 ### Option 1: Manual Download
+
 1. Visit the following URL to download the latest version of the plugin:
    [Download TickerTap](https://github.com/matextrem/streamdeck-tickertap/raw/main/release/com.matextrem.tickertap.streamDeckPlugin)
 2. After the download is complete, navigate to your downloads folder.
 3. Double-click on `com.matextrem.tickertap.streamDeckPlugin` to install the plugin on your Stream Deck.
 
 ### Option 2: Click on the Download Button
+
 Click on the button below to download the latest version of the plugin directly:
 
 <a href="https://github.com/matextrem/streamdeck-tickertap/raw/main/release/com.matextrem.tickertap.streamDeckPlugin">
@@ -33,16 +35,30 @@ Click on the button below to download the latest version of the plugin directly:
 
 - Visualize any real-time stock values.
 - Quickly access to the stock's prices you follow.
-- Support any stock from [Finvinz.](https://finviz.com)
+- Support the following types from [Finvinz.](https://finviz.com):
 
- **NO API KEY IS NEEDED! 🎊**
+  - Stock
+  - Forex
+  - Commodities
+  - Futures
+
+  **NO API KEY IS NEEDED! 🎊**
+
 ## Usage
 
 - Ticker field supports Finvinz website: e.g.
-  - **AAPL** - Apple
-  - **GOOGL** - Alphabet
-  - **MSFT** - Microsoft
-  - **AMZN** - Amazon
+  - Stocks
+    - **AAPL** - Apple
+    - **GOOGL** - Alphabet
+  - Forex
+    - **EURUSD** - EUR/USD
+    - **XAUUSD** - XAU/USD
+  - Commodities
+    - **GC** - Gold
+    - **SI** - Silver
+  - Futures
+    - **ES** - E-mini S&P 500
+    - **NQ** - E-mini Nasdaq 100
 - Frequency: How often the stock prices are fetched: e.g.
   - **On push** - _Every time the key button is pressed (default)_.
   - **5 minutes** - _Every 5 minutes_.

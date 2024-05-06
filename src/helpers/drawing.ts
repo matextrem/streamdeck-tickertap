@@ -14,6 +14,8 @@ export async function drawQuoteImage(
 ): Promise<string> {
   const canvasWidth = 144;
   const canvasHeight = 144;
+  const tickerLength = 5;
+  const priceLength = 6;
   const canvas = createCanvas(canvasWidth, canvasHeight); // Updated size to match the provided image resolution
   const ctx: CanvasRenderingContext2D = canvas.getContext('2d');
 
@@ -40,17 +42,22 @@ export async function drawQuoteImage(
 
   // Draw the stock ticker
   ctx.fillStyle = 'white';
-  ctx.font = 'bold 22pt "Verdana"';
+  const tSize = ticker.length > tickerLength ? 18 : 22;
+  ctx.font = `bold ${tSize}pt "Verdana"`;
   ctx.fillText(ticker, 10, 43);
 
   // Draw the stock price
-  ctx.font = '500 20pt "Verdana"';
-  const textWidth = ctx.measureText(`$${price.toFixed(2)}`).width;
-  ctx.fillText(`${price.toFixed(2)}`, 10, 98);
+  const formattedPrice = price.toFixed(2);
+  const pSize = formattedPrice.length > priceLength ? 16 : 20;
+  ctx.font = `500 ${pSize}pt "Verdana"`;
+  const textWidth = ctx.measureText(`$${formattedPrice}`).width;
+  ctx.fillText(`${formattedPrice}`, 10, 98);
 
   // Draw the arrow icon next to the price
-  const arrowSize = 18; // Set arrow size
-  ctx.drawImage(arrowImage, textWidth, 80, arrowSize, arrowSize); // Adjust positioning as needed
+  // 15 - 82
+  const arrowSize = formattedPrice.length > priceLength ? 15 : 18; // Set arrow size
+  const aPosition = formattedPrice.length > priceLength ? 82 : 80; // Adjust arrow position
+  ctx.drawImage(arrowImage, textWidth, aPosition, arrowSize, arrowSize); // Adjust positioning as needed
 
   // Set the fill color for percentage change
   ctx.fillStyle = state;

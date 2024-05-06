@@ -11,3 +11,15 @@
     align-items: center;
     flex:1;
 }
+
+.radio-container .sdpi-item-child{
+    text-align: center;
+}
+
+.radio-container .sdpi-item-label{
+    padding:0;
+}
+
+.radio-wrapper{
+    margin:5px 0;
+}

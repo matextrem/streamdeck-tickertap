@@ -1,6 +1,13 @@
+export enum QuoteTypes {
+  STOCK = 'stock',
+  FOREX = 'forex',
+  COMMODITY = 'commodity',
+  FUTURE = 'future',
+}
 export type Settings = {
   ticker: string;
   frequency: string;
+  type: QuoteTypes;
 };
 
 export const ON_PUSH = 'on-push';

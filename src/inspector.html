@@ -13,6 +13,29 @@
       style="text-transform: uppercase"
     />
   </div>
+  <div type="radio" class="sdpi-item radio-wrapper" id="type_radio">
+    <div class="sdpi-item-label">Type</div>
+    <div class="sdpi-item-value center radio-container">
+      <span class="sdpi-item-child">
+        <input id="rdio1" type="radio" value="stock" name="rdio" checked />
+        <label for="rdio1" class="sdpi-item-label"><span></span>Stock</label>
+      </span>
+      <span class="sdpi-item-child">
+        <input id="rdio2" type="radio" value="forex" name="rdio" />
+        <label for="rdio2" class="sdpi-item-label"><span></span>Forex</label>
+      </span>
+      <span class="sdpi-item-child">
+        <input id="rdio3" type="radio" value="commodity" name="rdio" />
+        <label for="rdio3" class="sdpi-item-label"
+          ><span></span>Commodity</label
+        >
+      </span>
+      <span class="sdpi-item-child">
+        <input id="rdio4" type="radio" value="future" name="rdio" />
+        <label for="rdio4" class="sdpi-item-label"><span></span>Future</label>
+      </span>
+    </div>
+  </div>
   <div class="sdpi-item">
     <div class="sdpi-item-label">Frequency</div>
     <select class="sdpi-item-value select" id="frequency">
@@ -29,11 +52,25 @@
   <details>
     <summary>More Info</summary>
     <p>Ticker field supports Finvinz website: e.g.</p>
+    <p>&nbsp;&nbsp;Stocks</p>
     <p>
-      &nbsp;&nbsp;&bull;AAPL - Apple<br />
-      &nbsp;&nbsp;&bull;GOOGL - Alphabet<br />
-      &nbsp;&nbsp;&bull;MSFT - Microsoft<br />
-      &nbsp;&nbsp;&bull;AMZN - Amazon<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&bull;AAPL - Apple<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&bull;GOOGL - Alphabet<br />
+    </p>
+    <p>&nbsp;&nbsp;Forex</p>
+    <p>
+      &nbsp;&nbsp;&nbsp;&nbsp;&bull;EURUSD - EUR/USD <br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&bull;XAUUSD - XAU/USD<br />
+    </p>
+    <p>&nbsp;&nbsp;Commodities</p>
+    <p>
+      &nbsp;&nbsp;&nbsp;&nbsp;&bull;GC - Gold<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&bull;SI - Silver<br />
+    </p>
+    <p>&nbsp;&nbsp;Futures</p>
+    <p>
+      &nbsp;&nbsp;&nbsp;&nbsp;&bull;ES - E-mini S&P 500<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&bull;NQ - E-mini Nasdaq 100<br />
     </p>
     <p>Frequency: How often the stock prices are fetched</p>
     <p>
