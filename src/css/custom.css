@@ -23,3 +23,7 @@
 .radio-wrapper{
     margin:5px 0;
 }
+
+.sdpi-item {
+    max-width: none;
+}
