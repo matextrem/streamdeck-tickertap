@@ -35,12 +35,14 @@ Click on the button below to download the latest version of the plugin directly:
 
 - Visualize any real-time stock values.
 - Quickly access to the stock's prices you follow.
-- Support the following types from [Finvinz.](https://finviz.com):
+- Support the following types from [Finvinz](https://finviz.com):
 
   - Stock
   - Forex
   - Commodities
   - Futures
+ 
+- Support cryptocurrencies from [CoinMarkeCap](https://coinmarketcap.com/)
 
   **NO API KEY IS NEEDED! 🎊**
 
@@ -59,6 +61,11 @@ Click on the button below to download the latest version of the plugin directly:
   - Futures
     - **ES** - E-mini S&P 500
     - **NQ** - E-mini Nasdaq 100
+  - Crypto
+    - Ticker field supports CoinMarketCap website. You have to get the name from the url: e.g.
+         - **BITCOIN** -  coinmarketcap.com/currencies/bitcoin
+         - **ETHEREUM** - coinmarketcap.com/currencies/ethereum
+         - **THE-GRAPH** - coinmarketcap.com/currencies/the-graph
 - Frequency: How often the stock prices are fetched: e.g.
   - **On push** - _Every time the key button is pressed (default)_.
   - **5 minutes** - _Every 5 minutes_.
