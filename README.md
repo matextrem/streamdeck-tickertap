@@ -1,5 +1,5 @@
 # TICKERTAP
-A Stream Deck plugin to visualize real-time stock values
+A Stream Deck plugin to visualize real-time asset values
 
 [![elgato-marketplace](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fmp-gateway.elgato.com%2Fproducts%3Fname%3DTickertap&query=%24.results.*.download_count&logo=elgato&label=Elgato%20Marketplace
 )](https://marketplace.elgato.com/product/tickertap-edbea047-025e-4b44-bc49-5e77d75a270f)
