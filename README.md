@@ -33,15 +33,13 @@ Click on the button below to download the latest version of the plugin directly:
 <img src="src/images/previews/gallery-previews-03.png"  width="768"/>
 <img src="src/images/previews/gallery-previews-02.png" width="768" />
 
-- Visualize any real-time stock values.
-- Quickly access to the stock's prices you follow.
+- Visualize any real-time asset values.
+- Quick access to the asset prices you follow.
 - Support the following types from [Finvinz](https://finviz.com):
-
   - Stock
   - Forex
   - Commodities
   - Futures
- 
 - Support cryptocurrencies from [CoinMarkeCap](https://coinmarketcap.com/)
 
   **NO API KEY IS NEEDED! 🎊**
