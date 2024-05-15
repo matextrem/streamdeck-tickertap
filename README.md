@@ -16,7 +16,7 @@ You can install the TickerTap plugin for StreamDeck by following one of the two 
 ### Option 1: Manual Download
 
 1. Visit the following URL to download the latest version of the plugin:
-   [Download TickerTap](https://github.com/matextrem/streamdeck-tickertap/raw/main/release/com.matextrem.tickertap.streamDeckPlugin)
+   [Download TickerTap](https://marketplace.elgato.com/product/tickertap-edbea047-025e-4b44-bc49-5e77d75a270f)
 2. After the download is complete, navigate to your downloads folder.
 3. Double-click on `com.matextrem.tickertap.streamDeckPlugin` to install the plugin on your Stream Deck.
 
