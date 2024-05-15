@@ -9,6 +9,7 @@
   "dependencies": {
     "@fnando/streamdeck": "*",
     "canvas": "2.10.2",
+    "cheerio": "^1.0.0-rc.12",
     "typescript": "*"
   },
   "scripts": {

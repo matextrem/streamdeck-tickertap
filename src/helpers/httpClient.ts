@@ -1,8 +1,9 @@
-import { API_URL } from './settings';
+import { QuoteTypes } from './settings';
+import { fetchStockData } from './utils';
 
 export default class HttpClient {
-  static async get(url: string) {
-    const response = await fetch(`${API_URL}${url}`);
-    return response.json();
+  static async get(ticker: string, type = QuoteTypes.STOCK) {
+    const stockData = await fetchStockData(type, ticker);
+    return stockData;
   }
 }

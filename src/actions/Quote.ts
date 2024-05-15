@@ -50,8 +50,10 @@ class Quote extends Action {
     const update = async () => {
       try {
         const quote = await httpClient.get(
-          `/quote/${this.settings[ctx]?.ticker}?type=${this.settings[ctx]?.type}`
+          this.settings[ctx]?.ticker,
+          this.settings[ctx]?.type
         );
+
         const image = await drawQuoteImage(
           quote.ticker,
           quote.price,
