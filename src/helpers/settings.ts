@@ -12,7 +12,8 @@ export type Settings = {
 
 export const ON_PUSH = 'on-push';
 // Github repository: https://github.com/matextrem/stonks-api
-export const API_URL = 'https://matextrem-stonks-api.vercel.app/api';
+export const API_URL =
+  'https://soic0q12c5.execute-api.us-east-1.amazonaws.com/dev';
 
 export type GlobalSettings = {};
 
