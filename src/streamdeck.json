@@ -2,12 +2,12 @@
   "id": "com.matextrem.tickertap",
   "version": "1.1.0",
   "name": "TickerTap",
-  "description": "A Stream Deck plugin to visualize real-time stock values",
+  "description": "A Stream Deck plugin to visualize real-time asset values",
   "author": "Mati Dastugue",
   "category": "TickerTap",
   "monitor": {
     "windows": [],
     "mac": []
   },
-  "url": "https://github.com/matextrem/plugin"
+  "url": "https://github.com/matextrem/streamdeck-tickertap"
 }
