@@ -138,7 +138,7 @@ export const API_PROVIDERS: ApiProvidersConfig = {
     },
   },
   [ApiProviders.CoinMarketCap]: {
-    baseUrl: 'https://www.coinmarketcap.com',
+    baseUrl: 'https://coinmarketcap.com',
     endpoints: {
       stock: {
         route: 'quote.ashx',
@@ -173,12 +173,12 @@ export const API_PROVIDERS: ApiProvidersConfig = {
           element.text().trim(),
       },
       price: {
-        selector: '.sc-f70bb44c-0.jxpCgO',
+        selector: '.flexStart.alignBaseline .base-text',
         extractor: (element: cheerio.Cheerio<cheerio.Element>) =>
           element.text().trim().replace(/[$,]/g, ''),
       },
       change: {
-        selector: '.sc-f70bb44c-0.flfGQp',
+        selector: '.flexStart.alignBaseline > div > div',
         extractor: (element: cheerio.Cheerio<cheerio.Element>) => {
           const calculatePriceChange = (
             percentageChange: string,
@@ -190,7 +190,7 @@ export const API_PROVIDERS: ApiProvidersConfig = {
           };
 
           const price = element
-            .find('.sc-f70bb44c-0.jxpCgO')
+            .find('.flexStart.alignBaseline > div > div')
             ?.text()
             .trim()
             .replace(/[$,]/g, '');
@@ -207,7 +207,7 @@ export const API_PROVIDERS: ApiProvidersConfig = {
         },
       },
       percentageChange: {
-        selector: '.sc-4984dd93-0',
+        selector: '.flexStart.alignBaseline p',
         extractor: (element: cheerio.Cheerio<cheerio.Element>) => {
           const color = element.attr('color');
           const isPositiveChange = color === 'green';

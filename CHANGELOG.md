@@ -22,3 +22,7 @@ Prefix your message with one of the following:
 
 [Added] Added new support for the following finance types: Forex, Commodities and Futures.
 [Added] Added new support for Cryptocurrencies from CoinMarketCap
+
+## Unreleased
+
+[Fixed] Cryptocurrencies not being fetched correctly due to changes in DOM selectors
