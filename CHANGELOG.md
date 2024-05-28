@@ -23,6 +23,6 @@ Prefix your message with one of the following:
 [Added] Added new support for the following finance types: Forex, Commodities and Futures.
 [Added] Added new support for Cryptocurrencies from CoinMarketCap
 
-## Unreleased
+## v1.1.1 - 2024-05-28
 
 [Fixed] Cryptocurrencies not being fetched correctly due to changes in DOM selectors
