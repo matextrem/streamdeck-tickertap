@@ -9,6 +9,7 @@ export enum QuoteTypes {
 }
 export type Settings = {
   ticker: string;
+  showAs: string;
   frequency: string;
   type: QuoteTypes;
 };

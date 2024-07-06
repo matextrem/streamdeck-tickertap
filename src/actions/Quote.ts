@@ -55,7 +55,7 @@ class Quote extends Action {
         );
 
         const image = await drawQuoteImage(
-          quote.ticker,
+          this.settings[ctx]?.showAs || quote.ticker,
           quote.price,
           quote.change,
           quote.percentageChange

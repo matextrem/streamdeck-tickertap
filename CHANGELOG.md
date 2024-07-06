@@ -20,9 +20,12 @@ Prefix your message with one of the following:
 
 ## v1.1.0 - 2024-05-15
 
-[Added] Added new support for the following finance types: Forex, Commodities and Futures.
-[Added] Added new support for Cryptocurrencies from CoinMarketCap
+[Added] New support for the following finance types: Forex, Commodities and Futures.
+[Added] New support for Cryptocurrencies from CoinMarketCap
 
 ## v1.1.1 - 2024-05-28
 
-[Fixed] Cryptocurrencies not being fetched correctly due to changes in DOM selectors
+[Fixed] Cryptocurrencies not being fetched correctly due to changes in DOM selectors.
+
+### Unreleased
+[Added] New field for adding a custom ticker name.

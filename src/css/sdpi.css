@@ -281,7 +281,7 @@ option {
 }
 
 .sdpi-item > *:not(.sdpi-item-label.empty):not(meter) {
-  min-height: 26px;
+ /* min-height: 26px;*/
   padding: 0px 4px 0px 4px;
 }
 
@@ -370,7 +370,6 @@ table > caption {
   flex: 1 0 0;
   /* flex-grow: 1;
   flex-shrink: 0; */
-  margin-right: 14px;
   margin-left: 4px;
   justify-content: space-evenly;
 }
@@ -690,7 +689,6 @@ textarea {
   border: none;
   margin-top: 2px;
   margin-bottom: 2px;
-  min-width: 219px;
 }
 
 textarea + label {

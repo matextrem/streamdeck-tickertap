@@ -5,10 +5,12 @@ import { ON_PUSH, QuoteTypes, Settings } from './helpers/settings';
 class DefaultPropertyInspector extends Inspector {
   public settings: Settings = {
     ticker: '',
+    showAs: '',
     frequency: ON_PUSH,
     type: QuoteTypes.STOCK,
   };
   public tickerInput: HTMLInputElement;
+  public showAsInput: HTMLInputElement;
   public typeRadio: HTMLInputElement;
   public frequencyInput: HTMLInputElement;
   public saveBtn: HTMLButtonElement;
@@ -18,6 +20,7 @@ class DefaultPropertyInspector extends Inspector {
   handleDidConnectToSocket(): void {
     // Set up your HTML event handlers here
     this.tickerInput = document.querySelector('#ticker');
+    this.showAsInput = document.querySelector('#show_as');
     this.typeRadio = document.querySelector('#type_radio');
     this.frequencyInput = document.querySelector('#frequency');
 
@@ -43,6 +46,11 @@ class DefaultPropertyInspector extends Inspector {
       }
     };
 
+    this.tickerInput.oninput = () => {
+      //Update the showAs input with the ticker value
+      this.showAsInput.value = this.tickerInput.value;
+    };
+
     this.saveBtn.onclick = () => {
       if (!this.tickerInput.value) {
         alert('Please choose a ticker symbol');
@@ -51,6 +59,7 @@ class DefaultPropertyInspector extends Inspector {
 
       this.setSettings({
         ticker: this.tickerInput.value,
+        showAs: this.showAsInput.value,
         type: this.getCheckedValue(),
         frequency: this.frequencyInput.value,
       });
@@ -70,6 +79,7 @@ class DefaultPropertyInspector extends Inspector {
 
   fillInForm() {
     this.tickerInput.value = this.settings.ticker ?? '';
+    this.showAsInput.value = this.settings.showAs ?? '';
     this.setCheckedValue(this.settings.type);
     this.frequencyInput.value = this.settings.frequency ?? ON_PUSH;
   }

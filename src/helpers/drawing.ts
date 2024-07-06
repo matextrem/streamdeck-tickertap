@@ -44,7 +44,7 @@ export async function drawQuoteImage(
   ctx.fillStyle = 'white';
   const tSize = ticker.length > tickerLength ? 18 : 22;
   ctx.font = `bold ${tSize}pt "Verdana"`;
-  ctx.fillText(ticker, 10, 43);
+  ctx.fillText(ticker.toUpperCase(), 10, 43);
 
   // Draw the stock price
   const formattedPrice = price.toFixed(2);

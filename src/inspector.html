@@ -5,13 +5,22 @@
   <div class="sdpi-heading">Configuration</div>
   <div class="sdpi-item">
     <div class="sdpi-item-label">Ticker</div>
-    <input
-      class="sdpi-item-value"
-      id="ticker"
-      required
-      placeholder="Enter a ticker - e.g. AAPL"
-      style="text-transform: uppercase"
-    />
+    <div class="sdpi-item">
+      <input
+        class="sdpi-item-value"
+        id="ticker"
+        required
+        placeholder="Enter a ticker"
+        style="text-transform: uppercase"
+      />
+      <input
+        class="sdpi-item-value w9"
+        id="show_as"
+        maxlength="7"
+        placeholder="Show as"
+        style="text-transform: uppercase"
+      />
+    </div>
   </div>
   <div type="radio" class="sdpi-item radio-wrapper" id="type_radio">
     <div class="sdpi-item-label">Type</div>
@@ -89,6 +98,7 @@
       &nbsp;&nbsp;&nbsp;&nbsp;&bull;THE-GRAPH -
       coinmarketcap.com/currencies/the-graph<br />
     </p>
+    <p>Show as: Add custom ticker - e.g GOLD</p>
     <p>Frequency: How often the stock prices are fetched</p>
     <p>
       &nbsp;&nbsp;&bull;On push - Every time the key button is pressed.<br />
