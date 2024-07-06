@@ -27,5 +27,5 @@ Prefix your message with one of the following:
 
 [Fixed] Cryptocurrencies not being fetched correctly due to changes in DOM selectors.
 
-### Unreleased
+### v1.1.2 - 2024-07-06
 [Added] New field for adding a custom ticker name.
