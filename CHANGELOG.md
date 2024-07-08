@@ -30,5 +30,5 @@ Prefix your message with one of the following:
 ### v1.1.2 - 2024-07-06
 [Added] New field for adding a custom ticker name.
 
-### Unreleased
+### v1.1.3 - 2024-07-08
 [Added] Ticker icons next to the name. This can be easily shown/hidden from settings.
