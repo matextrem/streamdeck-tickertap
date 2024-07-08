@@ -8,37 +8,44 @@ class DefaultPropertyInspector extends Inspector {
     showAs: '',
     frequency: ON_PUSH,
     type: QuoteTypes.STOCK,
+    showIcon: true,
   };
   public tickerInput: HTMLInputElement;
   public showAsInput: HTMLInputElement;
-  public typeRadio: HTMLInputElement;
+  public typeRadio: HTMLDivElement;
+  public showIconRadio: HTMLDivElement;
   public frequencyInput: HTMLInputElement;
   public saveBtn: HTMLButtonElement;
-  public getCheckedValue: () => string;
-  public setCheckedValue: (value: string) => void;
+  public getCheckedValue: (ele: HTMLDivElement) => string | null; // Adjusted the type definition
+  public setCheckedValue: (ele: HTMLDivElement, value: string) => void;
 
   handleDidConnectToSocket(): void {
     // Set up your HTML event handlers here
-    this.tickerInput = document.querySelector('#ticker');
-    this.showAsInput = document.querySelector('#show_as');
-    this.typeRadio = document.querySelector('#type_radio');
-    this.frequencyInput = document.querySelector('#frequency');
-
-    this.saveBtn = document.querySelector('#save');
+    this.tickerInput = document.querySelector('#ticker') as HTMLInputElement;
+    this.showAsInput = document.querySelector('#show_as') as HTMLInputElement;
+    this.typeRadio = document.querySelector('#type_radio') as HTMLDivElement;
+    this.showIconRadio = document.querySelector(
+      '#show_icon_radio'
+    ) as HTMLDivElement;
+    this.frequencyInput = document.querySelector(
+      '#frequency'
+    ) as HTMLInputElement;
+    this.saveBtn = document.querySelector('#save') as HTMLButtonElement;
 
     this.saveBtn.disabled = false;
 
     // Function to get the value of the checked radio button within the specified div
-    this.getCheckedValue = function () {
-      const checkedRadio = this.typeRadio.querySelector(
+    this.getCheckedValue = function (ele: HTMLDivElement) {
+      const checkedRadio = ele.querySelector(
         'input[type="radio"]:checked'
-      );
+      ) as HTMLInputElement;
+      console.log('CHECKED RADIO: ', checkedRadio?.value);
       return checkedRadio ? checkedRadio.value : null;
     };
 
     // Function to set the value of the checked radio button within the specified div
-    this.setCheckedValue = function (value) {
-      const radio = this.typeRadio.querySelector(
+    this.setCheckedValue = (ele: HTMLDivElement, value: string) => {
+      const radio = ele.querySelector(
         `input[value="${value}"]`
       ) as HTMLInputElement;
       if (radio) {
@@ -60,7 +67,8 @@ class DefaultPropertyInspector extends Inspector {
       this.setSettings({
         ticker: this.tickerInput.value,
         showAs: this.showAsInput.value,
-        type: this.getCheckedValue(),
+        type: this.getCheckedValue(this.typeRadio) as QuoteTypes,
+        showIcon: this.getCheckedValue(this.showIconRadio) === 'true',
         frequency: this.frequencyInput.value,
       });
     };
@@ -80,7 +88,8 @@ class DefaultPropertyInspector extends Inspector {
   fillInForm() {
     this.tickerInput.value = this.settings.ticker ?? '';
     this.showAsInput.value = this.settings.showAs ?? '';
-    this.setCheckedValue(this.settings.type);
+    this.setCheckedValue(this.typeRadio, this.settings.type);
+    this.setCheckedValue(this.showIconRadio, this.settings.showIcon.toString());
     this.frequencyInput.value = this.settings.frequency ?? ON_PUSH;
   }
 }

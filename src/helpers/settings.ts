@@ -12,6 +12,7 @@ export type Settings = {
   showAs: string;
   frequency: string;
   type: QuoteTypes;
+  showIcon: boolean;
 };
 
 export const ON_PUSH = 'on-push';
@@ -30,6 +31,7 @@ export interface Endpoint {
   route: string;
   query?: string;
   fallback?: ApiProviders;
+  iconUrl?: string;
 }
 
 interface SelectorConfig {

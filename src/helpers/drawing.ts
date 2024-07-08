@@ -8,6 +8,7 @@ import {
 
 export async function drawQuoteImage(
   ticker: string,
+  icon: string,
   price: number,
   change: number,
   percentage: number
@@ -44,20 +45,38 @@ export async function drawQuoteImage(
   ctx.fillStyle = 'white';
   const tSize = ticker.length > tickerLength ? 18 : 22;
   ctx.font = `bold ${tSize}pt "Verdana"`;
-  ctx.fillText(ticker.toUpperCase(), 10, 43);
+
+  // Measure the width of the ticker text
+  const tickerTextWidth = ctx.measureText(ticker.toUpperCase()).width;
+
+  // Draw the ticker text
+  const tickerX = 10; // X position to draw the ticker text
+  const tickerY = 43; // Y position to draw the ticker text
+  ctx.fillText(ticker.toUpperCase(), tickerX, tickerY);
+
+  if (icon) {
+    // Load the icon image
+    const iconImage = await loadImage(icon);
+    const iconWidth = 24; // Set the width of the icon (adjust as needed)
+    const iconHeight = 24; // Set the height of the icon (adjust as needed)
+    const iconX = tickerX + tickerTextWidth + 10; // X position to draw the icon
+    const iconY = tickerY - iconHeight; // Y position to draw the icon (adjust as needed)
+    ctx.drawImage(iconImage, iconX, iconY, iconWidth, iconHeight);
+  }
 
   // Draw the stock price
   const formattedPrice = price.toFixed(2);
   const pSize = formattedPrice.length > priceLength ? 16 : 20;
   ctx.font = `500 ${pSize}pt "Verdana"`;
-  const textWidth = ctx.measureText(`$${formattedPrice}`).width;
-  ctx.fillText(`${formattedPrice}`, 10, 98);
+  const priceText = `${formattedPrice}`;
+  const textWidth = ctx.measureText(priceText).width;
+  ctx.fillText(priceText, 10, 98);
 
   // Draw the arrow icon next to the price
-  // 15 - 82
   const arrowSize = formattedPrice.length > priceLength ? 15 : 18; // Set arrow size
   const aPosition = formattedPrice.length > priceLength ? 82 : 80; // Adjust arrow position
-  ctx.drawImage(arrowImage, textWidth, aPosition, arrowSize, arrowSize); // Adjust positioning as needed
+  const arrowX = 10 + textWidth + 5; // X position to draw the arrow (right of the price text)
+  ctx.drawImage(arrowImage, arrowX, aPosition, arrowSize, arrowSize); // Adjust positioning as needed
 
   // Set the fill color for percentage change
   ctx.fillStyle = state;

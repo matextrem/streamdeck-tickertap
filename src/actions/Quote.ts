@@ -48,14 +48,17 @@ class Quote extends Action {
     const ctx = context ?? this.context;
     clearInterval(this.tid[ctx]);
     const update = async () => {
+      console.log('Updating quote', this.settings[ctx]?.showIcon);
       try {
         const quote = await httpClient.get(
           this.settings[ctx]?.ticker,
-          this.settings[ctx]?.type
+          this.settings[ctx]?.type,
+          this.settings[ctx]?.showIcon
         );
 
         const image = await drawQuoteImage(
           this.settings[ctx]?.showAs || quote.ticker,
+          quote.icon,
           quote.price,
           quote.change,
           quote.percentageChange

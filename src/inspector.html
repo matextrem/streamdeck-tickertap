@@ -22,6 +22,29 @@
       />
     </div>
   </div>
+  <div type="radio" class="sdpi-item radio-wrapper" id="show_icon_radio">
+    <div class="sdpi-item-label">Icon</div>
+    <div class="sdpi-item-value radio-container">
+      <span class="sdpi-item-child">
+        <input
+          id="icon-rdio1"
+          type="radio"
+          value="true"
+          name="icon-rdio"
+          checked
+        />
+        <label for="icon-rdio1" class="sdpi-item-label"
+          ><span></span>Show</label
+        >
+      </span>
+      <span class="sdpi-item-child">
+        <input id="icon-rdio2" type="radio" value="false" name="icon-rdio" />
+        <label for="icon-rdio2" class="sdpi-item-label"
+          ><span></span>Hide</label
+        >
+      </span>
+    </div>
+  </div>
   <div type="radio" class="sdpi-item radio-wrapper" id="type_radio">
     <div class="sdpi-item-label">Type</div>
     <div class="sdpi-item-value center radio-container">
@@ -99,6 +122,7 @@
       coinmarketcap.com/currencies/the-graph<br />
     </p>
     <p>Show as: Add custom ticker - e.g GOLD</p>
+    <p>Icon: Show/Hide the ticker icon if exists</p>
     <p>Frequency: How often the stock prices are fetched</p>
     <p>
       &nbsp;&nbsp;&bull;On push - Every time the key button is pressed.<br />

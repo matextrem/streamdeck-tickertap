@@ -11,10 +11,12 @@ export const API_PROVIDERS: ApiProvidersConfig = {
       stock: {
         route: 'quote.ashx',
         query: 't',
+        iconUrl: 'https://github.com/nvstly/icons/tree/main/ticker_icons',
       },
       forex: {
         route: 'currencies',
         fallback: ApiProviders.Investing,
+        iconUrl: 'https://github.com/nvstly/icons/tree/main/forex_icons',
       },
       commodity: {
         route: 'commodities',
@@ -27,6 +29,7 @@ export const API_PROVIDERS: ApiProvidersConfig = {
       crypto: {
         route: 'crypto',
         fallback: ApiProviders.CoinMarketCap,
+        iconUrl: 'https://github.com/nvstly/icons/tree/main/crypto_icons',
       },
     },
     selectors: {
@@ -82,9 +85,11 @@ export const API_PROVIDERS: ApiProvidersConfig = {
     endpoints: {
       stock: {
         route: 'equities',
+        iconUrl: 'https://github.com/nvstly/icons/tree/main/ticker_icons',
       },
       forex: {
         route: 'currencies',
+        iconUrl: 'https://github.com/nvstly/icons/tree/main/forex_icons',
       },
       commodity: {
         route: 'commodities',
@@ -95,6 +100,7 @@ export const API_PROVIDERS: ApiProvidersConfig = {
       crypto: {
         route: 'crypto',
         fallback: ApiProviders.CoinMarketCap,
+        iconUrl: 'https://github.com/nvstly/icons/tree/main/crypto_icons',
       },
     },
     selectors: {
@@ -144,10 +150,12 @@ export const API_PROVIDERS: ApiProvidersConfig = {
         route: 'quote.ashx',
         query: 't',
         fallback: ApiProviders.Finviz,
+        iconUrl: 'https://github.com/nvstly/icons/tree/main/ticker_icons',
       },
       forex: {
         route: 'currencies',
         fallback: ApiProviders.Investing,
+        iconUrl: 'https://github.com/nvstly/icons/tree/main/forex_icons',
       },
       commodity: {
         route: 'commodities',
@@ -159,6 +167,7 @@ export const API_PROVIDERS: ApiProvidersConfig = {
       },
       crypto: {
         route: 'currencies',
+        iconUrl: 'https://github.com/nvstly/icons/tree/main/crypto_icons',
       },
     },
     selectors: {
