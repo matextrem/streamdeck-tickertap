@@ -39,7 +39,6 @@ class DefaultPropertyInspector extends Inspector {
       const checkedRadio = ele.querySelector(
         'input[type="radio"]:checked'
       ) as HTMLInputElement;
-      console.log('CHECKED RADIO: ', checkedRadio?.value);
       return checkedRadio ? checkedRadio.value : null;
     };
 
