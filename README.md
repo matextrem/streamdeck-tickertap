@@ -64,6 +64,8 @@ Click on the button below to download the latest version of the plugin directly:
          - **BITCOIN** -  coinmarketcap.com/currencies/bitcoin
          - **ETHEREUM** - coinmarketcap.com/currencies/ethereum
          - **THE-GRAPH** - coinmarketcap.com/currencies/the-graph
+- Show as: Add custom ticker - e.g **GOLD**.
+- Icon: Show/Hide the ticker icon if exists.
 - Frequency: How often the stock prices are fetched: e.g.
   - **On push** - _Every time the key button is pressed (default)_.
   - **5 minutes** - _Every 5 minutes_.
