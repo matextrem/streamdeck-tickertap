@@ -187,7 +187,7 @@ export const API_PROVIDERS: ApiProvidersConfig = {
           element.text().trim().replace(/[$,]/g, ''),
       },
       change: {
-        selector: '.flexStart.alignBaseline > div > div',
+        selector: '.flexStart.alignBaseline',
         extractor: (element: cheerio.Cheerio<cheerio.Element>) => {
           const calculatePriceChange = (
             percentageChange: string,
@@ -199,13 +199,13 @@ export const API_PROVIDERS: ApiProvidersConfig = {
           };
 
           const price = element
-            .find('.flexStart.alignBaseline > div > div')
+            .find('span')
             ?.text()
             .trim()
             .replace(/[$,]/g, '');
           const color = element.find('p').attr('color');
           const isPositiveChange = color === 'green';
-          const textContent = element.text().trim();
+          const textContent = element.find('div > div').text().trim();
           const match = textContent.match(/([\d.]+%)/);
           if (match) {
             const change = isPositiveChange ? match[1] : `-${match[1]}`;
