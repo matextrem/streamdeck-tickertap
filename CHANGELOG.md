@@ -28,7 +28,13 @@ Prefix your message with one of the following:
 [Fixed] Cryptocurrencies not being fetched correctly due to changes in DOM selectors.
 
 ### v1.1.2 - 2024-07-06
+
 [Added] New field for adding a custom ticker name.
 
 ### v1.1.3 - 2024-07-08
+
 [Added] Ticker icons next to the name. This can be easily shown/hidden from settings.
+
+### v1.1.4 - 2024-08-06
+
+[Added] Korean Won (KRW) Forex tickers.
