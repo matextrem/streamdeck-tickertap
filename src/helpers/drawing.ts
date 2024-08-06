@@ -5,6 +5,7 @@ import {
   ImgState,
   changeSvgState,
 } from '../images/actions/images';
+import { formatPrice } from './parser';
 
 export async function drawQuoteImage(
   ticker: string,
@@ -65,7 +66,7 @@ export async function drawQuoteImage(
   }
 
   // Draw the stock price
-  const formattedPrice = price.toFixed(2);
+  const formattedPrice = formatPrice(price);
   const pSize = formattedPrice.length > priceLength ? 16 : 20;
   ctx.font = `500 ${pSize}pt "Verdana"`;
   const priceText = `${formattedPrice}`;
