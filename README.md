@@ -35,12 +35,12 @@ Click on the button below to download the latest version of the plugin directly:
 
 - Visualize any real-time asset values.
 - Quick access to the asset prices you follow.
-- Support the following types from [Finvinz](https://finviz.com):
+- Support the following types from [Finvinz](https://finviz.com) (American market) and [Investing.com](https://www.investing.com/) (European and Asian markets):
   - Stock
   - Forex
   - Commodities
   - Futures
-- Support cryptocurrencies from [CoinMarkeCap](https://coinmarketcap.com/)
+- Support cryptocurrencies from [CoinMarketCap](https://coinmarketcap.com/)
 
   **NO API KEY IS NEEDED! 🎊**
 
@@ -64,13 +64,14 @@ Click on the button below to download the latest version of the plugin directly:
          - **BITCOIN** -  coinmarketcap.com/currencies/bitcoin
          - **ETHEREUM** - coinmarketcap.com/currencies/ethereum
          - **THE-GRAPH** - coinmarketcap.com/currencies/the-graph
-- Region: Select the region where the stocks market is from
-      - **America** -  United States
-      - **Europe** - European Union and UK
-      - **Asia/Pacific** - Asia and Pacific
-     **Note:**For EU and Asia markets, the ticker should be extracted from Investing.com url e.g:
-          - **BASF-AG** - investing.com/equities/basf-ag
-          - **IHI-CORP.** - investing.com/equities/ihi-corp.
+- Region: Select the region where the stocks market is from:
+     - **America** -  United States
+     - **Europe** - European Union and UK
+     - **Asia/Pacific** - Asia and Pacific
+  
+     **Note:** For EU and Asia markets, the ticker should be extracted from Investing.com url: e.g.
+     - **BASF-AG** - investing.com/equities/basf-ag
+     - **IHI-CORP.** - investing.com/equities/ihi-corp.
 - Show as: Add custom ticker - e.g **GOLD**.
 - Icon: Show/Hide the ticker icon if exists.
 - Frequency: How often the stock prices are fetched: e.g.
