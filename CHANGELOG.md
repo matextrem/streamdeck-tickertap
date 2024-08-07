@@ -38,3 +38,7 @@ Prefix your message with one of the following:
 ### v1.1.4 - 2024-08-06
 
 [Added] Korean Won (KRW) Forex tickers.
+
+### v1.2.0 - 2024-08-07
+
+[Added] Support for European and Asian stock markets.
