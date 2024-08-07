@@ -7,12 +7,19 @@ export enum QuoteTypes {
   FUTURE = 'future',
   CRYPTO = 'crypto',
 }
+
+export enum Regions {
+  US = 'us',
+  EU = 'eu',
+  ASIA = 'asia',
+}
 export type Settings = {
   ticker: string;
   showAs: string;
   frequency: string;
   type: QuoteTypes;
   showIcon: boolean;
+  region: Regions;
 };
 
 export const ON_PUSH = 'on-push';

@@ -1,25 +1,26 @@
 import * as cheerio from 'cheerio';
 import { API_PROVIDERS, PROVIDER, QUOTE_REPLACEMENTS } from './constants';
 import { parseURL } from './parser';
-import { ApiProviders, Endpoint, QuoteTypes } from './settings';
-
-const API_URL = API_PROVIDERS[PROVIDER].baseUrl;
-const API_SELECTORS = API_PROVIDERS[PROVIDER].selectors;
+import { ApiProviders, Endpoint, QuoteTypes, Regions } from './settings';
 
 export async function fetchStockData(
   service: QuoteTypes,
+  region: Regions,
   ticker?: string,
   showIcon = true
 ) {
+  const baseProvider = PROVIDER[region];
+  const { baseUrl: API_URL, selectors: API_SELECTORS } =
+    API_PROVIDERS[baseProvider];
   if (!ticker) {
     throw new Error('No ticker provided');
   }
   let endpoint =
-    API_PROVIDERS[PROVIDER].endpoints[
-      service as keyof (typeof API_PROVIDERS)[typeof PROVIDER]['endpoints']
+    API_PROVIDERS[PROVIDER[region]].endpoints[
+      service as keyof (typeof API_PROVIDERS)[typeof baseProvider]['endpoints']
     ];
 
-  let fallbackProvider: ApiProviders = PROVIDER as ApiProviders;
+  let fallbackProvider: ApiProviders = baseProvider as ApiProviders;
   let apiUrl: string = API_URL;
 
   if (endpoint.fallback) {
@@ -27,7 +28,7 @@ export async function fetchStockData(
     apiUrl = API_PROVIDERS[fallbackProvider].baseUrl;
     endpoint =
       API_PROVIDERS[fallbackProvider].endpoints[
-        service as keyof (typeof API_PROVIDERS)[typeof PROVIDER]['endpoints']
+        service as keyof (typeof API_PROVIDERS)[typeof baseProvider]['endpoints']
       ];
   }
 
@@ -52,11 +53,14 @@ export async function fetchStockData(
   const body = await response.text();
   const $ = cheerio.load(body);
   const iconUrl =
-    endpoint.iconUrl || API_PROVIDERS[PROVIDER].endpoints[service].iconUrl;
+    endpoint.iconUrl || API_PROVIDERS[baseProvider].endpoints[service].iconUrl;
+  const selectors = !!fallbackProvider
+    ? API_PROVIDERS[fallbackProvider].selectors
+    : API_SELECTORS;
   return await extractStockData(
     $,
     service,
-    provider || fallbackProvider,
+    selectors,
     symbol,
     showIcon ? iconUrl : ''
   );
@@ -65,14 +69,11 @@ export async function fetchStockData(
 export async function extractStockData(
   $: cheerio.CheerioAPI,
   service: QuoteTypes,
-  fallbackProvider?: ApiProviders,
+  selectors: Record<string, unknown>,
   customSymbol?: string,
   iconUrl?: string
 ) {
   const data = {} as Record<string, string>;
-  const selectors = !!fallbackProvider
-    ? API_PROVIDERS[fallbackProvider].selectors
-    : API_SELECTORS;
 
   for (let key in selectors) {
     const { selector, extractor, fallbackSelector, fallbackExtractor } =

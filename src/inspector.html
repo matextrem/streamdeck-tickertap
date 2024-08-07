@@ -72,6 +72,40 @@
       </span>
     </div>
   </div>
+  <div
+    id="region_radio"
+    class="sdpi-item radio-wrapper"
+    type="radio"
+    style="display: none"
+  >
+    <div class="sdpi-item-label">Region</div>
+    <div class="sdpi-item-value radio-container">
+      <span class="sdpi-item-child">
+        <input
+          id="region-rdio1"
+          type="radio"
+          value="us"
+          name="region-rdio"
+          checked
+        />
+        <label for="region-rdio1" class="sdpi-item-label"
+          ><span></span>America</label
+        >
+      </span>
+      <span class="sdpi-item-child">
+        <input id="region-rdio2" type="radio" value="eu" name="region-rdio" />
+        <label for="region-rdio2" class="sdpi-item-label"
+          ><span></span>Europe</label
+        >
+      </span>
+      <span class="sdpi-item-child">
+        <input id="region-rdio3" type="radio" value="asia" name="region-rdio" />
+        <label for="region-rdio3" class="sdpi-item-label"
+          ><span></span>Asia/Pacific</label
+        >
+      </span>
+    </div>
+  </div>
   <div class="sdpi-item">
     <div class="sdpi-item-label">Frequency</div>
     <select class="sdpi-item-value select" id="frequency">
@@ -87,7 +121,10 @@
 
   <details>
     <summary>How to use</summary>
-    <p>Ticker field supports Finvinz website: e.g.</p>
+    <p>
+      Ticker field supports Finvinz or Investing.com (for EU and ASIA markets)
+      website: e.g.
+    </p>
     <p>&nbsp;&nbsp;Stocks</p>
     <p>
       &nbsp;&nbsp;&nbsp;&nbsp;&bull;AAPL - Apple<br />
@@ -121,6 +158,18 @@
       &nbsp;&nbsp;&nbsp;&nbsp;&bull;THE-GRAPH -
       coinmarketcap.com/currencies/the-graph<br />
     </p>
+    <p>Region: Select the region where the stocks market is from</p>
+    <p>
+      &nbsp;&nbsp;&bull;America - United States<br />
+      &nbsp;&nbsp;&bull;Europe - European Union and UK<br />
+      &nbsp;&nbsp;&bull;Asia/Pacific - Asia and Pacific<br /><br />
+      &nbsp;&nbsp;&nbsp;Note: For EU and Asia markets, the ticker should be
+      &nbsp;&nbsp;&nbsp;extracted from Investing.com url&nbsp;&nbsp;e.g: <br />
+      <br />
+      &nbsp;&nbsp;&nbsp;BASF-AG - investing.com/equities/basf-ag<br />
+      &nbsp;&nbsp;&nbsp;IHI-CORP. - investing.com/equities/ihi-corp.<br />
+    </p>
+
     <p>Show as: Add custom ticker - e.g GOLD</p>
     <p>Icon: Show/Hide the ticker icon if exists</p>
     <p>Frequency: How often the stock prices are fetched</p>

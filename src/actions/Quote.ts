@@ -52,6 +52,7 @@ class Quote extends Action {
         const quote = await httpClient.get(
           this.settings[ctx]?.ticker,
           this.settings[ctx]?.type,
+          this.settings[ctx]?.region,
           this.settings[ctx]?.showIcon
         );
 

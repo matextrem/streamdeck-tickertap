@@ -1,8 +1,21 @@
 import * as cheerio from 'cheerio';
 
-import { ApiProviders, ApiProvidersConfig, QuoteTypes } from './settings';
+import {
+  ApiProviders,
+  ApiProvidersConfig,
+  QuoteTypes,
+  Regions,
+} from './settings';
 
-export const PROVIDER: ApiProviders = ApiProviders.Finviz;
+const US_PROVIDER: ApiProviders = ApiProviders.Finviz;
+const EU_PROVIDER: ApiProviders = ApiProviders.Investing;
+const ASIA_PROVIDER: ApiProviders = ApiProviders.Investing;
+
+export const PROVIDER = {
+  [Regions.US]: US_PROVIDER,
+  [Regions.EU]: EU_PROVIDER,
+  [Regions.ASIA]: ASIA_PROVIDER,
+};
 
 export const API_PROVIDERS: ApiProvidersConfig = {
   [ApiProviders.Finviz]: {

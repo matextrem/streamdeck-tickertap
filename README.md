@@ -46,7 +46,7 @@ Click on the button below to download the latest version of the plugin directly:
 
 ## Usage
 
-- Ticker field supports Finvinz website: e.g.
+- Ticker field supports Finvinz and Investing.com (for Europe and Asia markets) websites: e.g.
   - Stocks
     - **AAPL** - Apple
     - **GOOGL** - Alphabet
@@ -64,6 +64,13 @@ Click on the button below to download the latest version of the plugin directly:
          - **BITCOIN** -  coinmarketcap.com/currencies/bitcoin
          - **ETHEREUM** - coinmarketcap.com/currencies/ethereum
          - **THE-GRAPH** - coinmarketcap.com/currencies/the-graph
+- Region: Select the region where the stocks market is from
+      - **America** -  United States
+      - **Europe** - European Union and UK
+      - **Asia/Pacific** - Asia and Pacific
+     **Note:**For EU and Asia markets, the ticker should be extracted from Investing.com url e.g:
+          - **BASF-AG** - investing.com/equities/basf-ag
+          - **IHI-CORP.** - investing.com/equities/ihi-corp.
 - Show as: Add custom ticker - e.g **GOLD**.
 - Icon: Show/Hide the ticker icon if exists.
 - Frequency: How often the stock prices are fetched: e.g.
