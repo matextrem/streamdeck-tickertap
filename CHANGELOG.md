@@ -43,6 +43,6 @@ Prefix your message with one of the following:
 
 [Added] Support for European and Asian stock markets.
 
-### Unreleased
+### v1.2.1 - 2024-08-24
 [Added] Support for ETFs
 [Fixed] Correlation in Crypto displayed data
