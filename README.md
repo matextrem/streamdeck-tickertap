@@ -37,6 +37,7 @@ Click on the button below to download the latest version of the plugin directly:
 - Quick access to the asset prices you follow.
 - Support the following types from [Finvinz](https://finviz.com) (American market) and [Investing.com](https://www.investing.com/) (European and Asian markets):
   - Stock
+  - ETF
   - Forex
   - Commodities
   - Futures
@@ -50,6 +51,10 @@ Click on the button below to download the latest version of the plugin directly:
   - Stocks
     - **AAPL** - Apple
     - **GOOGL** - Alphabet
+  - ETF
+    - Ticker field supports Investing.com website. You have to get the name from the url: e.g.
+         - **SPDR-S-P-500** -  investing.com/etfs/spdr-s-p-500
+         - **ISHARES-FTSE-100** - investing.com/etfs/ishares-ftse-100
   - Forex
     - **EURUSD** - EUR/USD
     - **XAUUSD** - XAU/USD
