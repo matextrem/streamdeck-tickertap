@@ -31,8 +31,8 @@ export async function drawQuoteImage(
   ctx.stroke();
 
   // Determine color and SVG content based on price change
-  let svgContent = change >= 0 ? arrowUp : arrowDown;
-  const state = change >= 0 ? ImgState.increasing : ImgState.decreasing;
+  let svgContent = percentage >= 0 ? arrowUp : arrowDown;
+  const state = percentage >= 0 ? ImgState.increasing : ImgState.decreasing;
   svgContent = changeSvgState(svgContent, state);
 
   // Encode the SVG content

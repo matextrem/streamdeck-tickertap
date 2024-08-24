@@ -26,6 +26,10 @@ export const API_PROVIDERS: ApiProvidersConfig = {
         query: 't',
         iconUrl: 'https://github.com/nvstly/icons/tree/main/ticker_icons',
       },
+      etf: {
+        route: 'etfs',
+        fallback: ApiProviders.Investing,
+      },
       forex: {
         route: 'currencies',
         fallback: ApiProviders.Investing,
@@ -100,6 +104,9 @@ export const API_PROVIDERS: ApiProvidersConfig = {
         route: 'equities',
         iconUrl: 'https://github.com/nvstly/icons/tree/main/ticker_icons',
       },
+      etf: {
+        route: 'etfs',
+      },
       forex: {
         route: 'currencies',
         iconUrl: 'https://github.com/nvstly/icons/tree/main/forex_icons',
@@ -164,6 +171,10 @@ export const API_PROVIDERS: ApiProvidersConfig = {
         query: 't',
         fallback: ApiProviders.Finviz,
         iconUrl: 'https://github.com/nvstly/icons/tree/main/ticker_icons',
+      },
+      etf: {
+        route: 'etfs',
+        fallback: ApiProviders.Investing,
       },
       forex: {
         route: 'currencies',

@@ -45,32 +45,16 @@
       </span>
     </div>
   </div>
-  <div type="radio" class="sdpi-item radio-wrapper" id="type_radio">
+  <div class="sdpi-item">
     <div class="sdpi-item-label">Type</div>
-    <div class="sdpi-item-value center radio-container">
-      <span class="sdpi-item-child">
-        <input id="rdio1" type="radio" value="stock" name="rdio" checked />
-        <label for="rdio1" class="sdpi-item-label"><span></span>Stock</label>
-      </span>
-      <span class="sdpi-item-child">
-        <input id="rdio2" type="radio" value="forex" name="rdio" />
-        <label for="rdio2" class="sdpi-item-label"><span></span>Forex</label>
-      </span>
-      <span class="sdpi-item-child">
-        <input id="rdio3" type="radio" value="commodity" name="rdio" />
-        <label for="rdio3" class="sdpi-item-label"
-          ><span></span>Commodity</label
-        >
-      </span>
-      <span class="sdpi-item-child">
-        <input id="rdio4" type="radio" value="future" name="rdio" />
-        <label for="rdio4" class="sdpi-item-label"><span></span>Futures</label>
-      </span>
-      <span class="sdpi-item-child">
-        <input id="rdio5" type="radio" value="crypto" name="rdio" />
-        <label for="rdio5" class="sdpi-item-label"><span></span>Crypto</label>
-      </span>
-    </div>
+    <select class="sdpi-item-value select" id="type">
+      <option value="stock">Stock</option>
+      <option value="etf">ETF</option>
+      <option value="forex">Forex</option>
+      <option value="commodity">Commodity</option>
+      <option value="future">Futures</option>
+      <option value="crypto">Crypto</option>
+    </select>
   </div>
   <div
     id="region_radio"
@@ -129,6 +113,16 @@
     <p>
       &nbsp;&nbsp;&nbsp;&nbsp;&bull;AAPL - Apple<br />
       &nbsp;&nbsp;&nbsp;&nbsp;&bull;GOOGL - Alphabet<br />
+    </p>
+    <p>&nbsp;&nbsp;ETFs</p>
+    <p>
+      &nbsp;&nbsp;&nbsp;&nbsp;Ticker field supports Investing.com website.<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;You have to get the name from the url: e.g.
+    </p>
+    <p>
+      &nbsp;&nbsp;&nbsp;SPDR-S-P-500 - investing.com/etfs/spdr-s-p-500<br />
+      &nbsp;&nbsp;&nbsp;ISHARES-FTSE-100 -
+      investing.com/etfs/ishares-ftse-100<br />
     </p>
     <p>&nbsp;&nbsp;Forex</p>
     <p>

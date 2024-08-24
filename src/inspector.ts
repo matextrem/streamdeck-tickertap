@@ -13,7 +13,7 @@ class DefaultPropertyInspector extends Inspector {
   };
   public tickerInput: HTMLInputElement;
   public showAsInput: HTMLInputElement;
-  public typeRadio: HTMLDivElement;
+  public typeInput: HTMLInputElement;
   public regionRadio: HTMLDivElement;
   public showIconRadio: HTMLDivElement;
   public frequencyInput: HTMLInputElement;
@@ -25,7 +25,7 @@ class DefaultPropertyInspector extends Inspector {
     // Set up your HTML event handlers here
     this.tickerInput = document.querySelector('#ticker') as HTMLInputElement;
     this.showAsInput = document.querySelector('#show_as') as HTMLInputElement;
-    this.typeRadio = document.querySelector('#type_radio') as HTMLDivElement;
+    this.typeInput = document.querySelector('#type') as HTMLInputElement;
     this.regionRadio = document.querySelector(
       '#region_radio'
     ) as HTMLDivElement;
@@ -71,7 +71,7 @@ class DefaultPropertyInspector extends Inspector {
       this.setSettings({
         ticker: this.tickerInput.value,
         showAs: this.showAsInput.value,
-        type: this.getCheckedValue(this.typeRadio),
+        type: this.typeInput.value as QuoteTypes,
         region: this.getCheckedValue(this.regionRadio),
         showIcon: this.getCheckedValue(this.showIconRadio) === 'true',
         frequency: this.frequencyInput.value,
@@ -84,22 +84,17 @@ class DefaultPropertyInspector extends Inspector {
       };
     });
 
-    // Add event listeners for type radio buttons to show/hide region radio group
-    document.querySelectorAll('input[name="rdio"]').forEach((radio) => {
-      radio.addEventListener('change', () => {
-        if (
-          (radio as HTMLInputElement).value === QuoteTypes.STOCK &&
-          (radio as HTMLInputElement).checked
-        ) {
-          this.regionRadio.style.display = 'flex';
-        } else {
-          this.regionRadio.style.display = 'none';
-        }
-      });
+    // Show or hide region radio group based on current type setting
+    this.typeInput.addEventListener('change', () => {
+      if (this.typeInput.value === QuoteTypes.STOCK) {
+        this.regionRadio.style.display = 'flex';
+      } else {
+        this.regionRadio.style.display = 'none';
+      }
     });
 
-    // Initial check in case the "Stock" radio button is pre-selected
-    if ((document.getElementById('rdio1') as HTMLInputElement).checked) {
+    // Initialize the region radio group based on the current type setting
+    if (this.settings.type === QuoteTypes.STOCK) {
       this.regionRadio.style.display = 'flex';
     }
   }
@@ -112,10 +107,10 @@ class DefaultPropertyInspector extends Inspector {
   fillInForm() {
     this.tickerInput.value = this.settings.ticker ?? '';
     this.showAsInput.value = this.settings.showAs ?? '';
-    this.setCheckedValue(this.typeRadio, this.settings.type);
     this.setCheckedValue(this.regionRadio, this.settings.region);
     this.setCheckedValue(this.showIconRadio, this.settings.showIcon.toString());
     this.frequencyInput.value = this.settings.frequency ?? ON_PUSH;
+    this.typeInput.value = this.settings.type;
     // Show or hide region radio group based on current type setting
     if (this.settings.type === QuoteTypes.STOCK) {
       this.regionRadio.style.display = 'flex';

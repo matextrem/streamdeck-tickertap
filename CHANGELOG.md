@@ -42,3 +42,7 @@ Prefix your message with one of the following:
 ### v1.2.0 - 2024-08-07
 
 [Added] Support for European and Asian stock markets.
+
+### Unreleased
+[Added] Support for ETFs
+[Fixed] Correlation in Crypto displayed data

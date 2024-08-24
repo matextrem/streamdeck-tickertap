@@ -2,6 +2,7 @@ import * as cheerio from 'cheerio';
 
 export enum QuoteTypes {
   STOCK = 'stock',
+  ETF = 'etf',
   FOREX = 'forex',
   COMMODITY = 'commodity',
   FUTURE = 'future',
