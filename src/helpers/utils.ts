@@ -3,12 +3,16 @@ import { API_PROVIDERS, PROVIDER, QUOTE_REPLACEMENTS } from './constants';
 import { parseURL } from './parser';
 import { ApiProviders, Endpoint, QuoteTypes, Regions } from './settings';
 
-export async function fetchStockData(
+export async function getApiUrl(
   service: QuoteTypes,
   region: Regions,
-  ticker?: string,
-  showIcon = true
-) {
+  ticker?: string
+): Promise<{
+  uri: string;
+  fallbackProvider: ApiProviders;
+  selectors: Record<string, unknown>;
+  symbol: string;
+}> {
   const baseProvider = PROVIDER[region];
   const { baseUrl: API_URL, selectors: API_SELECTORS } =
     API_PROVIDERS[baseProvider];
@@ -44,6 +48,28 @@ export async function fetchStockData(
     value.toLowerCase()
   );
 
+  return {
+    uri,
+    fallbackProvider,
+    selectors: !!fallbackProvider
+      ? API_PROVIDERS[fallbackProvider].selectors
+      : API_SELECTORS,
+    symbol,
+  };
+}
+
+export async function fetchStockData(
+  service: QuoteTypes,
+  region: Regions,
+  ticker?: string,
+  showIcon = true
+) {
+  const { uri, selectors, symbol } = await getApiUrl(
+    service,
+    region,
+    ticker
+  );
+
   const response = await fetch(uri);
 
   if (!response.ok) {
@@ -52,11 +78,8 @@ export async function fetchStockData(
   }
   const body = await response.text();
   const $ = cheerio.load(body);
-  const iconUrl =
-    endpoint.iconUrl || API_PROVIDERS[baseProvider].endpoints[service].iconUrl;
-  const selectors = !!fallbackProvider
-    ? API_PROVIDERS[fallbackProvider].selectors
-    : API_SELECTORS;
+  const baseProvider = PROVIDER[region];
+  const iconUrl = API_PROVIDERS[baseProvider].endpoints[service].iconUrl;
   return await extractStockData(
     $,
     service,

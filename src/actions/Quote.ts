@@ -7,9 +7,13 @@ import { drawQuoteImage } from '../helpers/drawing';
 import { ON_PUSH, Settings } from '../helpers/settings';
 import httpClient from '../helpers/httpClient';
 import { Target } from '@fnando/streamdeck/dist/Target';
+import { getApiUrl } from '../helpers/utils';
+
+const LONG_PRESS_THRESHOLD = 500;
 
 class Quote extends Action {
   public settings: Record<string, Settings> = {};
+  private lastKeyDownTime = 0;
 
   public tid: Record<string, number> = {};
 
@@ -28,10 +32,26 @@ class Quote extends Action {
   }
 
   async handleKeyDown(): Promise<void> {
+    this.lastKeyDownTime = new Date().getTime();
     const context = this.context;
     if (this.validate() && this.settings[context]?.frequency === ON_PUSH) {
       this.refresh();
     }
+  }
+
+  async handleKeyUp(): Promise<void> {
+    const ctx = this.context;
+    const isLongPress =
+      new Date().getTime() - this.lastKeyDownTime > LONG_PRESS_THRESHOLD;
+    if (isLongPress) {
+      const { uri } = await getApiUrl(
+        this.settings[ctx]?.type,
+        this.settings[ctx]?.region,
+        this.settings[ctx]?.ticker
+      );
+      this.openURL(uri);
+    }
+    this.lastKeyDownTime = 0;
   }
 
   validate(context?: string): boolean {
