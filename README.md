@@ -85,6 +85,8 @@ Click on the button below to download the latest version of the plugin directly:
   - **30 minutes** - _Every 30 minutes_.
   - **1 hour** - _Hourly_.
 
+***Note*: Long pressed the key button redirects to the ticker website.**
+
 ## Maintainers
 
 - [Mati Dastugue](https://github.com/matextrem) (Developer)
