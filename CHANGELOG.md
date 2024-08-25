@@ -47,5 +47,5 @@ Prefix your message with one of the following:
 [Added] Support for ETFs
 [Fixed] Correlation in Crypto displayed data
 
-### Unreleased
+### v1.2.1 - 2024-08-25
 [Added] Long press over key redirects to asset webpage
