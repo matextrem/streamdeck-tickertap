@@ -44,8 +44,10 @@ Prefix your message with one of the following:
 [Added] Support for European and Asian stock markets.
 
 ### v1.2.1 - 2024-08-24
+
 [Added] Support for ETFs
 [Fixed] Correlation in Crypto displayed data
 
-### v1.2.1 - 2024-08-25
-[Added] Long press over key redirects to asset webpage
+### v1.2.2 - 2024-08-25
+
+[Added] Long pressed over key redirects to asset webpage
