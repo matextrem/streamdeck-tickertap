@@ -21,6 +21,8 @@ export type Settings = {
   type: QuoteTypes;
   showIcon: boolean;
   region: Regions;
+  risingColor: string;
+  fallingColor: string;
 };
 
 export const ON_PUSH = 'on-push';

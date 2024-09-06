@@ -8,6 +8,7 @@ import { ON_PUSH, Settings } from '../helpers/settings';
 import httpClient from '../helpers/httpClient';
 import { Target } from '@fnando/streamdeck/dist/Target';
 import { getApiUrl } from '../helpers/utils';
+import { ImgState } from '../images/actions/images';
 
 const LONG_PRESS_THRESHOLD = 500;
 
@@ -75,13 +76,17 @@ class Quote extends Action {
           this.settings[ctx]?.region,
           this.settings[ctx]?.showIcon
         );
+        const colors = {
+          increasing: this.settings[ctx]?.risingColor as ImgState,
+          decreasing: this.settings[ctx]?.fallingColor as ImgState,
+        };
 
         const image = await drawQuoteImage(
           this.settings[ctx]?.showAs || quote.ticker,
           quote.icon,
           quote.price,
-          quote.change,
-          quote.percentageChange
+          quote.percentageChange,
+          colors
         );
         this.setImage(image, { target: Target.both, context: ctx });
       } catch (e) {

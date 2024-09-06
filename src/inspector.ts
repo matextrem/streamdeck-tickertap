@@ -1,6 +1,7 @@
 import { DidReceiveSettingsEvent, Inspector } from '@fnando/streamdeck';
 import plugin from './plugin';
 import { ON_PUSH, QuoteTypes, Regions, Settings } from './helpers/settings';
+import { ImgState } from './images/actions/images';
 
 class DefaultPropertyInspector extends Inspector {
   public settings: Settings = {
@@ -10,6 +11,8 @@ class DefaultPropertyInspector extends Inspector {
     type: QuoteTypes.STOCK,
     showIcon: true,
     region: Regions.US,
+    risingColor: ImgState.increasing,
+    fallingColor: ImgState.decreasing,
   };
   public tickerInput: HTMLInputElement;
   public showAsInput: HTMLInputElement;
@@ -17,6 +20,8 @@ class DefaultPropertyInspector extends Inspector {
   public regionRadio: HTMLDivElement;
   public showIconRadio: HTMLDivElement;
   public frequencyInput: HTMLInputElement;
+  public risingColorInput: HTMLInputElement;
+  public fallingColorInput: HTMLInputElement;
   public saveBtn: HTMLButtonElement;
   public getCheckedValue: (ele: HTMLDivElement) => string | null; // Adjusted the type definition
   public setCheckedValue: (ele: HTMLDivElement, value: string) => void;
@@ -34,6 +39,12 @@ class DefaultPropertyInspector extends Inspector {
     ) as HTMLDivElement;
     this.frequencyInput = document.querySelector(
       '#frequency'
+    ) as HTMLInputElement;
+    this.risingColorInput = document.querySelector(
+      '#rising-color'
+    ) as HTMLInputElement;
+    this.fallingColorInput = document.querySelector(
+      '#falling-color'
     ) as HTMLInputElement;
     this.saveBtn = document.querySelector('#save') as HTMLButtonElement;
 
@@ -75,6 +86,8 @@ class DefaultPropertyInspector extends Inspector {
         region: this.getCheckedValue(this.regionRadio),
         showIcon: this.getCheckedValue(this.showIconRadio) === 'true',
         frequency: this.frequencyInput.value,
+        risingColor: this.risingColorInput.value,
+        fallingColor: this.fallingColorInput.value,
       });
     };
 
@@ -110,6 +123,10 @@ class DefaultPropertyInspector extends Inspector {
     this.setCheckedValue(this.regionRadio, this.settings.region);
     this.setCheckedValue(this.showIconRadio, this.settings.showIcon.toString());
     this.frequencyInput.value = this.settings.frequency ?? ON_PUSH;
+    this.risingColorInput.value =
+      this.settings.risingColor ?? ImgState.increasing;
+    this.fallingColorInput.value =
+      this.settings.fallingColor ?? ImgState.decreasing;
     this.typeInput.value = this.settings.type;
     // Show or hide region radio group based on current type setting
     if (this.settings.type === QuoteTypes.STOCK) {

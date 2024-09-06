@@ -11,8 +11,8 @@ export async function drawQuoteImage(
   ticker: string,
   icon: string,
   price: number,
-  change: number,
-  percentage: number
+  percentage: number,
+  colors: { increasing: ImgState; decreasing: ImgState }
 ): Promise<string> {
   const canvasWidth = 144;
   const canvasHeight = 144;
@@ -32,7 +32,7 @@ export async function drawQuoteImage(
 
   // Determine color and SVG content based on price change
   let svgContent = percentage >= 0 ? arrowUp : arrowDown;
-  const state = percentage >= 0 ? ImgState.increasing : ImgState.decreasing;
+  const state = percentage >= 0 ? colors.increasing : colors.decreasing;
   svgContent = changeSvgState(svgContent, state);
 
   // Encode the SVG content
