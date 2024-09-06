@@ -51,3 +51,7 @@ Prefix your message with one of the following:
 ### v1.2.2 - 2024-08-25
 
 [Added] Long pressed over key redirects to asset webpage
+
+### v1.3.0 - 2024-09-06
+
+[Added] Support for changing Rising/Falling stock colors.
