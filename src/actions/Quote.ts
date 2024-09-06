@@ -77,8 +77,12 @@ class Quote extends Action {
           this.settings[ctx]?.showIcon
         );
         const colors = {
-          increasing: this.settings[ctx]?.risingColor as ImgState,
-          decreasing: this.settings[ctx]?.fallingColor as ImgState,
+          increasing:
+            (this.settings[ctx]?.risingColor as ImgState) ??
+            ImgState.increasing,
+          decreasing:
+            (this.settings[ctx]?.fallingColor as ImgState) ??
+            ImgState.decreasing,
         };
 
         const image = await drawQuoteImage(

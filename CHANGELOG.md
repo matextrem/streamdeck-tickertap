@@ -52,6 +52,6 @@ Prefix your message with one of the following:
 
 [Added] Long pressed over key redirects to asset webpage
 
-### v1.3.0 - 2024-09-06
+### Unreleased
 
 [Added] Support for changing Rising/Falling stock colors.
