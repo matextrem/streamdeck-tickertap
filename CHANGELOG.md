@@ -55,3 +55,6 @@ Prefix your message with one of the following:
 ### v1.3.0 - 2024-09-06
 
 [Added] Support for changing Rising/Falling stock colors.
+
+### Unreleased
+[Added] Support for Canadian market.

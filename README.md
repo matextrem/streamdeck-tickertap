@@ -71,6 +71,7 @@ Click on the button below to download the latest version of the plugin directly:
          - **THE-GRAPH** - coinmarketcap.com/currencies/the-graph
 - Region: Select the region where the stocks market is from:
      - **America** -  United States
+     - **Canada** -  Canada
      - **Europe** - European Union and UK
      - **Asia/Pacific** - Asia and Pacific
   

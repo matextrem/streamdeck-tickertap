@@ -8,6 +8,7 @@ import {
 } from './settings';
 
 const US_PROVIDER: ApiProviders = ApiProviders.Finviz;
+const CA_PROVIDER: ApiProviders = ApiProviders.Investing;
 const EU_PROVIDER: ApiProviders = ApiProviders.Investing;
 const ASIA_PROVIDER: ApiProviders = ApiProviders.Investing;
 
@@ -15,6 +16,7 @@ export const PROVIDER = {
   [Regions.US]: US_PROVIDER,
   [Regions.EU]: EU_PROVIDER,
   [Regions.ASIA]: ASIA_PROVIDER,
+  [Regions.CA]: CA_PROVIDER,
 };
 
 export const API_PROVIDERS: ApiProvidersConfig = {

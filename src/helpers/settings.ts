@@ -11,6 +11,7 @@ export enum QuoteTypes {
 
 export enum Regions {
   US = 'us',
+  CA = 'ca',
   EU = 'eu',
   ASIA = 'asia',
 }
