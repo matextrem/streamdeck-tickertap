@@ -9,18 +9,16 @@ export async function getApiUrl(
   ticker?: string
 ): Promise<{
   uri: string;
-  fallbackProvider: ApiProviders;
   selectors: Record<string, unknown>;
   symbol: string;
 }> {
   const baseProvider = PROVIDER[region];
-  const { baseUrl: API_URL, selectors: API_SELECTORS } =
-    API_PROVIDERS[baseProvider];
+  const { baseUrl: API_URL } = API_PROVIDERS[baseProvider];
   if (!ticker) {
     throw new Error('No ticker provided');
   }
   let endpoint =
-    API_PROVIDERS[PROVIDER[region]].endpoints[
+    API_PROVIDERS[baseProvider].endpoints[
       service as keyof (typeof API_PROVIDERS)[typeof baseProvider]['endpoints']
     ];
 
@@ -50,10 +48,7 @@ export async function getApiUrl(
 
   return {
     uri,
-    fallbackProvider,
-    selectors: !!fallbackProvider
-      ? API_PROVIDERS[fallbackProvider].selectors
-      : API_SELECTORS,
+    selectors: getSelectors(provider, fallbackProvider),
     symbol,
   };
 }
@@ -64,11 +59,7 @@ export async function fetchStockData(
   ticker?: string,
   showIcon = true
 ) {
-  const { uri, selectors, symbol } = await getApiUrl(
-    service,
-    region,
-    ticker
-  );
+  const { uri, selectors, symbol } = await getApiUrl(service, region, ticker);
 
   const response = await fetch(uri);
 
@@ -158,4 +149,15 @@ const getIcon = async (
     icon = `${iconResponse.url}?raw=true`;
   }
   return icon;
+};
+
+const getSelectors = (
+  provider: ApiProviders,
+  fallbackProvider: ApiProviders
+) => {
+  if (provider) {
+    return API_PROVIDERS[provider].selectors; // Use provider specific selectors
+  } else {
+    return API_PROVIDERS[fallbackProvider].selectors; // Use fallback provider selectors
+  }
 };

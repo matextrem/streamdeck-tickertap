@@ -57,4 +57,9 @@ Prefix your message with one of the following:
 [Added] Support for changing Rising/Falling stock colors.
 
 ### v1.4.0 - 2024-09-26
+
 [Added] Support for Canadian market.
+
+### Unreleased
+
+[Fixed] Issues with most used index tickers
