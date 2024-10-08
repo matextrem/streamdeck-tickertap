@@ -60,6 +60,6 @@ Prefix your message with one of the following:
 
 [Added] Support for Canadian market.
 
-### Unreleased
+### v1.4.1 - 2024-10-08
 
 [Fixed] Issues with most used index tickers
