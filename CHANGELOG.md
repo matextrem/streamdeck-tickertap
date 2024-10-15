@@ -66,3 +66,6 @@ Prefix your message with one of the following:
 
 ### v1.5.0 - 2024-10-15
 [Added] Support for Funds 
+
+## v1.6.0 - 2024-10-15
+[Added] Total amount 
