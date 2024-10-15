@@ -69,3 +69,6 @@ Prefix your message with one of the following:
 
 ### v1.6.0 - 2024-10-15
 [Added] Total amount 
+
+## v1.6.1 - 2024-10-15
+[Fixed] Error when saving without "Amount" set
