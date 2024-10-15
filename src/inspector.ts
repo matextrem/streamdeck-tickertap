@@ -11,6 +11,8 @@ class DefaultPropertyInspector extends Inspector {
     type: QuoteTypes.STOCK,
     showIcon: true,
     region: Regions.US,
+    showTotal: false,
+    totalAmount: 0,
     risingColor: ImgState.increasing,
     fallingColor: ImgState.decreasing,
   };
@@ -20,6 +22,9 @@ class DefaultPropertyInspector extends Inspector {
   public regionRadio: HTMLDivElement;
   public showIconRadio: HTMLDivElement;
   public frequencyInput: HTMLInputElement;
+  public showTotalRadio: HTMLDivElement;
+  public totalAmountInput: HTMLInputElement;
+  public totalAmountWrapperElement: HTMLDivElement;
   public risingColorInput: HTMLInputElement;
   public fallingColorInput: HTMLInputElement;
   public saveBtn: HTMLButtonElement;
@@ -40,6 +45,13 @@ class DefaultPropertyInspector extends Inspector {
     this.frequencyInput = document.querySelector(
       '#frequency'
     ) as HTMLInputElement;
+    this.showTotalRadio = document.querySelector(
+      '#total_radio'
+    ) as HTMLInputElement;
+    this.totalAmountInput = document.querySelector(
+      '#total_amount'
+    ) as HTMLInputElement;
+    this.totalAmountWrapperElement = document.querySelector('#total_amount_wrapper') as HTMLDivElement;
     this.risingColorInput = document.querySelector(
       '#rising-color'
     ) as HTMLInputElement;
@@ -86,6 +98,8 @@ class DefaultPropertyInspector extends Inspector {
         region: this.getCheckedValue(this.regionRadio),
         showIcon: this.getCheckedValue(this.showIconRadio) === 'true',
         frequency: this.frequencyInput.value,
+        showTotal: this.getCheckedValue(this.showTotalRadio) === 'true',
+        totalAmount: parseInt(this.totalAmountInput.value),
         risingColor: this.risingColorInput.value,
         fallingColor: this.fallingColorInput.value,
       });
@@ -110,6 +124,22 @@ class DefaultPropertyInspector extends Inspector {
     if (this.settings.type === QuoteTypes.STOCK) {
       this.regionRadio.style.display = 'flex';
     }
+
+    // Show or hide total amount based on show total setting
+    this.showTotalRadio.querySelectorAll<HTMLInputElement>('input[name="total-radio"]').forEach((el) => {
+      el.addEventListener('change', (e) => {
+        let element = e.target as HTMLInputElement;
+        if (element.checked && element.value === 'true') {
+          this.totalAmountWrapperElement.style.display = 'flex';
+        } else if(element.checked) {
+          this.totalAmountWrapperElement.style.display = 'none';
+        }
+      });
+    })
+
+    if(this.settings.showTotal) {
+      this.totalAmountWrapperElement.style.display = 'flex';
+    } 
   }
 
   handleDidReceiveSettings({ settings }: DidReceiveSettingsEvent<Settings>) {
@@ -123,6 +153,8 @@ class DefaultPropertyInspector extends Inspector {
     this.setCheckedValue(this.regionRadio, this.settings.region);
     this.setCheckedValue(this.showIconRadio, this.settings.showIcon.toString());
     this.frequencyInput.value = this.settings.frequency ?? ON_PUSH;
+    this.setCheckedValue(this.showTotalRadio, this.settings.showTotal.toString());
+    this.totalAmountInput.value = this.settings.totalAmount.toString();
     this.risingColorInput.value =
       this.settings.risingColor ?? ImgState.increasing;
     this.fallingColorInput.value =
@@ -133,6 +165,11 @@ class DefaultPropertyInspector extends Inspector {
       this.regionRadio.style.display = 'flex';
     } else {
       this.regionRadio.style.display = 'none';
+    }
+    if(this.settings.showTotal) {
+      this.totalAmountWrapperElement.style.display = 'flex';
+    } else {
+      this.totalAmountWrapperElement.style.display = 'none';
     }
   }
 }

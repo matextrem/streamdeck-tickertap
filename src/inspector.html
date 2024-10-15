@@ -106,6 +106,40 @@
       <option value="60">1 hour</option>
     </select>
   </div>
+  <div type="radio" class="sdpi-item radio-wrapper" id="total_radio">
+    <div class="sdpi-item-label">Total</div>
+    <div class="sdpi-item-value radio-container">
+      <span class="sdpi-item-child">
+        <input
+          id="total-radio1"
+          type="radio"
+          value="true"
+          name="total-radio"
+          
+        />
+        <label for="total-radio1" class="sdpi-item-label"
+          ><span></span>Show</label
+        >
+      </span>
+      <span class="sdpi-item-child">
+        <input id="total-radio2" type="radio" value="false" name="total-radio" checked/>
+        <label for="total-radio2" class="sdpi-item-label"
+          ><span></span>Hide</label
+        >
+      </span>
+    </div>
+  </div>
+  <div class="sdpi-item" id="total_amount_wrapper" style="display: none;">
+    <div class="sdpi-item-label">Amount</div>
+    <div class="sdpi-item">
+      <input
+        class="sdpi-item-value"
+        id="total_amount"
+        placeholder="Enter amount held"
+        type="number"
+      />
+    </div>
+  </div>
   <div class="sdpi-item">
     <div type="color" class="sdpi-item">
       <div class="sdpi-item-label">Rising color</div>
@@ -208,6 +242,8 @@
       &nbsp;&nbsp;&bull;30 minutes - Every 30 minutes.<br />
       &nbsp;&nbsp;&bull;1 hour - Hourly.<br />
     </p>
+    <p>Total: Show/Hide the amount owned multiplied by the price</p>
+    <p>&nbsp;&nbsp;&bull;Amount - Amount owned</p>
     <p>
       Rising/Falling colors: Let you choose the color you want for
       Rising/Falling stocks

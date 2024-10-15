@@ -23,6 +23,8 @@ export type Settings = {
   type: QuoteTypes;
   showIcon: boolean;
   region: Regions;
+  showTotal: boolean;
+  totalAmount: number;
   risingColor: string;
   fallingColor: string;
 };
