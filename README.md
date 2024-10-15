@@ -41,6 +41,7 @@ Click on the button below to download the latest version of the plugin directly:
   - Forex
   - Commodities
   - Futures
+  - Funds
 - Support cryptocurrencies from [CoinMarketCap](https://coinmarketcap.com/)
 
   **NO API KEY IS NEEDED! 🎊**
