@@ -91,6 +91,8 @@ class DefaultPropertyInspector extends Inspector {
         return;
       }
 
+      const showTotalVal = this.getCheckedValue(this.showTotalRadio) === 'true';
+
       this.setSettings({
         ticker: this.tickerInput.value,
         showAs: this.showAsInput.value,
@@ -98,8 +100,8 @@ class DefaultPropertyInspector extends Inspector {
         region: this.getCheckedValue(this.regionRadio),
         showIcon: this.getCheckedValue(this.showIconRadio) === 'true',
         frequency: this.frequencyInput.value,
-        showTotal: this.getCheckedValue(this.showTotalRadio) === 'true',
-        totalAmount: parseInt(this.totalAmountInput.value),
+        showTotal: showTotalVal,
+        totalAmount: this.totalAmountInput.value === '' || !showTotalVal ? 0 : parseFloat(this.totalAmountInput.value),
         risingColor: this.risingColorInput.value,
         fallingColor: this.fallingColorInput.value,
       });
