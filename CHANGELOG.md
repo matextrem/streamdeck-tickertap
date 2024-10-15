@@ -64,5 +64,5 @@ Prefix your message with one of the following:
 
 [Fixed] Issues with most used index tickers
 
-### Unreleased
+### v1.5.0 - 2024-10-15
 [Added] Support for Funds 
