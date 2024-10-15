@@ -71,3 +71,7 @@ Prefix your message with one of the following:
 ### v1.6.0 - 2024-10-15
 
 [Added] Total amount field
+
+### Unreleased
+
+[Added] Support for Bonds

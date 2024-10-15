@@ -54,6 +54,10 @@ export const API_PROVIDERS: ApiProvidersConfig = {
         route: 'funds',
         fallback: ApiProviders.Investing,
       },
+      bonds: {
+        route: 'rates-bonds',
+        fallback: ApiProviders.Investing,
+      },
     },
     selectors: {
       name: {
@@ -130,6 +134,9 @@ export const API_PROVIDERS: ApiProvidersConfig = {
       },
       funds: {
         route: 'funds',
+      },
+      bonds: {
+        route: 'rates-bonds',
       },
     },
     selectors: {

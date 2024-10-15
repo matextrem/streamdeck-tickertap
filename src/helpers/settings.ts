@@ -7,6 +7,7 @@ export enum QuoteTypes {
   COMMODITY = 'commodity',
   FUTURE = 'future',
   FUNDS = 'funds',
+  BONDS = 'bonds',
   CRYPTO = 'crypto',
 }
 

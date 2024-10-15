@@ -1,8 +1,8 @@
 # TICKERTAP
+
 A Stream Deck plugin to visualize real-time asset values
 
-[![elgato-marketplace](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fmp-gateway.elgato.com%2Fproducts%3Fname%3DTickertap&query=%24.results.*.download_count&logo=elgato&label=Elgato%20Marketplace
-)](https://marketplace.elgato.com/product/tickertap-edbea047-025e-4b44-bc49-5e77d75a270f)
+[![elgato-marketplace](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fmp-gateway.elgato.com%2Fproducts%3Fname%3DTickertap&query=%24.results.*.download_count&logo=elgato&label=Elgato%20Marketplace)](https://marketplace.elgato.com/product/tickertap-edbea047-025e-4b44-bc49-5e77d75a270f)
 [![publish-package](https://img.shields.io/github/v/release/matextrem/streamdeck-tickertap?logo=github&label=plugin)](https://github.com/matextrem/streamdeck-tickertap/releases/latest)
 [![LICENSE](https://img.shields.io/github/license/matextrem/streamdeck-tickertap)](<[https://github.com/matextrem/streamdeck-tickertap/releases/latest](https://github.com/matextrem/streamdeck-tickertap/blob/main/LICENSE.md)>)
 [![Buy Me A Coffee](https://img.shields.io/badge/-Buy_me_a%C2%A0coffee-gray?logo=buy-me-a-coffee)](https://www.buymeacoffee.com/matextrem)
@@ -42,6 +42,7 @@ Click on the button below to download the latest version of the plugin directly:
   - Commodities
   - Futures
   - Funds
+  - Bonds
 - Support cryptocurrencies from [CoinMarketCap](https://coinmarketcap.com/)
 
   **NO API KEY IS NEEDED! 🎊**
@@ -54,8 +55,8 @@ Click on the button below to download the latest version of the plugin directly:
     - **GOOGL** - Alphabet
   - ETF
     - Ticker field supports Investing.com website. You have to get the name from the url: e.g.
-         - **SPDR-S-P-500** -  investing.com/etfs/spdr-s-p-500
-         - **ISHARES-FTSE-100** - investing.com/etfs/ishares-ftse-100
+      - **SPDR-S-P-500** - investing.com/etfs/spdr-s-p-500
+      - **ISHARES-FTSE-100** - investing.com/etfs/ishares-ftse-100
   - Forex
     - **EURUSD** - EUR/USD
     - **XAUUSD** - XAU/USD
@@ -67,22 +68,29 @@ Click on the button below to download the latest version of the plugin directly:
     - **NQ** - E-mini Nasdaq 100
   - Funds
     - Ticker field supports Investing.com website. You have to get the name from the url: e.g.
-         - **VANGUARD-TOTAL-STOCK-MARKET-INS-PLS** -  investing.com/funds/vanguard-total-stock-market-ins-pls
-         - **BAILLIE GIFFORD MANAGED FUND B ACC** - investing.com/funds/baillie-gifford-managed-b-acc
+      - **VANGUARD-TOTAL-STOCK-MARKET-INS-PLS** - investing.com/funds/vanguard-total-stock-market-ins-pls
+      - **BAILLIE GIFFORD MANAGED FUND B ACC** - investing.com/funds/baillie-gifford-managed-b-acc
+  - Bonds
+    - Ticker field supports Investing.com website. You have to get the name from the url: e.g.
+      - **U.S.-10-YEAR-BOND-YIELD** - investing.com/funds/u.s.-10-year-bond-yield
+      - **U.S.-30-YEAR-BOND-YIELD** - investing.com/funds/u.s.-30-year-bond-yield
   - Crypto
     - Ticker field supports CoinMarketCap website. You have to get the name from the url: e.g.
-         - **BITCOIN** -  coinmarketcap.com/currencies/bitcoin
-         - **ETHEREUM** - coinmarketcap.com/currencies/ethereum
-         - **THE-GRAPH** - coinmarketcap.com/currencies/the-graph
+      - **BITCOIN** - coinmarketcap.com/currencies/bitcoin
+      - **ETHEREUM** - coinmarketcap.com/currencies/ethereum
+      - **THE-GRAPH** - coinmarketcap.com/currencies/the-graph
 - Region: Select the region where the stocks market is from:
-     - **America** -  United States
-     - **Canada** -  Canada
-     - **Europe** - European Union and UK
-     - **Asia/Pacific** - Asia and Pacific
-  
-     **Note:** For EU and Asia markets, the ticker should be extracted from Investing.com url: e.g.
-     - **BASF-AG** - investing.com/equities/basf-ag
-     - **IHI-CORP.** - investing.com/equities/ihi-corp.
+
+  - **America** - United States
+  - **Canada** - Canada
+  - **Europe** - European Union and UK
+  - **Asia/Pacific** - Asia and Pacific
+
+  **Note:** For EU and Asia markets, the ticker should be extracted from Investing.com url: e.g.
+
+  - **BASF-AG** - investing.com/equities/basf-ag
+  - **IHI-CORP.** - investing.com/equities/ihi-corp.
+
 - Show as: Add custom ticker - e.g **GOLD**.
 - Icon: Show/Hide the ticker icon if exists.
 - Frequency: How often the stock prices are fetched: e.g.
@@ -94,7 +102,7 @@ Click on the button below to download the latest version of the plugin directly:
   - **Amount** - Amount owned
 - Rising/Falling colors: Let you choose the color you want for Rising/Falling stocks.
 
-***Note*: Long pressed the key button redirects to the ticker website.**
+**_Note_: Long pressed the key button redirects to the ticker website.**
 
 ## Maintainers
 
