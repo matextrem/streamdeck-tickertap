@@ -63,3 +63,6 @@ Prefix your message with one of the following:
 ### v1.4.1 - 2024-10-08
 
 [Fixed] Issues with most used index tickers
+
+### Unreleased
+[Added] Support for Funds 

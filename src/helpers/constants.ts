@@ -50,6 +50,10 @@ export const API_PROVIDERS: ApiProvidersConfig = {
         fallback: ApiProviders.CoinMarketCap,
         iconUrl: 'https://github.com/nvstly/icons/tree/main/crypto_icons',
       },
+      funds: {
+        route: 'funds',
+        fallback: ApiProviders.Investing,
+      },
     },
     selectors: {
       name: {
@@ -124,11 +128,21 @@ export const API_PROVIDERS: ApiProvidersConfig = {
         fallback: ApiProviders.CoinMarketCap,
         iconUrl: 'https://github.com/nvstly/icons/tree/main/crypto_icons',
       },
+      funds: {
+        route: 'funds',
+      },
     },
     selectors: {
       name: {
         selector: 'h1.leading-7',
+        fallbackSelector: '.float_lang_base_1',
         extractor: (element: cheerio.Cheerio<cheerio.Element>) => {
+          const regex = /^(.*?)\s*\((.*?)\)$/;
+          const title = element.text().trim();
+          const match = title.match(regex);
+          return match ? match[1] : title.split('-')[0].trim();
+        },
+        fallbackExtractor: (element: cheerio.Cheerio<cheerio.Element>) => {
           const regex = /^(.*?)\s*\((.*?)\)$/;
           const title = element.text().trim();
           const match = title.match(regex);
@@ -148,17 +162,28 @@ export const API_PROVIDERS: ApiProvidersConfig = {
       },
       price: {
         selector: '[data-test="instrument-price-last"]',
+        fallbackSelector: '#last_last',
         extractor: (element: cheerio.Cheerio<cheerio.Element>) =>
+          element.text().trim().replace(/,/g, ''),
+        fallbackExtractor: (element: cheerio.Cheerio<cheerio.Element>) =>
           element.text().trim().replace(/,/g, ''),
       },
       change: {
         selector: '[data-test="instrument-price-change"]',
+        fallbackSelector: '.current-data .arial_20',
         extractor: (element: cheerio.Cheerio<cheerio.Element>) =>
+          element.text().trim(),
+        fallbackExtractor: (element: cheerio.Cheerio<cheerio.Element>) =>
           element.text().trim(),
       },
       percentageChange: {
         selector: '[data-test="instrument-price-change-percent"]',
+        fallbackSelector: '.parentheses',
         extractor: (element: cheerio.Cheerio<cheerio.Element>) => {
+          const cleanedText = element.text().trim().replace(/[()]/g, ''); // Remove parentheses
+          return cleanedText;
+        },
+        fallbackExtractor: (element: cheerio.Cheerio<cheerio.Element>) => {
           const cleanedText = element.text().trim().replace(/[()]/g, ''); // Remove parentheses
           return cleanedText;
         },

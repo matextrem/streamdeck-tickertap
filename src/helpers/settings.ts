@@ -6,6 +6,7 @@ export enum QuoteTypes {
   FOREX = 'forex',
   COMMODITY = 'commodity',
   FUTURE = 'future',
+  FUNDS = 'funds',
   CRYPTO = 'crypto',
 }
 
