@@ -64,7 +64,7 @@ Click on the button below to download the latest version of the plugin directly:
   - Futures
     - **ES** - E-mini S&P 500
     - **NQ** - E-mini Nasdaq 100
-  - ETF
+  - Funds
     - Ticker field supports Investing.com website. You have to get the name from the url: e.g.
          - **VANGUARD-TOTAL-STOCK-MARKET-INS-PLS** -  investing.com/funds/vanguard-total-stock-market-ins-pls
          - **BAILLIE GIFFORD MANAGED FUND B ACC** - investing.com/funds/baillie-gifford-managed-b-acc
