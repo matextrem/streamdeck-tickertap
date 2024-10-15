@@ -39,3 +39,7 @@ export const formatPrice = (price: number) => {
 
   return formattedPrice;
 };
+
+export const addThousandSeperator = (number: number) => {
+  return number.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+}

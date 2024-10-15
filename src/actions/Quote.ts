@@ -84,12 +84,14 @@ class Quote extends Action {
             (this.settings[ctx]?.fallingColor as ImgState) ??
             ImgState.decreasing,
         };
+        const totalValue = this.settings[ctx]?.showTotal ? this.settings[ctx]?.totalAmount * quote.price : 0;
 
         const image = await drawQuoteImage(
           this.settings[ctx]?.showAs || quote.ticker,
           quote.icon,
           quote.price,
           quote.percentageChange,
+          totalValue,
           colors
         );
         this.setImage(image, { target: Target.both, context: ctx });
