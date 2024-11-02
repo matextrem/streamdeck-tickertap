@@ -76,6 +76,6 @@ Prefix your message with one of the following:
 
 [Added] Support for Bonds
 
-### Unreleased
+### v1.8.0 - 2024-11-02
 
 [Added] Increase maximum number of decimals for FOREX type.
