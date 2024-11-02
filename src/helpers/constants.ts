@@ -477,3 +477,7 @@ export const QUOTE_REPLACEMENTS: Record<
     },
   },
 };
+
+export const MAX_DECIMALS_BY_TYPE: Partial<Record<QuoteTypes, number>> = {
+  [QuoteTypes.FOREX]: 5,
+};

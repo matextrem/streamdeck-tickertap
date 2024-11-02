@@ -9,6 +9,7 @@ import httpClient from '../helpers/httpClient';
 import { Target } from '@fnando/streamdeck/dist/Target';
 import { getApiUrl } from '../helpers/utils';
 import { ImgState } from '../images/actions/images';
+import { MAX_DECIMALS_BY_TYPE } from '../helpers/constants';
 
 const LONG_PRESS_THRESHOLD = 500;
 
@@ -84,14 +85,17 @@ class Quote extends Action {
             (this.settings[ctx]?.fallingColor as ImgState) ??
             ImgState.decreasing,
         };
-        const totalValue = this.settings[ctx]?.showTotal ? this.settings[ctx]?.totalAmount * quote.price : 0;
-
+        const totalValue = this.settings[ctx]?.showTotal
+          ? this.settings[ctx]?.totalAmount * quote.price
+          : 0;
+        const maxDecimals = MAX_DECIMALS_BY_TYPE[this.settings[ctx]?.type];
         const image = await drawQuoteImage(
           this.settings[ctx]?.showAs || quote.ticker,
           quote.icon,
           quote.price,
           quote.percentageChange,
           totalValue,
+          maxDecimals,
           colors
         );
         this.setImage(image, { target: Target.both, context: ctx });

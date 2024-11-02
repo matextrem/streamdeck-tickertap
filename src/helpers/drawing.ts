@@ -13,6 +13,7 @@ export async function drawQuoteImage(
   price: number,
   percentage: number,
   totalValue: number,
+  decimals: number,
   colors: { increasing: ImgState; decreasing: ImgState }
 ): Promise<string> {
   const canvasWidth = 144;
@@ -27,7 +28,7 @@ export async function drawQuoteImage(
 
   let offsetY = -24;
 
-  if(totalValue === 0) {
+  if (totalValue === 0) {
     // Draw the divider line
     ctx.beginPath();
     ctx.moveTo(10, 61);
@@ -72,7 +73,7 @@ export async function drawQuoteImage(
   }
 
   // Draw the stock price
-  const formattedPrice = formatPrice(price);
+  const formattedPrice = formatPrice(price, decimals);
   const pSize = formattedPrice.length > priceLength ? 16 : 20;
   ctx.font = `500 ${pSize}pt "Verdana"`;
   const priceText = `${formattedPrice}`;
@@ -92,7 +93,7 @@ export async function drawQuoteImage(
   ctx.font = 'normal 16pt "Verdana"';
   ctx.fillText(`(${percentage.toFixed(2)}%)`, 10, 128 + offsetY);
 
-  if(totalValue) {
+  if (totalValue) {
     ctx.fillStyle = 'white';
     ctx.fillText(addThousandSeperator(Math.round(totalValue)), 10, 128);
   }
