@@ -79,3 +79,7 @@ Prefix your message with one of the following:
 ### v1.8.0 - 2024-11-02
 
 [Added] Increase maximum number of decimals for FOREX type.
+
+### v1.8.1 - 2024-11-25
+
+[Fixed] Price format when stock is over 1,000
