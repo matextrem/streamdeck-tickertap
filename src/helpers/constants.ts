@@ -73,7 +73,7 @@ export const API_PROVIDERS: ApiProvidersConfig = {
       price: {
         selector: '.quote-price_wrapper_price',
         extractor: (element: cheerio.Cheerio<cheerio.Element>) =>
-          element.text().trim(),
+          element.text().trim().replace(/[$,]/g, ''),
       },
       change: {
         selector: '.quote-price_wrapper_change > tbody > tr',
