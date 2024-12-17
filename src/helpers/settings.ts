@@ -47,6 +47,7 @@ export interface Endpoint {
   query?: string;
   fallback?: ApiProviders;
   iconUrl?: string;
+  useSiteLogo?: boolean;
 }
 
 interface SelectorConfig {

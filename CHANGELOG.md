@@ -83,3 +83,6 @@ Prefix your message with one of the following:
 ### v1.8.1 - 2024-11-25
 
 [Fixed] Price format when stock is over 1,000
+
+### Unreleased
+[Added] Crypto icon is now fetched from CoinMarketCap site.

@@ -49,6 +49,7 @@ export const API_PROVIDERS: ApiProvidersConfig = {
         route: 'crypto',
         fallback: ApiProviders.CoinMarketCap,
         iconUrl: 'https://github.com/nvstly/icons/tree/main/crypto_icons',
+        useSiteLogo: true,
       },
       funds: {
         route: 'funds',
@@ -69,6 +70,10 @@ export const API_PROVIDERS: ApiProvidersConfig = {
         selector: '.quote-header_ticker-wrapper_ticker',
         extractor: (element: cheerio.Cheerio<cheerio.Element>) =>
           element.text().trim(),
+      },
+      logo: {
+        selector: '',
+        extractor: (_element: cheerio.Cheerio<cheerio.Element>) => '',
       },
       price: {
         selector: '.quote-price_wrapper_price',
@@ -131,6 +136,7 @@ export const API_PROVIDERS: ApiProvidersConfig = {
         route: 'crypto',
         fallback: ApiProviders.CoinMarketCap,
         iconUrl: 'https://github.com/nvstly/icons/tree/main/crypto_icons',
+        useSiteLogo: true,
       },
       funds: {
         route: 'funds',
@@ -166,6 +172,10 @@ export const API_PROVIDERS: ApiProvidersConfig = {
           const match = element.text().match(regex);
           return match ? match[2] : element.text().split('-')[0].trim();
         },
+      },
+      logo: {
+        selector: '',
+        extractor: (_element: cheerio.Cheerio<cheerio.Element>) => '',
       },
       price: {
         selector: '[data-test="instrument-price-last"]',
@@ -226,6 +236,7 @@ export const API_PROVIDERS: ApiProvidersConfig = {
       crypto: {
         route: 'currencies',
         iconUrl: 'https://github.com/nvstly/icons/tree/main/crypto_icons',
+        useSiteLogo: true,
       },
     },
     selectors: {
@@ -238,6 +249,11 @@ export const API_PROVIDERS: ApiProvidersConfig = {
         selector: '[data-role="coin-symbol"]',
         extractor: (element: cheerio.Cheerio<cheerio.Element>) =>
           element.text().trim(),
+      },
+      logo: {
+        selector: '[data-role="coin-logo"] > img',
+        extractor: (element: cheerio.Cheerio<cheerio.Element>) =>
+          element.attr('src').trim(),
       },
       price: {
         selector: '.flexStart.alignBaseline .base-text',

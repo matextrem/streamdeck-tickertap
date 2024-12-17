@@ -70,13 +70,15 @@ export async function fetchStockData(
   const body = await response.text();
   const $ = cheerio.load(body);
   const baseProvider = PROVIDER[region];
+  const endpoint = API_PROVIDERS[baseProvider].endpoints[service];
   const iconUrl = API_PROVIDERS[baseProvider].endpoints[service].iconUrl;
   return await extractStockData(
     $,
     service,
     selectors,
     symbol,
-    showIcon ? iconUrl : ''
+    showIcon ? iconUrl : '',
+    endpoint.useSiteLogo
   );
 }
 
@@ -85,13 +87,15 @@ export async function extractStockData(
   service: QuoteTypes,
   selectors: Record<string, unknown>,
   customSymbol?: string,
-  iconUrl?: string
+  iconUrl?: string,
+  useSiteLogo?: boolean
 ) {
   const data = {} as Record<string, string>;
 
   for (let key in selectors) {
     const { selector, extractor, fallbackSelector, fallbackExtractor } =
       selectors[key] as any;
+    if (!selector) continue;
     const selectedExtractor = $(selector).length
       ? extractor
       : fallbackExtractor;
@@ -101,7 +105,12 @@ export async function extractStockData(
     data[key] = selectedExtractor(selectedElement, $);
   }
 
-  const icon = await getIcon(customSymbol || data.ticker, iconUrl, service);
+  const icon = await getIcon(
+    customSymbol || data.ticker,
+    useSiteLogo ? data.logo : iconUrl,
+    service,
+    useSiteLogo
+  );
 
   return {
     name: data.name,
@@ -133,14 +142,19 @@ const getTickerReplaced = (
 const getIcon = async (
   symbol: string,
   iconUrl: string,
-  service: QuoteTypes
+  service: QuoteTypes,
+  useSiteLogo: boolean
 ) => {
   if (!iconUrl) return '';
   const customSymbol =
     service === QuoteTypes.FOREX ? symbol.replace(/USD|\/+/g, '') : symbol;
-  const iconResponse = await fetch(
-    `${iconUrl}/${customSymbol.toUpperCase()}.png`
-  );
+
+  const url = useSiteLogo
+    ? iconUrl
+    : `${iconUrl}/${customSymbol.toUpperCase()}.png`;
+
+  const iconResponse = await fetch(url);
+
   let icon: string;
   if (!iconResponse.ok) {
     console.error(iconResponse);
