@@ -58,6 +58,8 @@ Click on the button below to download the latest version of the plugin directly:
     - Ticker field supports Investing.com website. You have to get the name from the url: e.g.
       - **SPDR-S-P-500** - investing.com/etfs/spdr-s-p-500
       - **ISHARES-FTSE-100** - investing.com/etfs/ishares-ftse-100
+    - _Note:_ If the Investing.com URL contains the _?cid=x_ part, ensure that you include it in the ticker field: e.g.
+      - **CS-ETF-(IE)-ON-S-P-500?CID=45844** - investing.com/etfs/cs-etf-(ie)-on-s-p-500?cid=45844
   - Forex
     - **EURUSD** - EUR/USD
     - **XAUUSD** - XAU/USD
