@@ -43,3 +43,37 @@ export const formatPrice = (price: number, decimals = DEFAULT_DECIMALS) => {
 export const addThousandSeperator = (number: number) => {
   return number.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
 };
+
+/**
+ * Parse price string from different locale formats
+ * Handles USD format (115,663.89) and EUR format (115.663,89)
+ * @param priceStr - The price string to parse
+ * @returns Parsed number
+ */
+export const parsePriceFromString = (priceStr: string): string => {
+  if (!priceStr) return '0';
+
+  // Remove currency symbols and extra whitespace
+  let cleaned = priceStr
+    .trim()
+    .replace(/[€$£¥]/g, '')
+    .trim();
+
+  // Check if it's EUR format (comma as decimal separator)
+  // In EUR format, the comma is the decimal separator and comes after the period
+  if (
+    cleaned.includes(',') &&
+    cleaned.includes('.') &&
+    cleaned.indexOf(',') > cleaned.indexOf('.')
+  ) {
+    // EUR format: 115.663,89 -> 115663.89
+    // Remove dots (thousand separators) and replace comma with dot
+    cleaned = cleaned.replace(/\./g, '').replace(',', '.');
+  } else if (cleaned.includes(',')) {
+    // USD format: 115,663.89 -> 115663.89
+    // Remove commas (thousand separators)
+    cleaned = cleaned.replace(/,/g, '');
+  }
+
+  return cleaned;
+};

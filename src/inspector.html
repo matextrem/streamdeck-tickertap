@@ -107,6 +107,39 @@
       <option value="60">1 hour</option>
     </select>
   </div>
+  <div
+    id="currency_radio"
+    class="sdpi-item radio-wrapper"
+    type="radio"
+    style="display: none"
+  >
+    <div class="sdpi-item-label">Currency</div>
+    <div class="sdpi-item-value radio-container">
+      <span class="sdpi-item-child">
+        <input
+          id="currency-rdio1"
+          type="radio"
+          value="usd"
+          name="currency-rdio"
+          checked
+        />
+        <label for="currency-rdio1" class="sdpi-item-label"
+          ><span></span>USD</label
+        >
+      </span>
+      <span class="sdpi-item-child">
+        <input
+          id="currency-rdio2"
+          type="radio"
+          value="eur"
+          name="currency-rdio"
+        />
+        <label for="currency-rdio2" class="sdpi-item-label"
+          ><span></span>EUR</label
+        >
+      </span>
+    </div>
+  </div>
   <div type="radio" class="sdpi-item radio-wrapper" id="total_radio">
     <div class="sdpi-item-label">Total</div>
     <div class="sdpi-item-value radio-container">
@@ -187,10 +220,12 @@
       investing.com/etfs/ishares-ftse-100<br />
     </p>
     <p>
-      &nbsp;&nbsp;&nbsp;&nbsp;Note: If the Investing.com URL contains the "?cid=x" part, ensure that you include it in the ticker field: e.g.
+      &nbsp;&nbsp;&nbsp;&nbsp;Note: If the Investing.com URL contains the
+      "?cid=x" part, ensure that you include it in the ticker field: e.g.
     </p>
     <p>
-      &nbsp;&nbsp;&nbsp;CS-ETF-(IE)-ON-S-P-500?CID=45844 - investing.com/etfs/cs-etf-(ie)-on-s-p-500?cid=45844<br />
+      &nbsp;&nbsp;&nbsp;CS-ETF-(IE)-ON-S-P-500?CID=45844 -
+      investing.com/etfs/cs-etf-(ie)-on-s-p-500?cid=45844<br />
     </p>
     <p>&nbsp;&nbsp;Forex</p>
     <p>
@@ -255,6 +290,14 @@
       &nbsp;&nbsp;&bull;5 minutes - Every 5 minutes.<br />
       &nbsp;&nbsp;&bull;30 minutes - Every 30 minutes.<br />
       &nbsp;&nbsp;&bull;1 hour - Hourly.<br />
+    </p>
+    <p>
+      Currency: Select the currency you want to use for the price display (Only
+      for Crypto)
+    </p>
+    <p>
+      &nbsp;&nbsp;&bull;USD - US Dollar<br />
+      &nbsp;&nbsp;&bull;EUR - Euro<br />
     </p>
     <p>Total: Show/Hide the amount owned multiplied by the price</p>
     <p>&nbsp;&nbsp;&bull;Amount - Amount owned</p>

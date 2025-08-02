@@ -1,4 +1,4 @@
-import { QuoteTypes, Regions } from './settings';
+import { QuoteTypes, Regions, Currency } from './settings';
 import { fetchStockData } from './utils';
 
 export default class HttpClient {
@@ -6,9 +6,16 @@ export default class HttpClient {
     ticker: string,
     type = QuoteTypes.STOCK,
     region = Regions.US,
-    showIcon = true
+    showIcon = true,
+    currency = Currency.USD
   ) {
-    const stockData = await fetchStockData(type, region, ticker, showIcon);
+    const stockData = await fetchStockData(
+      type,
+      region,
+      ticker,
+      showIcon,
+      currency
+    );
     return stockData;
   }
 }

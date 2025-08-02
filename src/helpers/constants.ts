@@ -5,7 +5,9 @@ import {
   ApiProvidersConfig,
   QuoteTypes,
   Regions,
+  CheerioElement,
 } from './settings';
+import { parsePriceFromString } from './parser';
 
 const US_PROVIDER: ApiProviders = ApiProviders.Finviz;
 const CA_PROVIDER: ApiProviders = ApiProviders.Investing;
@@ -63,31 +65,28 @@ export const API_PROVIDERS: ApiProvidersConfig = {
     selectors: {
       name: {
         selector: '.quote-header_ticker-wrapper_company > a',
-        extractor: (element: cheerio.Cheerio<cheerio.Element>) =>
-          element.text().trim(),
+        extractor: (element: CheerioElement) => element.text().trim(),
       },
       ticker: {
         selector: '.quote-header_ticker-wrapper_ticker',
-        extractor: (element: cheerio.Cheerio<cheerio.Element>) =>
-          element.text().trim(),
+        extractor: (element: CheerioElement) => element.text().trim(),
       },
       logo: {
         selector: '',
-        extractor: (_element: cheerio.Cheerio<cheerio.Element>) => '',
+        extractor: (_element: CheerioElement) => '',
       },
       price: {
         selector: '.quote-price_wrapper_price',
-        extractor: (element: cheerio.Cheerio<cheerio.Element>) =>
-          element.text().trim().replace(/[$,]/g, ''),
+        extractor: (element: CheerioElement) => {
+          const priceText = element.text().trim();
+          return parsePriceFromString(priceText);
+        },
       },
       change: {
         selector: '.quote-price_wrapper_change > tbody > tr',
-        extractor: (
-          element: cheerio.Cheerio<cheerio.Element>,
-          $: cheerio.CheerioAPI
-        ) => {
+        extractor: (element: CheerioElement, $: cheerio.CheerioAPI) => {
           let value = '';
-          element.find('.sr-only').each((i: number, el: cheerio.Element) => {
+          element.find('.sr-only').each((i: number, el: any) => {
             if ($(el).text().includes('Dollar')) {
               value = $(el).parent().text().replace($(el).text(), '').trim();
             }
@@ -97,12 +96,9 @@ export const API_PROVIDERS: ApiProvidersConfig = {
       },
       percentageChange: {
         selector: '.quote-price_wrapper_change > tbody > tr',
-        extractor: (
-          element: cheerio.Cheerio<cheerio.Element>,
-          $: cheerio.CheerioAPI
-        ) => {
+        extractor: (element: CheerioElement, $: cheerio.CheerioAPI) => {
           let value = '';
-          element.find('.sr-only').each((i: number, el: cheerio.Element) => {
+          element.find('.sr-only').each((i: number, el: any) => {
             if ($(el).text().includes('Percentage')) {
               value = $(el).parent().text().replace($(el).text(), '').trim();
             }
@@ -149,13 +145,13 @@ export const API_PROVIDERS: ApiProvidersConfig = {
       name: {
         selector: 'h1.leading-7',
         fallbackSelector: '.float_lang_base_1',
-        extractor: (element: cheerio.Cheerio<cheerio.Element>) => {
+        extractor: (element: CheerioElement) => {
           const regex = /^(.*?)\s*\((.*?)\)$/;
           const title = element.text().trim();
           const match = title.match(regex);
           return match ? match[1] : title.split('-')[0].trim();
         },
-        fallbackExtractor: (element: cheerio.Cheerio<cheerio.Element>) => {
+        fallbackExtractor: (element: CheerioElement) => {
           const regex = /^(.*?)\s*\((.*?)\)$/;
           const title = element.text().trim();
           const match = title.match(regex);
@@ -165,9 +161,8 @@ export const API_PROVIDERS: ApiProvidersConfig = {
       ticker: {
         selector: '[data-test="base_symbol"]',
         fallbackSelector: 'h1.leading-7',
-        extractor: (element: cheerio.Cheerio<cheerio.Element>) =>
-          element.text().trim(),
-        fallbackExtractor: (element: cheerio.Cheerio<cheerio.Element>) => {
+        extractor: (element: CheerioElement) => element.text().trim(),
+        fallbackExtractor: (element: CheerioElement) => {
           const regex = /^(.*?)\s*\((.*?)\)$/;
           const match = element.text().match(regex);
           return match ? match[2] : element.text().split('-')[0].trim();
@@ -175,32 +170,34 @@ export const API_PROVIDERS: ApiProvidersConfig = {
       },
       logo: {
         selector: '',
-        extractor: (_element: cheerio.Cheerio<cheerio.Element>) => '',
+        extractor: (_element: CheerioElement) => '',
       },
       price: {
         selector: '[data-test="instrument-price-last"]',
         fallbackSelector: '#last_last',
-        extractor: (element: cheerio.Cheerio<cheerio.Element>) =>
-          element.text().trim().replace(/,/g, ''),
-        fallbackExtractor: (element: cheerio.Cheerio<cheerio.Element>) =>
-          element.text().trim().replace(/,/g, ''),
+        extractor: (element: CheerioElement) => {
+          const priceText = element.text().trim();
+          return parsePriceFromString(priceText);
+        },
+        fallbackExtractor: (element: CheerioElement) => {
+          const priceText = element.text().trim();
+          return parsePriceFromString(priceText);
+        },
       },
       change: {
         selector: '[data-test="instrument-price-change"]',
         fallbackSelector: '.current-data .arial_20',
-        extractor: (element: cheerio.Cheerio<cheerio.Element>) =>
-          element.text().trim(),
-        fallbackExtractor: (element: cheerio.Cheerio<cheerio.Element>) =>
-          element.text().trim(),
+        extractor: (element: CheerioElement) => element.text().trim(),
+        fallbackExtractor: (element: CheerioElement) => element.text().trim(),
       },
       percentageChange: {
         selector: '[data-test="instrument-price-change-percent"]',
         fallbackSelector: '.parentheses',
-        extractor: (element: cheerio.Cheerio<cheerio.Element>) => {
+        extractor: (element: CheerioElement) => {
           const cleanedText = element.text().trim().replace(/[()]/g, ''); // Remove parentheses
           return cleanedText;
         },
-        fallbackExtractor: (element: cheerio.Cheerio<cheerio.Element>) => {
+        fallbackExtractor: (element: CheerioElement) => {
           const cleanedText = element.text().trim().replace(/[()]/g, ''); // Remove parentheses
           return cleanedText;
         },
@@ -209,6 +206,7 @@ export const API_PROVIDERS: ApiProvidersConfig = {
   },
   [ApiProviders.CoinMarketCap]: {
     baseUrl: 'https://coinmarketcap.com',
+    baseUrlEUR: 'https://coinmarketcap.com/de',
     endpoints: {
       stock: {
         route: 'quote.ashx',
@@ -242,27 +240,28 @@ export const API_PROVIDERS: ApiProvidersConfig = {
     selectors: {
       name: {
         selector: '[data-role="coin-name"]',
-        extractor: (element: cheerio.Cheerio<cheerio.Element>) =>
+        extractor: (element: CheerioElement) =>
           element.attr('title')?.trim() || element.text().trim(),
       },
       ticker: {
         selector: '[data-role="coin-symbol"]',
-        extractor: (element: cheerio.Cheerio<cheerio.Element>) =>
-          element.text().trim(),
+        extractor: (element: CheerioElement) => element.text().trim(),
       },
       logo: {
         selector: '[data-role="coin-logo"] > img',
-        extractor: (element: cheerio.Cheerio<cheerio.Element>) =>
-          element.attr('src').trim(),
+        extractor: (element: CheerioElement) =>
+          element.attr('src')?.trim() || '',
       },
       price: {
         selector: '.flexStart.alignBaseline .base-text',
-        extractor: (element: cheerio.Cheerio<cheerio.Element>) =>
-          element.text().trim().replace(/[$,]/g, ''),
+        extractor: (element: CheerioElement) => {
+          const priceText = element.text().trim();
+          return parsePriceFromString(priceText);
+        },
       },
       change: {
         selector: '.flexStart.alignBaseline',
-        extractor: (element: cheerio.Cheerio<cheerio.Element>) => {
+        extractor: (element: CheerioElement) => {
           const calculatePriceChange = (
             percentageChange: string,
             originalPrice: string
@@ -272,11 +271,9 @@ export const API_PROVIDERS: ApiProvidersConfig = {
             return parseFloat(originalPrice) * percentage;
           };
 
-          const price = element
-            .find('span')
-            ?.text()
-            .trim()
-            .replace(/[$,]/g, '');
+          const price = parsePriceFromString(
+            element.find('span')?.text().trim() || ''
+          );
           const color = element.find('p').attr('color');
           const isPositiveChange = color === 'green';
           const textContent = element.find('div > div').text().trim();
@@ -291,7 +288,7 @@ export const API_PROVIDERS: ApiProvidersConfig = {
       },
       percentageChange: {
         selector: '.flexStart.alignBaseline p',
-        extractor: (element: cheerio.Cheerio<cheerio.Element>) => {
+        extractor: (element: CheerioElement) => {
           const color = element.attr('color');
           const isPositiveChange = color === 'green';
           const textContent = element.text().trim();

@@ -17,6 +17,11 @@ export enum Regions {
   EU = 'eu',
   ASIA = 'asia',
 }
+
+export enum Currency {
+  USD = 'usd',
+  EUR = 'eur',
+}
 export type Settings = {
   ticker: string;
   showAs: string;
@@ -28,6 +33,7 @@ export type Settings = {
   totalAmount: number;
   risingColor: string;
   fallingColor: string;
+  currency: Currency;
 };
 
 export const ON_PUSH = 'on-push';
@@ -50,21 +56,22 @@ export interface Endpoint {
   useSiteLogo?: boolean;
 }
 
-interface SelectorConfig {
+// Type for cheerio elements - using any since cheerio.Element is not available in this version
+export type CheerioElement = cheerio.Cheerio<any>;
+
+export interface SelectorConfig {
   selector: string;
   fallbackSelector?: string;
-  extractor: (
-    element: cheerio.Cheerio<cheerio.Element>,
-    $: cheerio.CheerioAPI
-  ) => string;
+  extractor: (element: CheerioElement, $: cheerio.CheerioAPI) => string;
   fallbackExtractor?: (
-    element: cheerio.Cheerio<cheerio.Element>,
+    element: CheerioElement,
     $: cheerio.CheerioAPI
   ) => string;
 }
 
 interface ProviderConfig {
   baseUrl: string;
+  baseUrlEUR?: string;
   endpoints: {
     [key: string]: Endpoint;
   };

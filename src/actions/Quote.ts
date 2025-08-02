@@ -49,7 +49,8 @@ class Quote extends Action {
       const { uri } = await getApiUrl(
         this.settings[ctx]?.type,
         this.settings[ctx]?.region,
-        this.settings[ctx]?.ticker
+        this.settings[ctx]?.ticker,
+        this.settings[ctx]?.currency
       );
       this.openURL(uri);
     }
@@ -75,7 +76,8 @@ class Quote extends Action {
           this.settings[ctx]?.ticker,
           this.settings[ctx]?.type,
           this.settings[ctx]?.region,
-          this.settings[ctx]?.showIcon
+          this.settings[ctx]?.showIcon,
+          this.settings[ctx]?.currency
         );
         const colors = {
           increasing:
@@ -88,7 +90,7 @@ class Quote extends Action {
         const totalValue = this.settings[ctx]?.showTotal
           ? this.settings[ctx]?.totalAmount * quote.price
           : 0;
-        const maxDecimals = MAX_DECIMALS_BY_TYPE[this.settings[ctx]?.type];
+        const maxDecimals = MAX_DECIMALS_BY_TYPE[this.settings[ctx]?.type] || 2;
         const image = await drawQuoteImage(
           this.settings[ctx]?.showAs || quote.ticker,
           quote.icon,
@@ -109,7 +111,7 @@ class Quote extends Action {
       this.tid[ctx] = setInterval(
         update,
         1000 * Number(this.settings[ctx]?.frequency)
-      );
+      ) as unknown as number;
     }
     update();
   }
@@ -120,6 +122,6 @@ const quote = new Quote({
   states: [{ image: 'Key' }],
 });
 
-quote.enableUserTitle = false;
+(quote as any).enableUserTitle = false;
 
 export default quote;

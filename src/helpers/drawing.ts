@@ -72,9 +72,26 @@ export async function drawQuoteImage(
     ctx.drawImage(iconImage, iconX, iconY, iconWidth, iconHeight);
   }
 
-  // Draw the stock price
-  const formattedPrice = formatPrice(price, decimals);
-  const pSize = formattedPrice.length > priceLength ? 16 : 20;
+  // Draw the stock price with thousand separator
+  let formattedPrice = formatPrice(price, decimals);
+
+  // Add thousand separator to price if it's >= 1000
+  const priceNumber = parseFloat(formattedPrice);
+  if (priceNumber >= 1000) {
+    // Handle the decimal part separately to maintain proper formatting
+    if (formattedPrice.includes('.')) {
+      const [wholePart, decimalPart] = formattedPrice.split('.');
+      formattedPrice = `${addThousandSeperator(
+        parseInt(wholePart)
+      )}.${decimalPart}`;
+    } else {
+      formattedPrice = addThousandSeperator(priceNumber);
+    }
+  }
+
+  let pSize = formattedPrice.length > priceLength ? 16 : 20;
+  pSize = formattedPrice.length > priceLength + 2 ? 14 : pSize;
+
   ctx.font = `500 ${pSize}pt "Verdana"`;
   const priceText = `${formattedPrice}`;
   const textWidth = ctx.measureText(priceText).width;

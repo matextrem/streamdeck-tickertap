@@ -2,8 +2,7 @@
 
 A Stream Deck plugin to visualize real-time asset values
 
-[![elgato-marketplace](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fmp-gateway.elgato.com%2Forganizations%2Ff98d5e56-0849-4c43-ad03-44f8dc7ddc52%2Fproducts%2Fedbea047-025e-4b44-bc49-5e77d75a270f&query=%24.download_count&logo=elgato&label=Elgato%20Marketplace
-)](https://marketplace.elgato.com/product/tickertap-edbea047-025e-4b44-bc49-5e77d75a270f)
+[![elgato-marketplace](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fmp-gateway.elgato.com%2Forganizations%2Ff98d5e56-0849-4c43-ad03-44f8dc7ddc52%2Fproducts%2Fedbea047-025e-4b44-bc49-5e77d75a270f&query=%24.download_count&logo=elgato&label=Elgato%20Marketplace)](https://marketplace.elgato.com/product/tickertap-edbea047-025e-4b44-bc49-5e77d75a270f)
 [![publish-package](https://img.shields.io/github/v/release/matextrem/streamdeck-tickertap?logo=github&label=plugin)](https://github.com/matextrem/streamdeck-tickertap/releases/latest)
 [![LICENSE](https://img.shields.io/github/license/matextrem/streamdeck-tickertap)](<[https://github.com/matextrem/streamdeck-tickertap/releases/latest](https://github.com/matextrem/streamdeck-tickertap/blob/main/LICENSE.md)>)
 [![Buy Me A Coffee](https://img.shields.io/badge/-Buy_me_a%C2%A0coffee-gray?logo=buy-me-a-coffee)](https://www.buymeacoffee.com/matextrem)
@@ -101,6 +100,7 @@ Click on the button below to download the latest version of the plugin directly:
   - **5 minutes** - _Every 5 minutes_.
   - **30 minutes** - _Every 30 minutes_.
   - **1 hour** - _Hourly_.
+- Currency: Select the currency you want to use for the price display (Only for Crypto)
 - Total: Show/Hide the amount owned multiplied by the price
   - **Amount** - Amount owned
 - Rising/Falling colors: Let you choose the color you want for Rising/Falling stocks.

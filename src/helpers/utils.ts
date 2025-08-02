@@ -1,15 +1,23 @@
 import * as cheerio from 'cheerio';
 import { API_PROVIDERS, PROVIDER, QUOTE_REPLACEMENTS } from './constants';
 import { parseURL } from './parser';
-import { ApiProviders, Endpoint, QuoteTypes, Regions } from './settings';
+import {
+  ApiProviders,
+  Endpoint,
+  QuoteTypes,
+  Regions,
+  Currency,
+  SelectorConfig,
+} from './settings';
 
 export async function getApiUrl(
   service: QuoteTypes,
   region: Regions,
-  ticker?: string
+  ticker?: string,
+  currency: Currency = Currency.USD
 ): Promise<{
   uri: string;
-  selectors: Record<string, unknown>;
+  selectors: Record<string, SelectorConfig>;
   symbol: string;
 }> {
   const baseProvider = PROVIDER[region];
@@ -27,7 +35,16 @@ export async function getApiUrl(
 
   if (endpoint.fallback) {
     fallbackProvider = endpoint.fallback;
-    apiUrl = API_PROVIDERS[fallbackProvider].baseUrl;
+    // Handle currency-specific base URLs for fallback providers
+    if (
+      fallbackProvider === ApiProviders.CoinMarketCap &&
+      currency === Currency.EUR &&
+      API_PROVIDERS[fallbackProvider].baseUrlEUR
+    ) {
+      apiUrl = API_PROVIDERS[fallbackProvider].baseUrlEUR!;
+    } else {
+      apiUrl = API_PROVIDERS[fallbackProvider].baseUrl;
+    }
     endpoint =
       API_PROVIDERS[fallbackProvider].endpoints[
         service as keyof (typeof API_PROVIDERS)[typeof baseProvider]['endpoints']
@@ -40,16 +57,30 @@ export async function getApiUrl(
     fallbackProvider
   );
 
+  // Handle currency-specific base URLs for direct providers
+  let finalApiUrl = apiUrl;
+  if (provider) {
+    if (
+      provider === ApiProviders.CoinMarketCap &&
+      currency === Currency.EUR &&
+      API_PROVIDERS[provider].baseUrlEUR
+    ) {
+      finalApiUrl = API_PROVIDERS[provider].baseUrlEUR;
+    } else {
+      finalApiUrl = API_PROVIDERS[provider].baseUrl;
+    }
+  }
+
   const uri = parseURL(
-    provider ? API_PROVIDERS[provider].baseUrl : apiUrl,
+    finalApiUrl,
     route ? ({ route } as Endpoint) : endpoint,
     value.toLowerCase()
   );
 
   return {
     uri,
-    selectors: getSelectors(provider, fallbackProvider),
-    symbol,
+    selectors: getSelectors(provider as ApiProviders, fallbackProvider),
+    symbol: symbol || '',
   };
 }
 
@@ -57,9 +88,15 @@ export async function fetchStockData(
   service: QuoteTypes,
   region: Regions,
   ticker?: string,
-  showIcon = true
+  showIcon = true,
+  currency: Currency = Currency.USD
 ) {
-  const { uri, selectors, symbol } = await getApiUrl(service, region, ticker);
+  const { uri, selectors, symbol } = await getApiUrl(
+    service,
+    region,
+    ticker,
+    currency
+  );
 
   const response = await fetch(uri);
 
@@ -85,7 +122,7 @@ export async function fetchStockData(
 export async function extractStockData(
   $: cheerio.CheerioAPI,
   service: QuoteTypes,
-  selectors: Record<string, unknown>,
+  selectors: Record<string, SelectorConfig>,
   customSymbol?: string,
   iconUrl?: string,
   useSiteLogo?: boolean
@@ -94,7 +131,7 @@ export async function extractStockData(
 
   for (let key in selectors) {
     const { selector, extractor, fallbackSelector, fallbackExtractor } =
-      selectors[key] as any;
+      selectors[key] as SelectorConfig;
     if (!selector) continue;
     const selectedExtractor = $(selector).length
       ? extractor
@@ -102,14 +139,17 @@ export async function extractStockData(
     const selectedElement = $(selector).length
       ? $(selector)
       : $(fallbackSelector);
-    data[key] = selectedExtractor(selectedElement, $);
+
+    if (selectedExtractor) {
+      data[key] = selectedExtractor(selectedElement, $);
+    }
   }
 
   const icon = await getIcon(
     customSymbol || data.ticker,
-    useSiteLogo ? data.logo : iconUrl,
+    useSiteLogo ? data.logo : iconUrl || '',
     service,
-    useSiteLogo
+    useSiteLogo || false
   );
 
   return {
@@ -130,7 +170,10 @@ const getTickerReplaced = (
   const tickerUpper = ticker.toUpperCase();
 
   if (type) {
-    const replacement = QUOTE_REPLACEMENTS[provider][type];
+    const replacement =
+      QUOTE_REPLACEMENTS[provider][
+        type as keyof (typeof QUOTE_REPLACEMENTS)[typeof provider]
+      ];
 
     if (replacement && replacement[tickerUpper]) {
       return replacement[tickerUpper];
@@ -168,7 +211,7 @@ const getIcon = async (
 const getSelectors = (
   provider: ApiProviders,
   fallbackProvider: ApiProviders
-) => {
+): Record<string, SelectorConfig> => {
   if (provider) {
     return API_PROVIDERS[provider].selectors; // Use provider specific selectors
   } else {

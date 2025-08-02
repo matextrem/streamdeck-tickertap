@@ -1,6 +1,12 @@
 import { DidReceiveSettingsEvent, Inspector } from '@fnando/streamdeck';
 import plugin from './plugin';
-import { ON_PUSH, QuoteTypes, Regions, Settings } from './helpers/settings';
+import {
+  ON_PUSH,
+  QuoteTypes,
+  Regions,
+  Settings,
+  Currency,
+} from './helpers/settings';
 import { ImgState } from './images/actions/images';
 
 class DefaultPropertyInspector extends Inspector {
@@ -15,21 +21,23 @@ class DefaultPropertyInspector extends Inspector {
     totalAmount: 0,
     risingColor: ImgState.increasing,
     fallingColor: ImgState.decreasing,
+    currency: Currency.USD,
   };
-  public tickerInput: HTMLInputElement;
-  public showAsInput: HTMLInputElement;
-  public typeInput: HTMLInputElement;
-  public regionRadio: HTMLDivElement;
-  public showIconRadio: HTMLDivElement;
-  public frequencyInput: HTMLInputElement;
-  public showTotalRadio: HTMLDivElement;
-  public totalAmountInput: HTMLInputElement;
-  public totalAmountWrapperElement: HTMLDivElement;
-  public risingColorInput: HTMLInputElement;
-  public fallingColorInput: HTMLInputElement;
-  public saveBtn: HTMLButtonElement;
-  public getCheckedValue: (ele: HTMLDivElement) => string | null; // Adjusted the type definition
-  public setCheckedValue: (ele: HTMLDivElement, value: string) => void;
+  public tickerInput!: HTMLInputElement;
+  public showAsInput!: HTMLInputElement;
+  public typeInput!: HTMLInputElement;
+  public regionRadio!: HTMLDivElement;
+  public currencyRadio!: HTMLDivElement;
+  public showIconRadio!: HTMLDivElement;
+  public frequencyInput!: HTMLInputElement;
+  public showTotalRadio!: HTMLDivElement;
+  public totalAmountInput!: HTMLInputElement;
+  public totalAmountWrapperElement!: HTMLDivElement;
+  public risingColorInput!: HTMLInputElement;
+  public fallingColorInput!: HTMLInputElement;
+  public saveBtn!: HTMLButtonElement;
+  public getCheckedValue!: (ele: HTMLDivElement) => string | null; // Adjusted the type definition
+  public setCheckedValue!: (ele: HTMLDivElement, value: string) => void;
 
   handleDidConnectToSocket(): void {
     // Set up your HTML event handlers here
@@ -38,6 +46,9 @@ class DefaultPropertyInspector extends Inspector {
     this.typeInput = document.querySelector('#type') as HTMLInputElement;
     this.regionRadio = document.querySelector(
       '#region_radio'
+    ) as HTMLDivElement;
+    this.currencyRadio = document.querySelector(
+      '#currency_radio'
     ) as HTMLDivElement;
     this.showIconRadio = document.querySelector(
       '#show_icon_radio'
@@ -51,7 +62,9 @@ class DefaultPropertyInspector extends Inspector {
     this.totalAmountInput = document.querySelector(
       '#total_amount'
     ) as HTMLInputElement;
-    this.totalAmountWrapperElement = document.querySelector('#total_amount_wrapper') as HTMLDivElement;
+    this.totalAmountWrapperElement = document.querySelector(
+      '#total_amount_wrapper'
+    ) as HTMLDivElement;
     this.risingColorInput = document.querySelector(
       '#rising-color'
     ) as HTMLInputElement;
@@ -101,47 +114,66 @@ class DefaultPropertyInspector extends Inspector {
         showIcon: this.getCheckedValue(this.showIconRadio) === 'true',
         frequency: this.frequencyInput.value,
         showTotal: showTotalVal,
-        totalAmount: this.totalAmountInput.value === '' || !showTotalVal ? 0 : parseFloat(this.totalAmountInput.value),
+        totalAmount:
+          this.totalAmountInput.value === '' || !showTotalVal
+            ? 0
+            : parseFloat(this.totalAmountInput.value),
         risingColor: this.risingColorInput.value,
         fallingColor: this.fallingColorInput.value,
+        currency: this.getCheckedValue(this.currencyRadio) as Currency,
       });
     };
 
     document.querySelectorAll<HTMLElement>('[data-url]').forEach((node) => {
       node.onclick = () => {
-        this.openURL(node.dataset.url);
+        if (node.dataset.url) {
+          this.openURL(node.dataset.url);
+        }
       };
     });
 
-    // Show or hide region radio group based on current type setting
+    // Show or hide region and currency radio groups based on current type setting
     this.typeInput.addEventListener('change', () => {
       if (this.typeInput.value === QuoteTypes.STOCK) {
         this.regionRadio.style.display = 'flex';
       } else {
         this.regionRadio.style.display = 'none';
       }
+
+      // Show currency selection only for crypto
+      if (this.typeInput.value === QuoteTypes.CRYPTO) {
+        this.currencyRadio.style.display = 'flex';
+      } else {
+        this.currencyRadio.style.display = 'none';
+      }
     });
 
-    // Initialize the region radio group based on the current type setting
+    // Initialize the region and currency radio groups based on the current type setting
     if (this.settings.type === QuoteTypes.STOCK) {
       this.regionRadio.style.display = 'flex';
     }
 
-    // Show or hide total amount based on show total setting
-    this.showTotalRadio.querySelectorAll<HTMLInputElement>('input[name="total-radio"]').forEach((el) => {
-      el.addEventListener('change', (e) => {
-        let element = e.target as HTMLInputElement;
-        if (element.checked && element.value === 'true') {
-          this.totalAmountWrapperElement.style.display = 'flex';
-        } else if(element.checked) {
-          this.totalAmountWrapperElement.style.display = 'none';
-        }
-      });
-    })
+    if (this.settings.type === QuoteTypes.CRYPTO) {
+      this.currencyRadio.style.display = 'flex';
+    }
 
-    if(this.settings.showTotal) {
+    // Show or hide total amount based on show total setting
+    this.showTotalRadio
+      .querySelectorAll<HTMLInputElement>('input[name="total-radio"]')
+      .forEach((el) => {
+        el.addEventListener('change', (e) => {
+          let element = e.target as HTMLInputElement;
+          if (element.checked && element.value === 'true') {
+            this.totalAmountWrapperElement.style.display = 'flex';
+          } else if (element.checked) {
+            this.totalAmountWrapperElement.style.display = 'none';
+          }
+        });
+      });
+
+    if (this.settings.showTotal) {
       this.totalAmountWrapperElement.style.display = 'flex';
-    } 
+    }
   }
 
   handleDidReceiveSettings({ settings }: DidReceiveSettingsEvent<Settings>) {
@@ -153,9 +185,13 @@ class DefaultPropertyInspector extends Inspector {
     this.tickerInput.value = this.settings.ticker ?? '';
     this.showAsInput.value = this.settings.showAs ?? '';
     this.setCheckedValue(this.regionRadio, this.settings.region);
+    this.setCheckedValue(this.currencyRadio, this.settings.currency);
     this.setCheckedValue(this.showIconRadio, this.settings.showIcon.toString());
     this.frequencyInput.value = this.settings.frequency ?? ON_PUSH;
-    this.setCheckedValue(this.showTotalRadio, this.settings.showTotal.toString());
+    this.setCheckedValue(
+      this.showTotalRadio,
+      this.settings.showTotal.toString()
+    );
     this.totalAmountInput.value = this.settings.totalAmount.toString();
     this.risingColorInput.value =
       this.settings.risingColor ?? ImgState.increasing;
@@ -168,7 +204,14 @@ class DefaultPropertyInspector extends Inspector {
     } else {
       this.regionRadio.style.display = 'none';
     }
-    if(this.settings.showTotal) {
+
+    // Show or hide currency radio group based on current type setting
+    if (this.settings.type === QuoteTypes.CRYPTO) {
+      this.currencyRadio.style.display = 'flex';
+    } else {
+      this.currencyRadio.style.display = 'none';
+    }
+    if (this.settings.showTotal) {
       this.totalAmountWrapperElement.style.display = 'flex';
     } else {
       this.totalAmountWrapperElement.style.display = 'none';
