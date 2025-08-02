@@ -91,3 +91,8 @@ Prefix your message with one of the following:
 ### v1.9.2 - 2025-04-10
 
 [Fixed] Up arrow is now pointing to the right.
+
+### v1.10.0 - 2025-08-02
+
+[Added] New Currency display field for Crypto prices.
+[Added] Thousand separator using English system.
