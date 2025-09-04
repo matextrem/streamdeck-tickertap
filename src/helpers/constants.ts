@@ -83,7 +83,7 @@ export const API_PROVIDERS: ApiProvidersConfig = {
         },
       },
       change: {
-        selector: '.quote-price_wrapper_change > tbody > tr',
+        selector: '.quote-price_wrapper_change .table-row',
         extractor: (element: CheerioElement, $: cheerio.CheerioAPI) => {
           let value = '';
           element.find('.sr-only').each((i: number, el: any) => {
@@ -95,7 +95,7 @@ export const API_PROVIDERS: ApiProvidersConfig = {
         },
       },
       percentageChange: {
-        selector: '.quote-price_wrapper_change > tbody > tr',
+        selector: '.quote-price_wrapper_change .table-row',
         extractor: (element: CheerioElement, $: cheerio.CheerioAPI) => {
           let value = '';
           element.find('.sr-only').each((i: number, el: any) => {
