@@ -96,3 +96,7 @@ Prefix your message with one of the following:
 
 [Added] New Currency display field for Crypto prices.
 [Added] Thousand separator using English system.
+
+### v1.10.1 - 2025-09-04
+
+[Fixed] Price change not showing correctly for US stocks.
