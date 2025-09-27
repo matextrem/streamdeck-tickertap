@@ -100,3 +100,8 @@ Prefix your message with one of the following:
 ### v1.10.1 - 2025-09-04
 
 [Fixed] Price change not showing correctly for US stocks.
+
+### v1.10.2 - 2025-09-27
+
+[Fixed] Decimal precision for STOCKS.
+[Added] Gradient background for tiles.
