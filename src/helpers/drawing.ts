@@ -42,6 +42,23 @@ export async function drawQuoteImage(
   const state = percentage >= 0 ? colors.increasing : colors.decreasing;
   svgContent = changeSvgState(svgContent, state);
 
+  // Create gradient background from bottom to 70% of canvas height
+  const gradientHeight = canvasHeight;
+  const gradient = ctx.createLinearGradient(
+    0,
+    canvasHeight,
+    0,
+    canvasHeight - gradientHeight
+  );
+
+  const subtleStateColor = state + '70';
+  gradient.addColorStop(0, subtleStateColor);
+  gradient.addColorStop(1, 'transparent');
+
+  // Draw the gradient background
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, canvasHeight - gradientHeight, canvasWidth, gradientHeight);
+
   // Encode the SVG content
   const encodedSvgContent = encodeURIComponent(svgContent);
 
@@ -107,7 +124,7 @@ export async function drawQuoteImage(
 
   // Set the fill color for percentage change
   ctx.fillStyle = state;
-  ctx.font = 'normal 16pt "Verdana"';
+  ctx.font = 'bold 17pt "Verdana"';
   ctx.fillText(`(${percentage.toFixed(2)}%)`, 10, 128 + offsetY);
 
   if (totalValue) {
