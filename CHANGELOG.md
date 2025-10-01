@@ -105,3 +105,7 @@ Prefix your message with one of the following:
 
 [Fixed] Decimal precision for STOCKS.
 [Added] Gradient background for tiles.
+
+### v1.10.3 - 2025-10-01
+
+[Added] Show/Hide Gradient option. 
