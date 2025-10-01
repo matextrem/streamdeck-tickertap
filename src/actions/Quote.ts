@@ -98,7 +98,8 @@ class Quote extends Action {
           quote.percentageChange,
           totalValue,
           maxDecimals,
-          colors
+          colors,
+          this.settings[ctx]?.showGradient ?? true
         );
         this.setImage(image, { target: Target.both, context: ctx });
       } catch (e) {

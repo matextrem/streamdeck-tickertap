@@ -22,6 +22,7 @@ class DefaultPropertyInspector extends Inspector {
     risingColor: ImgState.increasing,
     fallingColor: ImgState.decreasing,
     currency: Currency.USD,
+    showGradient: true,
   };
   public tickerInput!: HTMLInputElement;
   public showAsInput!: HTMLInputElement;
@@ -35,6 +36,7 @@ class DefaultPropertyInspector extends Inspector {
   public totalAmountWrapperElement!: HTMLDivElement;
   public risingColorInput!: HTMLInputElement;
   public fallingColorInput!: HTMLInputElement;
+  public showGradientRadio!: HTMLDivElement;
   public saveBtn!: HTMLButtonElement;
   public getCheckedValue!: (ele: HTMLDivElement) => string | null; // Adjusted the type definition
   public setCheckedValue!: (ele: HTMLDivElement, value: string) => void;
@@ -71,6 +73,9 @@ class DefaultPropertyInspector extends Inspector {
     this.fallingColorInput = document.querySelector(
       '#falling-color'
     ) as HTMLInputElement;
+    this.showGradientRadio = document.querySelector(
+      '#gradient_radio'
+    ) as HTMLDivElement;
     this.saveBtn = document.querySelector('#save') as HTMLButtonElement;
 
     this.saveBtn.disabled = false;
@@ -121,6 +126,7 @@ class DefaultPropertyInspector extends Inspector {
         risingColor: this.risingColorInput.value,
         fallingColor: this.fallingColorInput.value,
         currency: this.getCheckedValue(this.currencyRadio) as Currency,
+        showGradient: this.getCheckedValue(this.showGradientRadio) === 'true',
       });
     };
 
@@ -197,6 +203,10 @@ class DefaultPropertyInspector extends Inspector {
       this.settings.risingColor ?? ImgState.increasing;
     this.fallingColorInput.value =
       this.settings.fallingColor ?? ImgState.decreasing;
+    this.setCheckedValue(
+      this.showGradientRadio,
+      this.settings.showGradient.toString()
+    );
     this.typeInput.value = this.settings.type;
     // Show or hide region radio group based on current type setting
     if (this.settings.type === QuoteTypes.STOCK) {

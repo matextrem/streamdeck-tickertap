@@ -101,6 +101,7 @@ Click on the button below to download the latest version of the plugin directly:
   - **30 minutes** - _Every 30 minutes_.
   - **1 hour** - _Hourly_.
 - Currency: Select the currency you want to use for the price display (Only for Crypto)
+- Gradient: Show/Hide the gradient background color on the tile
 - Total: Show/Hide the amount owned multiplied by the price
   - **Amount** - Amount owned
 - Rising/Falling colors: Let you choose the color you want for Rising/Falling stocks.

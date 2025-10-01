@@ -34,6 +34,7 @@ export type Settings = {
   risingColor: string;
   fallingColor: string;
   currency: Currency;
+  showGradient: boolean;
 };
 
 export const ON_PUSH = 'on-push';

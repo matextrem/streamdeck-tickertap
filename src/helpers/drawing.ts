@@ -14,7 +14,8 @@ export async function drawQuoteImage(
   percentage: number,
   totalValue: number,
   decimals: number,
-  colors: { increasing: ImgState; decreasing: ImgState }
+  colors: { increasing: ImgState; decreasing: ImgState },
+  showGradient: boolean = true
 ): Promise<string> {
   const canvasWidth = 144;
   const canvasHeight = 144;
@@ -42,22 +43,24 @@ export async function drawQuoteImage(
   const state = percentage >= 0 ? colors.increasing : colors.decreasing;
   svgContent = changeSvgState(svgContent, state);
 
-  // Create gradient background from bottom to 70% of canvas height
-  const gradientHeight = canvasHeight;
-  const gradient = ctx.createLinearGradient(
-    0,
-    canvasHeight,
-    0,
-    canvasHeight - gradientHeight
-  );
+  // Create gradient background from bottom to 70% of canvas height (if enabled)
+  if (showGradient) {
+    const gradientHeight = canvasHeight;
+    const gradient = ctx.createLinearGradient(
+      0,
+      canvasHeight,
+      0,
+      canvasHeight - gradientHeight
+    );
 
-  const subtleStateColor = state + '70';
-  gradient.addColorStop(0, subtleStateColor);
-  gradient.addColorStop(1, 'transparent');
+    const subtleStateColor = state + '70';
+    gradient.addColorStop(0, subtleStateColor);
+    gradient.addColorStop(1, 'transparent');
 
-  // Draw the gradient background
-  ctx.fillStyle = gradient;
-  ctx.fillRect(0, canvasHeight - gradientHeight, canvasWidth, gradientHeight);
+    // Draw the gradient background
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, canvasHeight - gradientHeight, canvasWidth, gradientHeight);
+  }
 
   // Encode the SVG content
   const encodedSvgContent = encodeURIComponent(svgContent);
