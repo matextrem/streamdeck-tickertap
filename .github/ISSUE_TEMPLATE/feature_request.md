@@ -18,3 +18,10 @@ A clear and concise description of any alternative solutions or features you've 
 
 **Additional context**
 Add any other context or screenshots about the feature request here.
+
+---
+
+**Support the Project**
+If you find this project helpful, please consider supporting its development by buying me a coffee! Your support helps make this project better.
+
+☕ [Buy me a coffee](https://www.buymeacoffee.com/matextrem)

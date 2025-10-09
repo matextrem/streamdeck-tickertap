@@ -36,3 +36,10 @@ If applicable, add screenshots to help explain your problem.
 
 **Additional context**
 Add any other context about the problem here.
+
+---
+
+**Support the Project**
+If you find this project helpful, please consider supporting its development by buying me a coffee! Your support helps make this project better.
+
+☕ [Buy me a coffee](https://www.buymeacoffee.com/matextrem)
