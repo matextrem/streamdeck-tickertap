@@ -108,4 +108,9 @@ Prefix your message with one of the following:
 
 ### v1.10.3 - 2025-10-01
 
-[Added] Show/Hide Gradient option. 
+[Added] Show/Hide Gradient option.
+
+### v1.11.0 - 2025-10-19
+
+[Added] Custom frequency option - users can now specify any custom refresh interval in seconds.
+[Fixed] Icon caching to prevent rate limiting when using short refresh intervals.
