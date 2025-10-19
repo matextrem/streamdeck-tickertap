@@ -2,6 +2,7 @@ import { DidReceiveSettingsEvent, Inspector } from '@fnando/streamdeck';
 import plugin from './plugin';
 import {
   ON_PUSH,
+  CUSTOM,
   QuoteTypes,
   Regions,
   Settings,
@@ -31,6 +32,8 @@ class DefaultPropertyInspector extends Inspector {
   public currencyRadio!: HTMLDivElement;
   public showIconRadio!: HTMLDivElement;
   public frequencyInput!: HTMLInputElement;
+  public customFrequencyInput!: HTMLInputElement;
+  public customFrequencyWrapperElement!: HTMLDivElement;
   public showTotalRadio!: HTMLDivElement;
   public totalAmountInput!: HTMLInputElement;
   public totalAmountWrapperElement!: HTMLDivElement;
@@ -58,6 +61,12 @@ class DefaultPropertyInspector extends Inspector {
     this.frequencyInput = document.querySelector(
       '#frequency'
     ) as HTMLInputElement;
+    this.customFrequencyInput = document.querySelector(
+      '#custom_frequency'
+    ) as HTMLInputElement;
+    this.customFrequencyWrapperElement = document.querySelector(
+      '#custom_frequency_wrapper'
+    ) as HTMLDivElement;
     this.showTotalRadio = document.querySelector(
       '#total_radio'
     ) as HTMLInputElement;
@@ -111,13 +120,24 @@ class DefaultPropertyInspector extends Inspector {
 
       const showTotalVal = this.getCheckedValue(this.showTotalRadio) === 'true';
 
+      // Handle custom frequency
+      let frequencyValue = this.frequencyInput.value;
+      if (frequencyValue === CUSTOM) {
+        const customValue = this.customFrequencyInput.value;
+        if (!customValue || parseFloat(customValue) <= 0) {
+          alert('Please enter a valid custom frequency in seconds');
+          return;
+        }
+        frequencyValue = customValue;
+      }
+
       this.setSettings({
         ticker: this.tickerInput.value,
         showAs: this.showAsInput.value,
         type: this.typeInput.value as QuoteTypes,
         region: this.getCheckedValue(this.regionRadio),
         showIcon: this.getCheckedValue(this.showIconRadio) === 'true',
-        frequency: this.frequencyInput.value,
+        frequency: frequencyValue,
         showTotal: showTotalVal,
         totalAmount:
           this.totalAmountInput.value === '' || !showTotalVal
@@ -163,6 +183,19 @@ class DefaultPropertyInspector extends Inspector {
       this.currencyRadio.style.display = 'flex';
     }
 
+    // Show or hide custom frequency input based on frequency setting
+    this.frequencyInput.addEventListener('change', () => {
+      if (this.frequencyInput.value === CUSTOM) {
+        this.customFrequencyWrapperElement.style.display = 'flex';
+        // Set default value if empty
+        if (!this.customFrequencyInput.value) {
+          this.customFrequencyInput.value = '10';
+        }
+      } else {
+        this.customFrequencyWrapperElement.style.display = 'none';
+      }
+    });
+
     // Show or hide total amount based on show total setting
     this.showTotalRadio
       .querySelectorAll<HTMLInputElement>('input[name="total-radio"]')
@@ -193,7 +226,27 @@ class DefaultPropertyInspector extends Inspector {
     this.setCheckedValue(this.regionRadio, this.settings.region);
     this.setCheckedValue(this.currencyRadio, this.settings.currency);
     this.setCheckedValue(this.showIconRadio, this.settings.showIcon.toString());
-    this.frequencyInput.value = this.settings.frequency ?? ON_PUSH;
+
+    // Handle frequency: if it's a custom numeric value (not a predefined option), set dropdown to "custom"
+    const frequency = this.settings.frequency ?? ON_PUSH;
+
+    // Get predefined frequency values from the select options (excluding custom)
+    const predefinedFrequencies = Array.from(
+      this.frequencyInput.querySelectorAll('option')
+    )
+      .map((option) => option.value)
+      .filter((value) => value !== CUSTOM);
+
+    if (predefinedFrequencies.includes(frequency)) {
+      this.frequencyInput.value = frequency;
+      this.customFrequencyWrapperElement.style.display = 'none';
+    } else {
+      // It's a custom numeric value
+      this.frequencyInput.value = CUSTOM;
+      this.customFrequencyInput.value = frequency;
+      this.customFrequencyWrapperElement.style.display = 'flex';
+    }
+
     this.setCheckedValue(
       this.showTotalRadio,
       this.settings.showTotal.toString()

@@ -100,6 +100,7 @@ Click on the button below to download the latest version of the plugin directly:
   - **5 minutes** - _Every 5 minutes_.
   - **30 minutes** - _Every 30 minutes_.
   - **1 hour** - _Hourly_.
+  - **Custom** - _Specify a custom interval in seconds (e.g., 10 seconds)_.
 - Currency: Select the currency you want to use for the price display (Only for Crypto)
 - Gradient: Show/Hide the gradient background color on the tile
 - Total: Show/Hide the amount owned multiplied by the price

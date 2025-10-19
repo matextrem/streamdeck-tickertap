@@ -98,7 +98,18 @@ export async function fetchStockData(
     currency
   );
 
-  const response = await fetch(uri);
+  // Add cache-busting timestamp to URL
+  const cacheBustingUri = uri.includes('?')
+    ? `${uri}&_t=${Date.now()}`
+    : `${uri}?_t=${Date.now()}`;
+
+  const response = await fetch(cacheBustingUri, {
+    headers: {
+      'Cache-Control': 'no-cache, no-store, must-revalidate',
+      Pragma: 'no-cache',
+      Expires: '0',
+    },
+  });
 
   if (!response.ok) {
     console.error(response);
@@ -182,6 +193,9 @@ const getTickerReplaced = (
   return { value: ticker, route: '', symbol: '', provider: '' as ApiProviders };
 };
 
+// Cache for icons to prevent rate limiting from GitHub
+const iconCache: Record<string, string> = {};
+
 const getIcon = async (
   symbol: string,
   iconUrl: string,
@@ -196,6 +210,11 @@ const getIcon = async (
     ? iconUrl
     : `${iconUrl}/${customSymbol.toUpperCase()}.png`;
 
+  // Check cache first to avoid rate limiting
+  if (iconCache[url]) {
+    return iconCache[url];
+  }
+
   const iconResponse = await fetch(url);
 
   let icon: string;
@@ -204,6 +223,8 @@ const getIcon = async (
     icon = '';
   } else {
     icon = `${iconResponse.url}?raw=true`;
+    // Cache successful icon fetches
+    iconCache[url] = icon;
   }
   return icon;
 };

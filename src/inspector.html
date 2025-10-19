@@ -102,10 +102,24 @@
     <div class="sdpi-item-label">Frequency</div>
     <select class="sdpi-item-value select" id="frequency">
       <option value="on-push">On push</option>
-      <option value="5">5 minutes</option>
-      <option value="30">30 minutes</option>
-      <option value="60">1 hour</option>
+      <option value="300">5 minutes</option>
+      <option value="1800">30 minutes</option>
+      <option value="3600">1 hour</option>
+      <option value="custom">Custom</option>
     </select>
+  </div>
+  <div class="sdpi-item" id="custom_frequency_wrapper" style="display: none">
+    <div class="sdpi-item-label">Custom interval (seconds)</div>
+    <div class="sdpi-item">
+      <input
+        class="sdpi-item-value"
+        id="custom_frequency"
+        type="number"
+        placeholder="10"
+        min="1"
+        step="1"
+      />
+    </div>
   </div>
   <div
     id="currency_radio"
@@ -318,6 +332,8 @@
       &nbsp;&nbsp;&bull;5 minutes - Every 5 minutes.<br />
       &nbsp;&nbsp;&bull;30 minutes - Every 30 minutes.<br />
       &nbsp;&nbsp;&bull;1 hour - Hourly.<br />
+      &nbsp;&nbsp;&bull;Custom - Specify a custom interval in seconds (e.g., 10
+      seconds).<br />
     </p>
     <p>
       Currency: Select the currency you want to use for the price display (Only

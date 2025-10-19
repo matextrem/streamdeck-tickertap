@@ -38,6 +38,7 @@ export type Settings = {
 };
 
 export const ON_PUSH = 'on-push';
+export const CUSTOM = 'custom';
 
 export type GlobalSettings = {};
 
