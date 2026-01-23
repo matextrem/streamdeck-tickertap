@@ -93,7 +93,7 @@ index 6818273..114e37e 100644
 +            controllers.push("Encoder");
 +        }
 +        if (this.keyPad === true) {
-+            controllers.push("KeyPad");
++            controllers.push("Keypad");
 +        }
 +        snippet.Controllers = controllers;
          const optionals = [
