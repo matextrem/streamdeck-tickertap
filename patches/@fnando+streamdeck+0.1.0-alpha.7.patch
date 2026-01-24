@@ -62,7 +62,7 @@ index 20d1436..4153892 100644
 +    setFeedbackLayout(layout: string): void;
  }
 diff --git a/node_modules/@fnando/streamdeck/dist/Action.js b/node_modules/@fnando/streamdeck/dist/Action.js
-index 6818273..114e37e 100644
+index 6818273..946586c 100644
 --- a/node_modules/@fnando/streamdeck/dist/Action.js
 +++ b/node_modules/@fnando/streamdeck/dist/Action.js
 @@ -15,6 +15,11 @@ class Action extends events_1.ActionEvents {
@@ -415,6 +415,24 @@ index 0000000..a05514c
 @@ -0,0 +1 @@
 +{"version":3,"file":"Layout.js","sourceRoot":"","sources":["../src/Layout.ts"],"names":[],"mappings":";;;AAQA,MAAa,MAAM;IAkDjB,YAAY,EAAU;QAFf,UAAK,GAAkB,EAAE,CAAC;QAG/B,IAAI,CAAC,EAAE,GAAG,EAAE,CAAC;IACf,CAAC;IAEM,cAAc,CAAC,IAAkB;QACtC,IAAI,CAAC,KAAK,CAAC,IAAI,iCAAM,IAAI,KAAE,IAAI,EAAE,UAAU,IAAG,CAAC;IACjD,CAAC;IAEM,YAAY,CAAC,IAAgB;QAClC,IAAI,CAAC,KAAK,CAAC,IAAI,iCAAM,IAAI,KAAE,IAAI,EAAE,QAAQ,IAAG,CAAC;IAC/C,CAAC;IAEM,SAAS,CAAC,IAAa;QAC5B,IAAI,CAAC,KAAK,CAAC,IAAI,iCAAM,IAAI,KAAE,IAAI,EAAE,KAAK,IAAG,CAAC;IAC5C,CAAC;IAEM,UAAU,CAAC,IAAc;QAC9B,IAAI,CAAC,KAAK,CAAC,IAAI,iCAAM,IAAI,KAAE,IAAI,EAAE,MAAM,IAAG,CAAC;IAC7C,CAAC;IAEM,UAAU,CAAC,IAAc;QAC9B,IAAI,CAAC,KAAK,CAAC,IAAI,iCAAM,IAAI,KAAE,IAAI,EAAE,MAAM,IAAG,CAAC;IAC7C,CAAC;;AAxEH,wBAyEC;AApEiB,kBAAW,GAAW,KAAK,CAAC;AAM5B,oBAAa,GAAW,KAAK,CAAC;AAM9B,mBAAY,GAAW,KAAK,CAAC;AAM7B,uBAAgB,GAAW,KAAK,CAAC;AAOjC,gCAAyB,GAAW,KAAK,CAAC;AAM1C,8BAAuB,GAAW,KAAK,CAAC"}
 \ No newline at end of file
+diff --git a/node_modules/@fnando/streamdeck/dist/Plugin.js b/node_modules/@fnando/streamdeck/dist/Plugin.js
+index 2ab2c29..5ea00de 100644
+--- a/node_modules/@fnando/streamdeck/dist/Plugin.js
++++ b/node_modules/@fnando/streamdeck/dist/Plugin.js
+@@ -12,11 +12,11 @@ class Plugin extends events_1.PluginEvents {
+         var _a, _b;
+         super();
+         this.version = "";
+-        this.sdkVersion = 2;
++        this.sdkVersion = 3;
+         this.url = "";
+         this.name = "";
+         this.author = "";
+-        this.minimumSoftwareVersion = "5.0";
++        this.minimumSoftwareVersion = "6.9";
+         this.category = "";
+         this.description = "";
+         this.actions = [];
 diff --git a/node_modules/@fnando/streamdeck/dist/events.d.ts b/node_modules/@fnando/streamdeck/dist/events.d.ts
 index f4e5bed..989e19f 100644
 --- a/node_modules/@fnando/streamdeck/dist/events.d.ts
