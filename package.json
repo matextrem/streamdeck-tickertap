@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "@fnando/streamdeck": "*",
-    "canvas": "2.10.2",
+    "canvas": "3.2.1",
     "cheerio": "^1.0.0-rc.12",
     "typescript": "*"
   },
