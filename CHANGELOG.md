@@ -114,3 +114,7 @@ Prefix your message with one of the following:
 
 [Added] Custom frequency option - users can now specify any custom refresh interval in seconds.
 [Fixed] Icon caching to prevent rate limiting when using short refresh intervals.
+
+### v1.11.1 - 2026-01-24
+
+[Fixed] use correct capitalisation of Keypad controller identifier (Add support for OpenDeck)
