@@ -118,3 +118,7 @@ Prefix your message with one of the following:
 ### v1.11.1 - 2026-01-24
 
 [Fixed] Use correct capitalisation of Keypad controller identifier (Add support for OpenDeck)
+
+### v1.11.2 - 2026-01-24
+
+[Fixed] Resolve issues arising from CORS restrictions on image loading (OpenDeck)
