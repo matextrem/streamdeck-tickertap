@@ -66,7 +66,8 @@ export async function drawQuoteImage(
   const encodedSvgContent = encodeURIComponent(svgContent);
 
   const arrowImage = await loadImage(
-    `data:image/svg+xml;utf8,${encodedSvgContent}`
+    `data:image/svg+xml;utf8,${encodedSvgContent}`,
+    { crossOrigin: "anonymous" }
   );
 
   // Draw the stock ticker
@@ -84,7 +85,7 @@ export async function drawQuoteImage(
 
   if (icon) {
     // Load the icon image
-    const iconImage = await loadImage(icon);
+    const iconImage = await loadImage(icon, { crossOrigin: "anonymous" });
     const iconWidth = 24; // Set the width of the icon (adjust as needed)
     const iconHeight = 24; // Set the height of the icon (adjust as needed)
     const iconX = tickerX + tickerTextWidth + 10; // X position to draw the icon

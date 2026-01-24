@@ -28,7 +28,7 @@ export const API_PROVIDERS: ApiProvidersConfig = {
       stock: {
         route: 'quote.ashx',
         query: 't',
-        iconUrl: 'https://github.com/nvstly/icons/tree/main/ticker_icons',
+        iconUrl: 'https://raw.githubusercontent.com/nvstly/icons/main/ticker_icons',
       },
       etf: {
         route: 'etfs',
@@ -37,7 +37,7 @@ export const API_PROVIDERS: ApiProvidersConfig = {
       forex: {
         route: 'currencies',
         fallback: ApiProviders.Investing,
-        iconUrl: 'https://github.com/nvstly/icons/tree/main/forex_icons',
+        iconUrl: 'https://raw.githubusercontent.com/nvstly/icons/main/forex_icons',
       },
       commodity: {
         route: 'commodities',
@@ -50,7 +50,7 @@ export const API_PROVIDERS: ApiProvidersConfig = {
       crypto: {
         route: 'crypto',
         fallback: ApiProviders.CoinMarketCap,
-        iconUrl: 'https://github.com/nvstly/icons/tree/main/crypto_icons',
+        iconUrl: 'https://raw.githubusercontent.com/nvstly/icons/main/crypto_icons',
         useSiteLogo: true,
       },
       funds: {
@@ -113,14 +113,14 @@ export const API_PROVIDERS: ApiProvidersConfig = {
     endpoints: {
       stock: {
         route: 'equities',
-        iconUrl: 'https://github.com/nvstly/icons/tree/main/ticker_icons',
+        iconUrl: 'https://raw.githubusercontent.com/nvstly/icons/main/ticker_icons',
       },
       etf: {
         route: 'etfs',
       },
       forex: {
         route: 'currencies',
-        iconUrl: 'https://github.com/nvstly/icons/tree/main/forex_icons',
+        iconUrl: 'https://raw.githubusercontent.com/nvstly/icons/main/forex_icons',
       },
       commodity: {
         route: 'commodities',
@@ -131,7 +131,7 @@ export const API_PROVIDERS: ApiProvidersConfig = {
       crypto: {
         route: 'crypto',
         fallback: ApiProviders.CoinMarketCap,
-        iconUrl: 'https://github.com/nvstly/icons/tree/main/crypto_icons',
+        iconUrl: 'https://raw.githubusercontent.com/nvstly/icons/main/crypto_icons',
         useSiteLogo: true,
       },
       funds: {
@@ -212,7 +212,7 @@ export const API_PROVIDERS: ApiProvidersConfig = {
         route: 'quote.ashx',
         query: 't',
         fallback: ApiProviders.Finviz,
-        iconUrl: 'https://github.com/nvstly/icons/tree/main/ticker_icons',
+        iconUrl: 'https://raw.githubusercontent.com/nvstly/icons/main/ticker_icons',
       },
       etf: {
         route: 'etfs',
@@ -221,7 +221,7 @@ export const API_PROVIDERS: ApiProvidersConfig = {
       forex: {
         route: 'currencies',
         fallback: ApiProviders.Investing,
-        iconUrl: 'https://github.com/nvstly/icons/tree/main/forex_icons',
+        iconUrl: 'https://raw.githubusercontent.com/nvstly/icons/main/forex_icons',
       },
       commodity: {
         route: 'commodities',
@@ -233,7 +233,7 @@ export const API_PROVIDERS: ApiProvidersConfig = {
       },
       crypto: {
         route: 'currencies',
-        iconUrl: 'https://github.com/nvstly/icons/tree/main/crypto_icons',
+        iconUrl: 'https://raw.githubusercontent.com/nvstly/icons/main/crypto_icons',
         useSiteLogo: true,
       },
     },
