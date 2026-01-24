@@ -117,4 +117,4 @@ Prefix your message with one of the following:
 
 ### v1.11.1 - 2026-01-24
 
-[Fixed] use correct capitalisation of Keypad controller identifier (Add support for OpenDeck)
+[Fixed] Use correct capitalisation of Keypad controller identifier (Add support for OpenDeck)
