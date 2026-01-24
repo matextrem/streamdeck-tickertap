@@ -14,7 +14,7 @@ export async function getApiUrl(
   service: QuoteTypes,
   region: Regions,
   ticker?: string,
-  currency: Currency = Currency.USD
+  currency: Currency = Currency.USD,
 ): Promise<{
   uri: string;
   selectors: Record<string, SelectorConfig>;
@@ -54,7 +54,7 @@ export async function getApiUrl(
   const { value, route, symbol, provider } = getTickerReplaced(
     service,
     ticker,
-    fallbackProvider
+    fallbackProvider,
   );
 
   // Handle currency-specific base URLs for direct providers
@@ -74,7 +74,7 @@ export async function getApiUrl(
   const uri = parseURL(
     finalApiUrl,
     route ? ({ route } as Endpoint) : endpoint,
-    value.toLowerCase()
+    value.toLowerCase(),
   );
 
   return {
@@ -89,13 +89,13 @@ export async function fetchStockData(
   region: Regions,
   ticker?: string,
   showIcon = true,
-  currency: Currency = Currency.USD
+  currency: Currency = Currency.USD,
 ) {
   const { uri, selectors, symbol } = await getApiUrl(
     service,
     region,
     ticker,
-    currency
+    currency,
   );
 
   // Add cache-busting timestamp to URL
@@ -126,7 +126,7 @@ export async function fetchStockData(
     selectors,
     symbol,
     showIcon ? iconUrl : '',
-    endpoint.useSiteLogo
+    endpoint.useSiteLogo,
   );
 }
 
@@ -136,7 +136,7 @@ export async function extractStockData(
   selectors: Record<string, SelectorConfig>,
   customSymbol?: string,
   iconUrl?: string,
-  useSiteLogo?: boolean
+  useSiteLogo?: boolean,
 ) {
   const data = {} as Record<string, string>;
 
@@ -158,9 +158,9 @@ export async function extractStockData(
 
   const icon = await getIcon(
     customSymbol || data.ticker,
-    useSiteLogo ? data.logo : iconUrl || '',
+    iconUrl === '' ? '' : useSiteLogo ? data.logo : iconUrl || '',
     service,
-    useSiteLogo || false
+    useSiteLogo || false,
   );
 
   return {
@@ -176,7 +176,7 @@ export async function extractStockData(
 const getTickerReplaced = (
   type: QuoteTypes,
   ticker: string,
-  provider: ApiProviders
+  provider: ApiProviders,
 ) => {
   const tickerUpper = ticker.toUpperCase();
 
@@ -200,7 +200,7 @@ const getIcon = async (
   symbol: string,
   iconUrl: string,
   service: QuoteTypes,
-  useSiteLogo: boolean
+  useSiteLogo: boolean,
 ) => {
   if (!iconUrl) return '';
   const customSymbol =
@@ -231,7 +231,7 @@ const getIcon = async (
 
 const getSelectors = (
   provider: ApiProviders,
-  fallbackProvider: ApiProviders
+  fallbackProvider: ApiProviders,
 ): Record<string, SelectorConfig> => {
   if (provider) {
     return API_PROVIDERS[provider].selectors; // Use provider specific selectors
