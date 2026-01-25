@@ -112,7 +112,7 @@ Click on the button below to download the latest version of the plugin directly:
 ## Maintainers
 
 - [Mati Dastugue](https://github.com/matextrem) (Developer)
-- [Mariana Gurksnis](https://marianagurksnis.com/) (Graphic Designer)
+- [Mariana Gurksnis](https://gurksnis.design/) (Graphic Designer)
 
 ## Contributors
 
