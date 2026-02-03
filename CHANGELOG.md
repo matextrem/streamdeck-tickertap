@@ -11,7 +11,12 @@ Prefix your message with one of the following:
 - [Security] in case of vulnerabilities.
 -->
 
-## v1.0.0 - 2024-04-20
+## v1.11.3 - 2026-02-03
+
+[Fixed] Add missing UUID field to manifest for Elgato Maker Console compatibility
+[Added] DRM protection support for Marketplace distribution
+
+## v1.11.2 - 2026-01-24
 
 [Added] Visualize any real-time stock values.
 [Added] Quickly access to the stock's prices you follow..
