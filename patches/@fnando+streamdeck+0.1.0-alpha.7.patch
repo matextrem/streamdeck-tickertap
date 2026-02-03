@@ -433,6 +433,14 @@ index 2ab2c29..5ea00de 100644
          this.category = "";
          this.description = "";
          this.actions = [];
+@@ -84,6 +84,7 @@ class Plugin extends events_1.PluginEvents {
+     }
+     toManifest() {
+         const snippet = {
++            UUID: this.id,
+             Author: this.author,
+             Actions: this.actions.map((a) => a.toManifest()),
+             CodePath: "plugin.html",
 diff --git a/node_modules/@fnando/streamdeck/dist/events.d.ts b/node_modules/@fnando/streamdeck/dist/events.d.ts
 index f4e5bed..989e19f 100644
 --- a/node_modules/@fnando/streamdeck/dist/events.d.ts
