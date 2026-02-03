@@ -416,7 +416,7 @@ index 0000000..a05514c
 +{"version":3,"file":"Layout.js","sourceRoot":"","sources":["../src/Layout.ts"],"names":[],"mappings":";;;AAQA,MAAa,MAAM;IAkDjB,YAAY,EAAU;QAFf,UAAK,GAAkB,EAAE,CAAC;QAG/B,IAAI,CAAC,EAAE,GAAG,EAAE,CAAC;IACf,CAAC;IAEM,cAAc,CAAC,IAAkB;QACtC,IAAI,CAAC,KAAK,CAAC,IAAI,iCAAM,IAAI,KAAE,IAAI,EAAE,UAAU,IAAG,CAAC;IACjD,CAAC;IAEM,YAAY,CAAC,IAAgB;QAClC,IAAI,CAAC,KAAK,CAAC,IAAI,iCAAM,IAAI,KAAE,IAAI,EAAE,QAAQ,IAAG,CAAC;IAC/C,CAAC;IAEM,SAAS,CAAC,IAAa;QAC5B,IAAI,CAAC,KAAK,CAAC,IAAI,iCAAM,IAAI,KAAE,IAAI,EAAE,KAAK,IAAG,CAAC;IAC5C,CAAC;IAEM,UAAU,CAAC,IAAc;QAC9B,IAAI,CAAC,KAAK,CAAC,IAAI,iCAAM,IAAI,KAAE,IAAI,EAAE,MAAM,IAAG,CAAC;IAC7C,CAAC;IAEM,UAAU,CAAC,IAAc;QAC9B,IAAI,CAAC,KAAK,CAAC,IAAI,iCAAM,IAAI,KAAE,IAAI,EAAE,MAAM,IAAG,CAAC;IAC7C,CAAC;;AAxEH,wBAyEC;AApEiB,kBAAW,GAAW,KAAK,CAAC;AAM5B,oBAAa,GAAW,KAAK,CAAC;AAM9B,mBAAY,GAAW,KAAK,CAAC;AAM7B,uBAAgB,GAAW,KAAK,CAAC;AAOjC,gCAAyB,GAAW,KAAK,CAAC;AAM1C,8BAAuB,GAAW,KAAK,CAAC"}
 \ No newline at end of file
 diff --git a/node_modules/@fnando/streamdeck/dist/Plugin.js b/node_modules/@fnando/streamdeck/dist/Plugin.js
-index 2ab2c29..5ea00de 100644
+index 2ab2c29..2cc655a 100644
 --- a/node_modules/@fnando/streamdeck/dist/Plugin.js
 +++ b/node_modules/@fnando/streamdeck/dist/Plugin.js
 @@ -12,11 +12,11 @@ class Plugin extends events_1.PluginEvents {
@@ -441,6 +441,19 @@ index 2ab2c29..5ea00de 100644
              Author: this.author,
              Actions: this.actions.map((a) => a.toManifest()),
              CodePath: "plugin.html",
+diff --git a/node_modules/@fnando/streamdeck/dist/State.js b/node_modules/@fnando/streamdeck/dist/State.js
+index 7507176..1d2bbff 100644
+--- a/node_modules/@fnando/streamdeck/dist/State.js
++++ b/node_modules/@fnando/streamdeck/dist/State.js
+@@ -34,7 +34,7 @@ class State {
+             ["Name", this.name, this.name],
+             ["Title", this.title, this.title],
+             ["ShowTitle", this.showTitle === false, this.showTitle],
+-            ["FontSize", this.fontSize, String(this.fontSize)],
++            ["FontSize", this.fontSize, this.fontSize],
+             ["FontUnderline", this.underline, this.underline],
+             ["FontStyle", this.fontStyle, this.fontStyle],
+             ["TitleAlignment", this.align, this.align],
 diff --git a/node_modules/@fnando/streamdeck/dist/events.d.ts b/node_modules/@fnando/streamdeck/dist/events.d.ts
 index f4e5bed..989e19f 100644
 --- a/node_modules/@fnando/streamdeck/dist/events.d.ts

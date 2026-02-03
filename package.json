@@ -1,5 +1,5 @@
 {
-  "version": "1.11.2",
+  "version": "1.11.3",
   "private": true,
   "license": "MIT",
   "author": {
@@ -13,11 +13,14 @@
     "typescript": "*"
   },
   "scripts": {
-    "dev": "watchman-make -p 'src/**/*' '*.json' --run 'npx @fnando/streamdeck bundle --dev'",
-    "release": "npx @fnando/streamdeck release --version",
+    "dev": "watchman-make -p 'src/**/*' '*.json' --run 'node node_modules/@fnando/streamdeck/bin/cli.js bundle --dev'",
+    "build": "node node_modules/@fnando/streamdeck/bin/cli.js release --version $npm_package_version",
+    "pack": "npx streamdeck pack build/com.matextrem.tickertap.sdPlugin -o release --force",
+    "release": "npm run build && npm run pack",
     "postinstall": "patch-package"
   },
   "devDependencies": {
+    "@elgato/cli": "^1.7.0",
     "@types/node": "^24.1.0",
     "image-size": "^1.0.0",
     "patch-package": "^8.0.0"
