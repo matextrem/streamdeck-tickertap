@@ -128,3 +128,7 @@ Prefix your message with one of the following:
 
 [Fixed] Resolve issues arising from CORS restrictions on image loading (OpenDeck)
 [Fixed] Show/Hide icon button for crypto assets not working
+
+### v1.11.3 - 2026-02-03
+
+[Added] DRM protection
