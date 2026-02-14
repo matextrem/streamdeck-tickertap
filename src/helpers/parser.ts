@@ -59,20 +59,24 @@ export const parsePriceFromString = (priceStr: string): string => {
     .replace(/[€$£¥]/g, '')
     .trim();
 
-  // Check if it's EUR format (comma as decimal separator)
-  // In EUR format, the comma is the decimal separator and comes after the period
-  if (
-    cleaned.includes(',') &&
-    cleaned.includes('.') &&
-    cleaned.indexOf(',') > cleaned.indexOf('.')
-  ) {
-    // EUR format: 115.663,89 -> 115663.89
-    // Remove dots (thousand separators) and replace comma with dot
-    cleaned = cleaned.replace(/\./g, '').replace(',', '.');
+  if (cleaned.includes(',') && cleaned.includes('.')) {
+    if (cleaned.indexOf(',') > cleaned.indexOf('.')) {
+      // EUR format with both separators: 115.663,89 -> 115663.89
+      cleaned = cleaned.replace(/\./g, '').replace(',', '.');
+    } else {
+      // USD format with both separators: 107,949.27 -> 107949.27
+      cleaned = cleaned.replace(/,/g, '');
+    }
   } else if (cleaned.includes(',')) {
-    // USD format: 115,663.89 -> 115663.89
-    // Remove commas (thousand separators)
-    cleaned = cleaned.replace(/,/g, '');
+    // Only comma, no period. Could be USD thousands (1,234) or EUR decimal (74,59)
+    // USD thousand separators always produce groups of exactly 3 digits
+    const isUsdThousandSeparator = /^\d{1,3}(,\d{3})+$/.test(cleaned);
+    if (isUsdThousandSeparator) {
+      cleaned = cleaned.replace(/,/g, '');
+    } else {
+      // EUR decimal
+      cleaned = cleaned.replace(',', '.');
+    }
   }
 
   return cleaned;
