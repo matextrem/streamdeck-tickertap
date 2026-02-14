@@ -133,6 +133,6 @@ Prefix your message with one of the following:
 
 [Added] DRM protection
 
-### v1.11.3 - 2026-02-14
+### v1.11.4 - 2026-02-14
 
 [Fixed] EUR conversion for Crypto assets
