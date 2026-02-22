@@ -136,3 +136,7 @@ Prefix your message with one of the following:
 ### v1.11.4 - 2026-02-14
 
 [Fixed] EUR conversion for Crypto assets
+
+### v1.12.0 - 2026-02-22
+
+[Added] Avg. price field when showing total

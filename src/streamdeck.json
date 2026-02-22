@@ -1,6 +1,6 @@
 {
   "id": "com.matextrem.tickertap",
-  "version": "1.11.4",
+  "version": "1.12.0",
   "name": "Tickertap",
   "description": "A Stream Deck plugin to visualize real-time asset values",
   "author": "Mati Dastugue",
