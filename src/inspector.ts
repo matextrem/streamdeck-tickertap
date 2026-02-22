@@ -20,6 +20,7 @@ class DefaultPropertyInspector extends Inspector {
     region: Regions.US,
     showTotal: false,
     totalAmount: 0,
+    avgPrice: 0,
     risingColor: ImgState.increasing,
     fallingColor: ImgState.decreasing,
     currency: Currency.USD,
@@ -37,6 +38,8 @@ class DefaultPropertyInspector extends Inspector {
   public showTotalRadio!: HTMLDivElement;
   public totalAmountInput!: HTMLInputElement;
   public totalAmountWrapperElement!: HTMLDivElement;
+  public avgPriceInput!: HTMLInputElement;
+  public avgPriceWrapperElement!: HTMLDivElement;
   public risingColorInput!: HTMLInputElement;
   public fallingColorInput!: HTMLInputElement;
   public showGradientRadio!: HTMLDivElement;
@@ -50,40 +53,46 @@ class DefaultPropertyInspector extends Inspector {
     this.showAsInput = document.querySelector('#show_as') as HTMLInputElement;
     this.typeInput = document.querySelector('#type') as HTMLInputElement;
     this.regionRadio = document.querySelector(
-      '#region_radio'
+      '#region_radio',
     ) as HTMLDivElement;
     this.currencyRadio = document.querySelector(
-      '#currency_radio'
+      '#currency_radio',
     ) as HTMLDivElement;
     this.showIconRadio = document.querySelector(
-      '#show_icon_radio'
+      '#show_icon_radio',
     ) as HTMLDivElement;
     this.frequencyInput = document.querySelector(
-      '#frequency'
+      '#frequency',
     ) as HTMLInputElement;
     this.customFrequencyInput = document.querySelector(
-      '#custom_frequency'
+      '#custom_frequency',
     ) as HTMLInputElement;
     this.customFrequencyWrapperElement = document.querySelector(
-      '#custom_frequency_wrapper'
+      '#custom_frequency_wrapper',
     ) as HTMLDivElement;
     this.showTotalRadio = document.querySelector(
-      '#total_radio'
+      '#total_radio',
     ) as HTMLInputElement;
     this.totalAmountInput = document.querySelector(
-      '#total_amount'
+      '#total_amount',
     ) as HTMLInputElement;
     this.totalAmountWrapperElement = document.querySelector(
-      '#total_amount_wrapper'
+      '#total_amount_wrapper',
+    ) as HTMLDivElement;
+    this.avgPriceInput = document.querySelector(
+      '#avg_price',
+    ) as HTMLInputElement;
+    this.avgPriceWrapperElement = document.querySelector(
+      '#avg_price_wrapper',
     ) as HTMLDivElement;
     this.risingColorInput = document.querySelector(
-      '#rising-color'
+      '#rising-color',
     ) as HTMLInputElement;
     this.fallingColorInput = document.querySelector(
-      '#falling-color'
+      '#falling-color',
     ) as HTMLInputElement;
     this.showGradientRadio = document.querySelector(
-      '#gradient_radio'
+      '#gradient_radio',
     ) as HTMLDivElement;
     this.saveBtn = document.querySelector('#save') as HTMLButtonElement;
 
@@ -92,7 +101,7 @@ class DefaultPropertyInspector extends Inspector {
     // Function to get the value of the checked radio button within the specified div
     this.getCheckedValue = function (ele: HTMLDivElement) {
       const checkedRadio = ele.querySelector(
-        'input[type="radio"]:checked'
+        'input[type="radio"]:checked',
       ) as HTMLInputElement;
       return checkedRadio ? checkedRadio.value : null;
     };
@@ -100,7 +109,7 @@ class DefaultPropertyInspector extends Inspector {
     // Function to set the value of the checked radio button within the specified div
     this.setCheckedValue = (ele: HTMLDivElement, value: string) => {
       const radio = ele.querySelector(
-        `input[value="${value}"]`
+        `input[value="${value}"]`,
       ) as HTMLInputElement;
       if (radio) {
         radio.checked = true;
@@ -143,6 +152,10 @@ class DefaultPropertyInspector extends Inspector {
           this.totalAmountInput.value === '' || !showTotalVal
             ? 0
             : parseFloat(this.totalAmountInput.value),
+        avgPrice:
+          this.avgPriceInput.value === '' || !showTotalVal
+            ? 0
+            : parseFloat(this.avgPriceInput.value),
         risingColor: this.risingColorInput.value,
         fallingColor: this.fallingColorInput.value,
         currency: this.getCheckedValue(this.currencyRadio) as Currency,
@@ -204,14 +217,17 @@ class DefaultPropertyInspector extends Inspector {
           let element = e.target as HTMLInputElement;
           if (element.checked && element.value === 'true') {
             this.totalAmountWrapperElement.style.display = 'flex';
+            this.avgPriceWrapperElement.style.display = 'flex';
           } else if (element.checked) {
             this.totalAmountWrapperElement.style.display = 'none';
+            this.avgPriceWrapperElement.style.display = 'none';
           }
         });
       });
 
     if (this.settings.showTotal) {
       this.totalAmountWrapperElement.style.display = 'flex';
+      this.avgPriceWrapperElement.style.display = 'flex';
     }
   }
 
@@ -232,7 +248,7 @@ class DefaultPropertyInspector extends Inspector {
 
     // Get predefined frequency values from the select options (excluding custom)
     const predefinedFrequencies = Array.from(
-      this.frequencyInput.querySelectorAll('option')
+      this.frequencyInput.querySelectorAll('option'),
     )
       .map((option) => option.value)
       .filter((value) => value !== CUSTOM);
@@ -249,16 +265,19 @@ class DefaultPropertyInspector extends Inspector {
 
     this.setCheckedValue(
       this.showTotalRadio,
-      this.settings.showTotal.toString()
+      this.settings.showTotal.toString(),
     );
     this.totalAmountInput.value = this.settings.totalAmount.toString();
+    this.avgPriceInput.value = this.settings.avgPrice
+      ? this.settings.avgPrice.toString()
+      : '';
     this.risingColorInput.value =
       this.settings.risingColor ?? ImgState.increasing;
     this.fallingColorInput.value =
       this.settings.fallingColor ?? ImgState.decreasing;
     this.setCheckedValue(
       this.showGradientRadio,
-      this.settings.showGradient.toString()
+      this.settings.showGradient.toString(),
     );
     this.typeInput.value = this.settings.type;
     // Show or hide region radio group based on current type setting
@@ -276,8 +295,10 @@ class DefaultPropertyInspector extends Inspector {
     }
     if (this.settings.showTotal) {
       this.totalAmountWrapperElement.style.display = 'flex';
+      this.avgPriceWrapperElement.style.display = 'flex';
     } else {
       this.totalAmountWrapperElement.style.display = 'none';
+      this.avgPriceWrapperElement.style.display = 'none';
     }
   }
 }

@@ -50,7 +50,7 @@ class Quote extends Action {
         this.settings[ctx]?.type,
         this.settings[ctx]?.region,
         this.settings[ctx]?.ticker,
-        this.settings[ctx]?.currency
+        this.settings[ctx]?.currency,
       );
       this.openURL(uri);
     }
@@ -77,7 +77,7 @@ class Quote extends Action {
           this.settings[ctx]?.type,
           this.settings[ctx]?.region,
           this.settings[ctx]?.showIcon,
-          this.settings[ctx]?.currency
+          this.settings[ctx]?.currency,
         );
         const colors = {
           increasing:
@@ -90,6 +90,9 @@ class Quote extends Action {
         const totalValue = this.settings[ctx]?.showTotal
           ? this.settings[ctx]?.totalAmount * quote.price
           : 0;
+        const avgPrice = this.settings[ctx]?.showTotal
+          ? this.settings[ctx]?.avgPrice || 0
+          : 0;
         const maxDecimals = MAX_DECIMALS_BY_TYPE[this.settings[ctx]?.type] || 2;
         const image = await drawQuoteImage(
           this.settings[ctx]?.showAs || quote.ticker,
@@ -99,7 +102,8 @@ class Quote extends Action {
           totalValue,
           maxDecimals,
           colors,
-          this.settings[ctx]?.showGradient ?? true
+          this.settings[ctx]?.showGradient ?? true,
+          avgPrice,
         );
         this.setImage(image, { target: Target.both, context: ctx });
       } catch (e) {
@@ -111,7 +115,7 @@ class Quote extends Action {
     if (this.settings[ctx]?.frequency !== ON_PUSH) {
       this.tid[ctx] = setInterval(
         update,
-        1000 * Number(this.settings[ctx]?.frequency)
+        1000 * Number(this.settings[ctx]?.frequency),
       ) as unknown as number;
     }
     update();

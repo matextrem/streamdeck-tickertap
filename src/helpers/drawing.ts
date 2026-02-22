@@ -15,7 +15,8 @@ export async function drawQuoteImage(
   totalValue: number,
   decimals: number,
   colors: { increasing: ImgState; decreasing: ImgState },
-  showGradient: boolean = true
+  showGradient: boolean = true,
+  avgPrice: number = 0,
 ): Promise<string> {
   const canvasWidth = 144;
   const canvasHeight = 144;
@@ -50,7 +51,7 @@ export async function drawQuoteImage(
       0,
       canvasHeight,
       0,
-      canvasHeight - gradientHeight
+      canvasHeight - gradientHeight,
     );
 
     const subtleStateColor = state + '70';
@@ -67,7 +68,7 @@ export async function drawQuoteImage(
 
   const arrowImage = await loadImage(
     `data:image/svg+xml;utf8,${encodedSvgContent}`,
-    { crossOrigin: "anonymous" }
+    { crossOrigin: 'anonymous' },
   );
 
   // Draw the stock ticker
@@ -85,7 +86,7 @@ export async function drawQuoteImage(
 
   if (icon) {
     // Load the icon image
-    const iconImage = await loadImage(icon, { crossOrigin: "anonymous" });
+    const iconImage = await loadImage(icon, { crossOrigin: 'anonymous' });
     const iconWidth = 24; // Set the width of the icon (adjust as needed)
     const iconHeight = 24; // Set the height of the icon (adjust as needed)
     const iconX = tickerX + tickerTextWidth + 10; // X position to draw the icon
@@ -103,12 +104,16 @@ export async function drawQuoteImage(
     if (formattedPrice.includes('.')) {
       const [wholePart, decimalPart] = formattedPrice.split('.');
       formattedPrice = `${addThousandSeperator(
-        parseInt(wholePart)
+        parseInt(wholePart),
       )}.${decimalPart}`;
     } else {
       formattedPrice = addThousandSeperator(priceNumber);
     }
   }
+
+  // When P&L is shown, shift elements up slightly to make room for a 5th line
+  const hasPnl = totalValue > 0 && avgPrice > 0;
+  const pnlShift = hasPnl ? -3 : 0;
 
   let pSize = formattedPrice.length > priceLength ? 16 : 20;
   pSize = formattedPrice.length > priceLength + 2 ? 14 : pSize;
@@ -116,24 +121,45 @@ export async function drawQuoteImage(
   ctx.font = `500 ${pSize}pt "Verdana"`;
   const priceText = `${formattedPrice}`;
   const textWidth = ctx.measureText(priceText).width;
-  ctx.fillText(priceText, 10, 98 + offsetY);
+  ctx.fillText(priceText, 10, 98 + offsetY + pnlShift);
 
   // Draw the arrow icon next to the price
-  const arrowSize = formattedPrice.length > priceLength ? 15 : 18; // Set arrow size
-  const aPosition = formattedPrice.length > priceLength ? 82 : 80; // Adjust arrow position
-  const arrowX = 10 + textWidth + 5; // X position to draw the arrow (right of the price text)
-  ctx.drawImage(arrowImage, arrowX, aPosition + offsetY, arrowSize, arrowSize); // Adjust positioning as needed
+  const arrowSize = formattedPrice.length > priceLength ? 15 : 18;
+  const aPosition = formattedPrice.length > priceLength ? 82 : 80;
+  const arrowX = 10 + textWidth + 5;
+  ctx.drawImage(
+    arrowImage,
+    arrowX,
+    aPosition + offsetY + pnlShift,
+    arrowSize,
+    arrowSize,
+  );
 
   offsetY = totalValue ? offsetY - 3 : offsetY;
 
   // Set the fill color for percentage change
   ctx.fillStyle = state;
-  ctx.font = 'bold 17pt "Verdana"';
-  ctx.fillText(`(${percentage.toFixed(2)}%)`, 10, 128 + offsetY);
+  const dayChangeFontSize = hasPnl ? 14 : 17;
+  ctx.font = `bold ${dayChangeFontSize}pt "Verdana"`;
+  ctx.fillText(`(${percentage.toFixed(2)}%)`, 10, hasPnl ? 93 : 128 + offsetY);
 
   if (totalValue) {
+    const totalText = addThousandSeperator(Math.round(totalValue));
+    const totalFontSize = hasPnl ? 14 : 17;
+    ctx.font = `bold ${totalFontSize}pt "Verdana"`;
     ctx.fillStyle = 'white';
-    ctx.fillText(addThousandSeperator(Math.round(totalValue)), 10, 128);
+    ctx.fillText(totalText, 10, hasPnl ? 118 : 128);
+
+    if (hasPnl) {
+      const referencePrice = avgPrice > 0 ? avgPrice : price;
+      const pnlPercentage = ((price - referencePrice) / referencePrice) * 100;
+      const pnlColor =
+        pnlPercentage >= 0 ? colors.increasing : colors.decreasing;
+      const pnlSign = pnlPercentage >= 0 ? '+' : '';
+      ctx.fillStyle = pnlColor;
+      ctx.font = 'bold 12pt "Verdana"';
+      ctx.fillText(`(${pnlSign}${pnlPercentage.toFixed(2)}%)`, 10, 137);
+    }
   }
 
   return canvas.toDataURL();

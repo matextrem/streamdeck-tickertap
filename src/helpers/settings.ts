@@ -31,6 +31,7 @@ export type Settings = {
   region: Regions;
   showTotal: boolean;
   totalAmount: number;
+  avgPrice: number;
   risingColor: string;
   fallingColor: string;
   currency: Currency;
@@ -67,7 +68,7 @@ export interface SelectorConfig {
   extractor: (element: CheerioElement, $: cheerio.CheerioAPI) => string;
   fallbackExtractor?: (
     element: CheerioElement,
-    $: cheerio.CheerioAPI
+    $: cheerio.CheerioAPI,
   ) => string;
 }
 
