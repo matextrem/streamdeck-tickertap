@@ -23,6 +23,6 @@
     "@elgato/cli": "^1.7.0",
     "@types/node": "^24.1.0",
     "image-size": "^1.0.0",
-    "patch-package": "^8.0.0"
+    "patch-package": "^8.0.1"
   }
 }
