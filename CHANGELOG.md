@@ -140,3 +140,7 @@ Prefix your message with one of the following:
 ### v1.12.0 - 2026-02-22
 
 [Added] Avg. price field when showing total
+
+### v1.12.1 - 2026-04-04
+
+[Fixed] Crypto .gif icons not loading.
