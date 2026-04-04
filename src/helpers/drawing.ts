@@ -1,4 +1,11 @@
-import { createCanvas, loadImage, CanvasRenderingContext2D } from 'canvas';
+import {
+  createCanvas,
+  loadImage,
+  CanvasRenderingContext2D,
+  Image,
+  Canvas,
+} from 'canvas';
+import { GifReader } from 'omggif';
 import {
   arrowUp,
   arrowDown,
@@ -6,6 +13,90 @@ import {
   changeSvgState,
 } from '../images/actions/images';
 import { formatPrice, addThousandSeperator } from './parser';
+
+/**
+ * For GIF icons, finds the stable "settled" frame by detecting the longest
+ * plateau of low frame-to-frame pixel change, then renders it onto a canvas.
+ * Falls back to loadImage for non-GIF URLs.
+ */
+async function loadIconImage(icon: string): Promise<Image | Canvas> {
+  if (!icon.toLowerCase().includes('.gif')) {
+    return loadImage(icon, { crossOrigin: 'anonymous' });
+  }
+
+  try {
+    const response = await fetch(icon);
+    if (!response.ok)
+      throw new Error(`Failed to fetch GIF: ${response.status}`);
+
+    const buf = new Uint8Array(await response.arrayBuffer());
+    const gr = new GifReader(buf);
+    const frameCount = gr.numFrames();
+    const { width, height } = gr.frameInfo(0);
+    const pixelCount = width * height * 4;
+
+    // Decode all frames and compute frame-to-frame diffs
+    const allFramePixels: Uint8ClampedArray[] = [];
+    const diffs: number[] = [];
+    let prevPixels: Uint8ClampedArray | null = null;
+
+    for (let i = 0; i < frameCount; i++) {
+      const pixels = new Uint8ClampedArray(pixelCount);
+      gr.decodeAndBlitFrameRGBA(i, pixels);
+      allFramePixels.push(pixels);
+
+      if (prevPixels) {
+        let diff = 0;
+        for (let j = 0; j < pixelCount; j++)
+          diff += Math.abs(pixels[j] - prevPixels[j]);
+        diffs.push(diff);
+      } else {
+        diffs.push(Infinity);
+      }
+      prevPixels = pixels;
+    }
+
+    // Find the longest run of low-diff frames (the stable plateau)
+    const sortedFiniteDiffs = diffs.filter(isFinite).sort((a, b) => a - b);
+    const medianDiff =
+      sortedFiniteDiffs[Math.floor(sortedFiniteDiffs.length / 2)];
+    const threshold = medianDiff * 0.75;
+
+    let bestRunStart = 0,
+      bestRunLen = 0,
+      curStart = 0,
+      curLen = 0;
+    for (let i = 0; i < diffs.length; i++) {
+      if (diffs[i] <= threshold) {
+        if (curLen === 0) curStart = i;
+        curLen++;
+        if (curLen > bestRunLen) {
+          bestRunLen = curLen;
+          bestRunStart = curStart;
+        }
+      } else {
+        curLen = 0;
+      }
+    }
+
+    // Pick the middle of the plateau; fall back to last frame if no plateau found
+    const targetFrame =
+      bestRunLen > 0
+        ? bestRunStart + Math.floor(bestRunLen / 2)
+        : frameCount - 1;
+
+    const canvas = createCanvas(width, height);
+    const ctx = canvas.getContext('2d');
+    const imageData = ctx.createImageData(width, height);
+    imageData.data.set(allFramePixels[targetFrame]);
+    ctx.putImageData(imageData, 0, 0);
+
+    return canvas;
+  } catch (e) {
+    console.error('GIF decode failed, falling back to loadImage:', e);
+    return loadImage(icon, { crossOrigin: 'anonymous' });
+  }
+}
 
 export async function drawQuoteImage(
   ticker: string,
@@ -85,8 +176,8 @@ export async function drawQuoteImage(
   ctx.fillText(ticker.toUpperCase(), tickerX, tickerY);
 
   if (icon) {
-    // Load the icon image
-    const iconImage = await loadImage(icon, { crossOrigin: 'anonymous' });
+    // Load the icon image (handles GIF last-frame extraction)
+    const iconImage = await loadIconImage(icon);
     const iconWidth = 24; // Set the width of the icon (adjust as needed)
     const iconHeight = 24; // Set the height of the icon (adjust as needed)
     const iconX = tickerX + tickerTextWidth + 10; // X position to draw the icon
