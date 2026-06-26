@@ -7,7 +7,7 @@ A Stream Deck plugin to visualize real-time asset values
 [![LICENSE](https://img.shields.io/github/license/matextrem/streamdeck-tickertap)](<[https://github.com/matextrem/streamdeck-tickertap/releases/latest](https://github.com/matextrem/streamdeck-tickertap/blob/main/LICENSE.md)>)
 [![Buy Me A Coffee](https://img.shields.io/badge/-Buy_me_a%C2%A0coffee-gray?logo=buy-me-a-coffee)](https://www.buymeacoffee.com/matextrem)
 
-<img src="src/images/previews/gallery previews_01.png" width="1024" />
+<img src="previews/gallery previews_01.png" width="1024" />
 
 ## Installation
 
@@ -30,8 +30,8 @@ Click on the button below to download the latest version of the plugin directly:
 
 ## Features
 
-<img src="src/images/previews/gallery previews_03.png"  width="768"/>
-<img src="src/images/previews/gallery previews_02.png" width="768" />
+<img src="previews/gallery previews_03.png"  width="768"/>
+<img src="previews/gallery previews_02.png" width="768" />
 
 - Visualize any real-time asset values.
 - Quick access to the asset prices you follow.
