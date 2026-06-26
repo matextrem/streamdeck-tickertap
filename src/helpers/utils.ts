@@ -116,6 +116,14 @@ export async function fetchStockData(
     throw new Error('Failed to fetch data');
   }
   const body = await response.text();
+
+  // CoinMarketCap no longer server-renders the price into the DOM (the old
+  // selectors return nothing -> NaN). Parse the server-rendered __NEXT_DATA__
+  // JSON blob instead, which doesn't require JavaScript.
+  if (uri.includes('coinmarketcap.com')) {
+    return await extractCoinMarketCapData(body, showIcon, currency);
+  }
+
   const $ = cheerio.load(body);
   const baseProvider = PROVIDER[region];
   const endpoint = API_PROVIDERS[baseProvider].endpoints[service];
@@ -128,6 +136,85 @@ export async function fetchStockData(
     showIcon ? iconUrl : '',
     endpoint.useSiteLogo,
   );
+}
+
+/** Extract and parse the Next.js __NEXT_DATA__ JSON blob from an HTML page. */
+function extractNextData(body: string): any | null {
+  const match = body.match(
+    /<script id="__NEXT_DATA__"[^>]*>([\s\S]*?)<\/script>/,
+  );
+  if (!match) return null;
+  try {
+    return JSON.parse(match[1]);
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Fetch the EUR/USD rate (USD per 1 EUR) using the existing forex pipeline,
+ * so we can convert CoinMarketCap's USD-only JSON price to EUR.
+ */
+async function getEurUsdRate(): Promise<number> {
+  try {
+    const fx = await fetchStockData(
+      QuoteTypes.FOREX,
+      Regions.US,
+      'EURUSD',
+      false,
+      Currency.USD,
+    );
+    return Number.isFinite(fx.price) && fx.price > 0 ? fx.price : 0;
+  } catch {
+    return 0;
+  }
+}
+
+/**
+ * Parse CoinMarketCap quote data from the page's __NEXT_DATA__ JSON.
+ * The embedded `statistics.price` is always USD, so convert to EUR when needed.
+ */
+export async function extractCoinMarketCapData(
+  body: string,
+  showIcon = true,
+  currency: Currency = Currency.USD,
+) {
+  const data = extractNextData(body);
+  const detail = data?.props?.pageProps?.detailRes?.detail;
+
+  if (!detail?.statistics || typeof detail.statistics.price === 'undefined') {
+    throw new Error('Failed to parse CoinMarketCap data');
+  }
+
+  let price = Number(detail.statistics.price);
+  const percentageChange = Number(detail.statistics.priceChangePercentage24h);
+
+  // The JSON price is USD-only (even on /de); convert to EUR via forex.
+  if (currency === Currency.EUR) {
+    const rate = await getEurUsdRate();
+    if (rate > 0) {
+      price = price / rate;
+    }
+  }
+
+  // Reconstruct the absolute change from the 24h percentage.
+  const prevClose =
+    percentageChange !== -100 ? price / (1 + percentageChange / 100) : price;
+  const change = price - prevClose;
+
+  const icon =
+    showIcon && detail.id
+      ? `https://s2.coinmarketcap.com/static/img/coins/64x64/${detail.id}.png`
+      : '';
+
+  return {
+    name: detail.name as string,
+    ticker: detail.symbol as string,
+    icon,
+    price,
+    change,
+    percentageChange,
+  };
 }
 
 export async function extractStockData(
