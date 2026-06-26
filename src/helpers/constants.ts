@@ -76,34 +76,27 @@ export const API_PROVIDERS: ApiProvidersConfig = {
         extractor: (_element: CheerioElement) => '',
       },
       price: {
-        selector: '.quote-price_wrapper_price',
+        selector: '.quote-price_price',
         extractor: (element: CheerioElement) => {
-          const priceText = element.text().trim();
+          const priceText = element.first().text().trim();
           return parsePriceFromString(priceText);
         },
       },
       change: {
-        selector: '.quote-price_wrapper_change .table-row',
-        extractor: (element: CheerioElement, $: cheerio.CheerioAPI) => {
-          let value = '';
-          element.find('.sr-only').each((i: number, el: any) => {
-            if ($(el).text().includes('Dollar')) {
-              value = $(el).parent().text().replace($(el).text(), '').trim();
-            }
-          });
-          return value;
+        selector: '.quote-price_change',
+        extractor: (element: CheerioElement) => {
+          // Text looks like: "Dollar change-17.93 Percentage change(-6.12%)"
+          const text = element.first().text();
+          const match = text.match(/Dollar change\s*(-?[\d.,]+)/i);
+          return match ? match[1] : '';
         },
       },
       percentageChange: {
-        selector: '.quote-price_wrapper_change .table-row',
-        extractor: (element: CheerioElement, $: cheerio.CheerioAPI) => {
-          let value = '';
-          element.find('.sr-only').each((i: number, el: any) => {
-            if ($(el).text().includes('Percentage')) {
-              value = $(el).parent().text().replace($(el).text(), '').trim();
-            }
-          });
-          return value;
+        selector: '.quote-price_change',
+        extractor: (element: CheerioElement) => {
+          const text = element.first().text();
+          const match = text.match(/Percentage change\s*\(?(-?[\d.,]+)/i);
+          return match ? match[1] : '';
         },
       },
     },
