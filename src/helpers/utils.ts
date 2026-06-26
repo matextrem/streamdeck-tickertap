@@ -120,7 +120,17 @@ export async function fetchStockData(
   // CoinMarketCap no longer server-renders the price into the DOM (the old
   // selectors return nothing -> NaN). Parse the server-rendered __NEXT_DATA__
   // JSON blob instead, which doesn't require JavaScript.
-  if (uri.includes('coinmarketcap.com')) {
+  let isCoinMarketCapHost = false;
+  try {
+    const hostname = new URL(uri).hostname.toLowerCase();
+    isCoinMarketCapHost =
+      hostname === 'coinmarketcap.com' ||
+      hostname.endsWith('.coinmarketcap.com');
+  } catch {
+    isCoinMarketCapHost = false;
+  }
+
+  if (isCoinMarketCapHost) {
     return await extractCoinMarketCapData(body, showIcon, currency);
   }
 
