@@ -11,6 +11,10 @@ Prefix your message with one of the following:
 - [Security] in case of vulnerabilities.
 -->
 
+## v1.12.2 - 2026-06-26
+
+[Fixed] Crypto prices showing NaN — CoinMarketCap stopped server-rendering values into the page DOM. Prices and 24h changes are now read from the page's embedded JSON data (no JavaScript required), which is also more resilient to layout changes. EUR crypto prices are converted from USD using the live EUR/USD rate.
+
 ## v1.11.3 - 2026-02-03
 
 [Fixed] Add missing UUID field to manifest for Elgato Maker Console compatibility
