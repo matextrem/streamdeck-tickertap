@@ -33,3 +33,42 @@
 .w9 {
     width: 9rem;
 }
+
+.ticker-suggestions {
+    display: flex;
+    flex-direction: column;
+    max-height: 180px;
+    overflow-y: auto;
+    border: 1px solid #3d3d3d;
+    border-radius: 4px;
+    background: #2d2d2d;
+}
+
+.ticker-suggestion {
+    display: flex;
+    flex-direction: column;
+    padding: 6px 8px;
+    cursor: pointer;
+    border-bottom: 1px solid #3d3d3d;
+}
+
+.ticker-suggestion:last-child {
+    border-bottom: none;
+}
+
+.ticker-suggestion:hover {
+    background: #4c8bf5;
+}
+
+.ticker-suggestion .sym {
+    font-weight: 600;
+    font-size: 11px;
+}
+
+.ticker-suggestion .desc {
+    font-size: 10px;
+    opacity: 0.75;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

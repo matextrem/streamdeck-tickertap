@@ -8,7 +8,15 @@ import {
   Settings,
   Currency,
 } from './helpers/settings';
+import { searchSymbols, TvSearchResult } from './helpers/tradingview';
 import { ImgState } from './images/actions/images';
+
+/** Whether the ticker field should offer TradingView autocomplete. */
+function usesTradingView(type: QuoteTypes, region: Regions): boolean {
+  if (type === QuoteTypes.CRYPTO) return false; // CoinMarketCap
+  if (type === QuoteTypes.STOCK && region === Regions.US) return false; // Finviz
+  return true; // TradingView
+}
 
 class DefaultPropertyInspector extends Inspector {
   public settings: Settings = {
@@ -28,6 +36,10 @@ class DefaultPropertyInspector extends Inspector {
   };
   public tickerInput!: HTMLInputElement;
   public showAsInput!: HTMLInputElement;
+  public tickerSuggestions!: HTMLDivElement;
+  public tickerSuggestionsWrapper!: HTMLDivElement;
+  private searchDebounce?: ReturnType<typeof setTimeout>;
+  private searchSeq = 0;
   public typeInput!: HTMLInputElement;
   public regionRadio!: HTMLDivElement;
   public currencyRadio!: HTMLDivElement;
@@ -51,6 +63,12 @@ class DefaultPropertyInspector extends Inspector {
     // Set up your HTML event handlers here
     this.tickerInput = document.querySelector('#ticker') as HTMLInputElement;
     this.showAsInput = document.querySelector('#show_as') as HTMLInputElement;
+    this.tickerSuggestions = document.querySelector(
+      '#ticker_suggestions',
+    ) as HTMLDivElement;
+    this.tickerSuggestionsWrapper = document.querySelector(
+      '#ticker_suggestions_wrapper',
+    ) as HTMLDivElement;
     this.typeInput = document.querySelector('#type') as HTMLInputElement;
     this.regionRadio = document.querySelector(
       '#region_radio',
@@ -117,9 +135,16 @@ class DefaultPropertyInspector extends Inspector {
     };
 
     this.tickerInput.oninput = () => {
-      //Update the showAs input with the ticker value
+      // Update the showAs input with the ticker value
       this.showAsInput.value = this.tickerInput.value;
+      this.onTickerInput();
     };
+
+    // Hide the suggestions dropdown when focus leaves the ticker field.
+    this.tickerInput.addEventListener('blur', () => {
+      // Delay so a click on a suggestion registers first.
+      setTimeout(() => this.hideSuggestions(), 200);
+    });
 
     this.saveBtn.onclick = () => {
       if (!this.tickerInput.value) {
@@ -173,6 +198,7 @@ class DefaultPropertyInspector extends Inspector {
 
     // Show or hide region and currency radio groups based on current type setting
     this.typeInput.addEventListener('change', () => {
+      this.hideSuggestions();
       if (this.typeInput.value === QuoteTypes.STOCK) {
         this.regionRadio.style.display = 'flex';
       } else {
@@ -234,6 +260,83 @@ class DefaultPropertyInspector extends Inspector {
   handleDidReceiveSettings({ settings }: DidReceiveSettingsEvent<Settings>) {
     this.settings = settings;
     this.fillInForm();
+  }
+
+  private currentRegion(): Regions {
+    return (this.getCheckedValue(this.regionRadio) as Regions) || Regions.US;
+  }
+
+  /** Debounced TradingView search as the user types (TV types only). */
+  private onTickerInput(): void {
+    const type = this.typeInput.value as QuoteTypes;
+    const region = this.currentRegion();
+    const query = this.tickerInput.value.trim();
+
+    if (!usesTradingView(type, region) || query.length < 2) {
+      this.hideSuggestions();
+      return;
+    }
+    if (this.searchDebounce) clearTimeout(this.searchDebounce);
+    this.searchDebounce = setTimeout(
+      () => this.runSearch(query, region, type),
+      300,
+    );
+  }
+
+  private async runSearch(
+    query: string,
+    region: Regions,
+    type: QuoteTypes,
+  ): Promise<void> {
+    const seq = ++this.searchSeq;
+    try {
+      const results = await searchSymbols(query, region, type);
+      if (seq !== this.searchSeq) return; // ignore stale responses
+      this.renderSuggestions(results.slice(0, 8));
+    } catch {
+      this.hideSuggestions();
+    }
+  }
+
+  private renderSuggestions(results: TvSearchResult[]): void {
+    this.tickerSuggestions.innerHTML = '';
+    if (!results.length) {
+      this.hideSuggestions();
+      return;
+    }
+    results.forEach((result) => {
+      const item = document.createElement('div');
+      item.className = 'ticker-suggestion';
+
+      const sym = document.createElement('span');
+      sym.className = 'sym';
+      sym.textContent = result.symbol;
+
+      const desc = document.createElement('span');
+      desc.className = 'desc';
+      desc.textContent = result.description || result.type;
+
+      item.appendChild(sym);
+      item.appendChild(desc);
+      // mousedown fires before the input's blur, so the pick isn't lost.
+      item.addEventListener('mousedown', (event) => {
+        event.preventDefault();
+        this.selectSuggestion(result);
+      });
+      this.tickerSuggestions.appendChild(item);
+    });
+    this.tickerSuggestionsWrapper.style.display = 'flex';
+  }
+
+  private selectSuggestion(result: TvSearchResult): void {
+    this.tickerInput.value = result.symbol;
+    this.showAsInput.value = result.shortSymbol;
+    this.hideSuggestions();
+  }
+
+  private hideSuggestions(): void {
+    this.tickerSuggestionsWrapper.style.display = 'none';
+    this.tickerSuggestions.innerHTML = '';
   }
 
   fillInForm() {

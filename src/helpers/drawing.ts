@@ -130,9 +130,15 @@ export async function drawQuoteImage(
     offsetY = 0;
   }
 
-  // Determine color and SVG content based on price change
+  // Determine color and arrow from the change. NaN means the change is
+  // unavailable (e.g. a mutual-fund NAV) — render neutrally, no arrow.
+  const knownChange = Number.isFinite(percentage);
+  const state = !knownChange
+    ? ('#B0B0B0' as ImgState)
+    : percentage >= 0
+      ? colors.increasing
+      : colors.decreasing;
   let svgContent = percentage >= 0 ? arrowUp : arrowDown;
-  const state = percentage >= 0 ? colors.increasing : colors.decreasing;
   svgContent = changeSvgState(svgContent, state);
 
   // Create gradient background from bottom to 70% of canvas height (if enabled)
@@ -157,10 +163,11 @@ export async function drawQuoteImage(
   // Encode the SVG content
   const encodedSvgContent = encodeURIComponent(svgContent);
 
-  const arrowImage = await loadImage(
-    `data:image/svg+xml;utf8,${encodedSvgContent}`,
-    { crossOrigin: 'anonymous' },
-  );
+  const arrowImage = knownChange
+    ? await loadImage(`data:image/svg+xml;utf8,${encodedSvgContent}`, {
+        crossOrigin: 'anonymous',
+      })
+    : null;
 
   // Draw the stock ticker
   ctx.fillStyle = 'white';
@@ -214,25 +221,28 @@ export async function drawQuoteImage(
   const textWidth = ctx.measureText(priceText).width;
   ctx.fillText(priceText, 10, 98 + offsetY + pnlShift);
 
-  // Draw the arrow icon next to the price
+  // Draw the arrow icon next to the price (only when the change is known)
   const arrowSize = formattedPrice.length > priceLength ? 15 : 18;
   const aPosition = formattedPrice.length > priceLength ? 82 : 80;
   const arrowX = 10 + textWidth + 5;
-  ctx.drawImage(
-    arrowImage,
-    arrowX,
-    aPosition + offsetY + pnlShift,
-    arrowSize,
-    arrowSize,
-  );
+  if (arrowImage) {
+    ctx.drawImage(
+      arrowImage,
+      arrowX,
+      aPosition + offsetY + pnlShift,
+      arrowSize,
+      arrowSize,
+    );
+  }
 
   offsetY = totalValue ? offsetY - 3 : offsetY;
 
-  // Set the fill color for percentage change
+  // Day change: the percentage when known, else a neutral dash.
   ctx.fillStyle = state;
   const dayChangeFontSize = hasPnl ? 14 : 17;
   ctx.font = `bold ${dayChangeFontSize}pt "Verdana"`;
-  ctx.fillText(`(${percentage.toFixed(2)}%)`, 10, hasPnl ? 93 : 128 + offsetY);
+  const changeText = knownChange ? `(${percentage.toFixed(2)}%)` : '—';
+  ctx.fillText(changeText, 10, hasPnl ? 93 : 128 + offsetY);
 
   if (totalValue) {
     const totalText = addThousandSeperator(Math.round(totalValue));

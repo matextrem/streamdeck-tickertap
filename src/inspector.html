@@ -10,7 +10,8 @@
         class="sdpi-item-value"
         id="ticker"
         required
-        placeholder="Enter a ticker"
+        placeholder="Search a ticker or symbol"
+        autocomplete="off"
         style="text-transform: uppercase"
       />
       <input
@@ -21,6 +22,14 @@
         style="text-transform: uppercase"
       />
     </div>
+  </div>
+  <div
+    class="sdpi-item"
+    id="ticker_suggestions_wrapper"
+    style="display: none"
+  >
+    <div class="sdpi-item-label"></div>
+    <div class="sdpi-item-value ticker-suggestions" id="ticker_suggestions"></div>
   </div>
   <div type="radio" class="sdpi-item radio-wrapper" id="show_icon_radio">
     <div class="sdpi-item-label">Icon</div>
@@ -255,31 +264,33 @@
   <details>
     <summary>How to use</summary>
     <p>
-      Ticker field supports Finvinz or Investing.com (for EU and ASIA markets)
-      website: e.g.
+      Start typing a company name, ticker or symbol in the Ticker field and pick
+      a match from the suggestions. Prices come from TradingView (except US
+      stocks, which use Finviz, and crypto, which uses CoinMarketCap).
     </p>
-    <p>&nbsp;&nbsp;Stocks</p>
+    <p>&nbsp;&nbsp;Stocks (US &mdash; Finviz)</p>
     <p>
       &nbsp;&nbsp;&nbsp;&nbsp;&bull;AAPL - Apple<br />
       &nbsp;&nbsp;&nbsp;&nbsp;&bull;GOOGL - Alphabet<br />
     </p>
-    <p>&nbsp;&nbsp;ETFs</p>
+    <p>&nbsp;&nbsp;Stocks (Canada / Europe / Asia &mdash; TradingView)</p>
     <p>
-      &nbsp;&nbsp;&nbsp;&nbsp;Ticker field supports Investing.com website.<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;You have to get the name from the url: e.g.
+      &nbsp;&nbsp;&nbsp;&nbsp;Search the company name and pick the match, or
+      type the TradingView symbol directly: e.g.
     </p>
     <p>
-      &nbsp;&nbsp;&nbsp;SPDR-S-P-500 - investing.com/etfs/spdr-s-p-500<br />
-      &nbsp;&nbsp;&nbsp;ISHARES-FTSE-100 -
-      investing.com/etfs/ishares-ftse-100<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&bull;BASF &rarr; XETR:BAS<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&bull;IHI Corp &rarr; TSE:7013<br />
+    </p>
+    <p>&nbsp;&nbsp;ETFs &amp; Funds</p>
+    <p>
+      &nbsp;&nbsp;&nbsp;&nbsp;Search the name and pick a match. Choose the
+      &ldquo;ETF&rdquo; type for exchange-traded funds and &ldquo;Funds&rdquo;
+      for mutual funds: e.g.
     </p>
     <p>
-      &nbsp;&nbsp;&nbsp;&nbsp;Note: If the Investing.com URL contains the
-      "?cid=x" part, ensure that you include it in the ticker field: e.g.
-    </p>
-    <p>
-      &nbsp;&nbsp;&nbsp;CS-ETF-(IE)-ON-S-P-500?CID=45844 -
-      investing.com/etfs/cs-etf-(ie)-on-s-p-500?cid=45844<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&bull;SPDR S&amp;P 500 &rarr; AMEX:SPY<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&bull;iShares S&amp;P 500 IT &rarr; XETR:QDVE<br />
     </p>
     <p>&nbsp;&nbsp;Forex</p>
     <p>
@@ -293,24 +304,18 @@
     </p>
     <p>&nbsp;&nbsp;Futures</p>
     <p>
-      &nbsp;&nbsp;&nbsp;&nbsp;&bull;ES - E-mini S&P 500<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&bull;ES - E-mini S&amp;P 500<br />
       &nbsp;&nbsp;&nbsp;&nbsp;&bull;NQ - E-mini Nasdaq 100<br />
-    </p>
-    <p>&nbsp;&nbsp;Funds</p>
-    <p>
-      &nbsp;&nbsp;&nbsp;&bull;VANGUARD-TOTAL-STOCK-MARKET-INS-PLS -
-      &nbsp;&nbsp;&nbsp;investing.com/funds/vanguard-total-stock-market-ins-pls<br /><br />
-      &nbsp;&nbsp;&nbsp;&bull;BAILLIE GIFFORD MANAGED FUND B ACC -
-      &nbsp;&nbsp;&nbsp;investing.com/funds/baillie-gifford-managed-b-acc<br /><br />
     </p>
     <p>&nbsp;&nbsp;Bonds</p>
     <p>
-      &nbsp;&nbsp;&nbsp;&bull;U.S.-10-YEAR-BOND-YIELD -
-      &nbsp;&nbsp;&nbsp;investing.com/funds/u.s.-10-year-bond-yield<br /><br />
-      &nbsp;&nbsp;&nbsp;&bull;U.S.-30-YEAR-BOND-YIELD -
-      &nbsp;&nbsp;&nbsp;u.s.-30-year-bond-yield<br /><br />
+      &nbsp;&nbsp;&nbsp;&nbsp;Search the full yield name and pick a match: e.g.
     </p>
-    <p>&nbsp;&nbsp;Crypto</p>
+    <p>
+      &nbsp;&nbsp;&nbsp;&nbsp;&bull;United States 10 Year &rarr; TVC:US10Y<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&bull;United States 30 Year &rarr; TVC:US30Y<br />
+    </p>
+    <p>&nbsp;&nbsp;Crypto (CoinMarketCap)</p>
     <p>
       &nbsp;&nbsp;&nbsp;&nbsp;Ticker field supports CoinMarketCap website.<br />
       &nbsp;&nbsp;&nbsp;&nbsp;You have to get the name from the url: e.g.
@@ -323,17 +328,14 @@
       &nbsp;&nbsp;&nbsp;&nbsp;&bull;THE-GRAPH -
       coinmarketcap.com/currencies/the-graph<br />
     </p>
-    <p>Region: Select the region where the stocks market is from</p>
+    <p>Region: Select the market region the stock is from</p>
     <p>
-      &nbsp;&nbsp;&bull;America - United States<br />
-      &nbsp;&nbsp;&bull;Canada - Canada<br />
-      &nbsp;&nbsp;&bull;Europe - European Union and UK<br />
-      &nbsp;&nbsp;&bull;Asia/Pacific - Asia and Pacific<br /><br />
-      &nbsp;&nbsp;&nbsp;Note: For EU and Asia markets, the ticker should be
-      &nbsp;&nbsp;&nbsp;extracted from Investing.com url&nbsp;&nbsp;e.g: <br />
-      <br />
-      &nbsp;&nbsp;&nbsp;BASF-AG - investing.com/equities/basf-ag<br />
-      &nbsp;&nbsp;&nbsp;IHI-CORP. - investing.com/equities/ihi-corp.<br />
+      &nbsp;&nbsp;&bull;America - United States (Finviz)<br />
+      &nbsp;&nbsp;&bull;Canada - Canada (TradingView)<br />
+      &nbsp;&nbsp;&bull;Europe - European Union and UK (TradingView)<br />
+      &nbsp;&nbsp;&bull;Asia/Pacific - Asia and Pacific (TradingView)<br /><br />
+      &nbsp;&nbsp;&nbsp;Tip: the region helps the search pick the right
+      &nbsp;&nbsp;&nbsp;exchange when several list the same ticker.<br />
     </p>
 
     <p>Show as: Add custom ticker - e.g GOLD</p>

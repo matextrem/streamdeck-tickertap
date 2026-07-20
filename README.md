@@ -35,7 +35,7 @@ Click on the button below to download the latest version of the plugin directly:
 
 - Visualize any real-time asset values.
 - Quick access to the asset prices you follow.
-- Support the following types from [Finvinz](https://finviz.com) (American market) and [Investing.com](https://www.investing.com/) (European and Asian markets):
+- Support the following types from [Finviz](https://finviz.com) (American stocks) and [TradingView](https://www.tradingview.com/) (global markets):
   - Stock
   - ETF
   - Forex
@@ -49,47 +49,48 @@ Click on the button below to download the latest version of the plugin directly:
 
 ## Usage
 
-- Ticker field supports Finvinz and Investing.com (for Europe and Asia markets) websites: e.g.
-  - Stocks
+Type a company name, ticker or symbol in the **Ticker** field and pick a match from the search suggestions. Prices come from **TradingView** for most instruments, from **Finviz** for US stocks, and from **CoinMarketCap** for crypto. You can also type a TradingView `EXCHANGE:SYMBOL` directly (e.g. `XETR:BAS`).
+
+- Stocks
+  - US stocks (region **America**) use Finviz: e.g.
     - **AAPL** - Apple
     - **GOOGL** - Alphabet
-  - ETF
-    - Ticker field supports Investing.com website. You have to get the name from the url: e.g.
-      - **SPDR-S-P-500** - investing.com/etfs/spdr-s-p-500
-      - **ISHARES-FTSE-100** - investing.com/etfs/ishares-ftse-100
-    - _Note:_ If the Investing.com URL contains the _?cid=x_ part, ensure that you include it in the ticker field: e.g.
-      - **CS-ETF-(IE)-ON-S-P-500?CID=45844** - investing.com/etfs/cs-etf-(ie)-on-s-p-500?cid=45844
-  - Forex
-    - **EURUSD** - EUR/USD
-    - **XAUUSD** - XAU/USD
-  - Commodities
-    - **GC** - Gold
-    - **SI** - Silver
-  - Futures
-    - **ES** - E-mini S&P 500
-    - **NQ** - E-mini Nasdaq 100
-  - Funds
-    - Ticker field supports Investing.com website. You have to get the name from the url: e.g.
-      - **VANGUARD-TOTAL-STOCK-MARKET-INS-PLS** - investing.com/funds/vanguard-total-stock-market-ins-pls
-      - **BAILLIE GIFFORD MANAGED FUND B ACC** - investing.com/funds/baillie-gifford-managed-b-acc
-  - Bonds
-    - Ticker field supports Investing.com website. You have to get the name from the url: e.g.
-      - **U.S.-10-YEAR-BOND-YIELD** - investing.com/funds/u.s.-10-year-bond-yield
-      - **U.S.-30-YEAR-BOND-YIELD** - investing.com/funds/u.s.-30-year-bond-yield
-  - Crypto
-    - Ticker field supports CoinMarketCap website. You have to get the name from the url: e.g.
-      - **BITCOIN** - coinmarketcap.com/currencies/bitcoin
-      - **ETHEREUM** - coinmarketcap.com/currencies/ethereum
-      - **THE-GRAPH** - coinmarketcap.com/currencies/the-graph
+  - Canada / Europe / Asia stocks use TradingView — search the company name and pick a match, or type the symbol: e.g.
+    - **BASF** → `XETR:BAS`
+    - **IHI Corp** → `TSE:7013`
+- ETF
+  - Search the fund name and pick a match (choose the **ETF** type): e.g.
+    - **SPDR S&P 500** → `AMEX:SPY`
+    - **iShares S&P 500 IT** → `XETR:QDVE`
+- Forex
+  - **EURUSD** - EUR/USD
+  - **XAUUSD** - XAU/USD
+- Commodities
+  - **GC** - Gold
+  - **SI** - Silver
+- Futures
+  - **ES** - E-mini S&P 500
+  - **NQ** - E-mini Nasdaq 100
+- Funds
+  - Search the fund name and pick an exchange-listed match (choose the **Funds** or **ETF** type): e.g.
+    - **iShares Core MSCI World** → `XETR:EUNL`
+    - **Baillie Gifford US Growth Trust** → `LSE:USA`
+  - US open-end mutual funds (daily NAV, e.g. VSMPX) aren't available for live quotes — use their exchange-traded (ETF) share class instead, e.g. **Vanguard Total Stock Market** → `AMEX:VTI`.
+- Bonds
+  - Search the full yield name and pick a match: e.g.
+    - **United States 10 Year** → `TVC:US10Y`
+    - **United States 30 Year** → `TVC:US30Y`
+- Crypto (from CoinMarketCap — get the name from the url): e.g.
+  - **BITCOIN** - coinmarketcap.com/currencies/bitcoin
+  - **ETHEREUM** - coinmarketcap.com/currencies/ethereum
+  - **THE-GRAPH** - coinmarketcap.com/currencies/the-graph
 - Region: Select the region where the stocks market is from:
-  - **America** - United States
-  - **Canada** - Canada
-  - **Europe** - European Union and UK
-  - **Asia/Pacific** - Asia and Pacific
+  - **America** - United States (Finviz)
+  - **Canada** - Canada (TradingView)
+  - **Europe** - European Union and UK (TradingView)
+  - **Asia/Pacific** - Asia and Pacific (TradingView)
 
-  **Note:** For EU and Asia markets, the ticker should be extracted from Investing.com url: e.g.
-  - **BASF-AG** - investing.com/equities/basf-ag
-  - **IHI-CORP.** - investing.com/equities/ihi-corp.
+  **Note:** For non-US markets, the region helps the search pick the right exchange when several list the same ticker. You can always type the exact TradingView symbol (e.g. `EURONEXT:MC`) to be precise.
 
 - Show as: Add custom ticker - e.g **GOLD**.
 - Icon: Show/Hide the ticker icon if exists.

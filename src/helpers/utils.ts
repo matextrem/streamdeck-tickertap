@@ -2,6 +2,12 @@ import * as cheerio from 'cheerio';
 import { API_PROVIDERS, PROVIDER, QUOTE_REPLACEMENTS } from './constants';
 import { parseURL } from './parser';
 import {
+  fetchTradingViewQuote,
+  resolveSymbol,
+  shortcutFor,
+  tradingViewUrl,
+} from './tradingview';
+import {
   ApiProviders,
   Endpoint,
   QuoteTypes,
@@ -9,6 +15,33 @@ import {
   Currency,
   SelectorConfig,
 } from './settings';
+
+/**
+ * Which instrument types/regions are sourced from TradingView.
+ * US stocks use Finviz and crypto uses CoinMarketCap; everything that used to
+ * come from investing.com now comes from TradingView. A known TradingView
+ * symbol (an EXCHANGE:SYMBOL or a legacy index code like SPX) always uses
+ * TradingView, even under stock/America.
+ */
+export function usesTradingView(
+  service: QuoteTypes,
+  region: Regions,
+  ticker?: string,
+): boolean {
+  if (service === QuoteTypes.CRYPTO) return false; // CoinMarketCap
+  const t = (ticker || '').trim();
+  if (t.includes(':') || shortcutFor(service, t)) return true;
+  if (service === QuoteTypes.STOCK && region === Regions.US) return false; // Finviz
+  return true; // TradingView
+}
+
+/** Icon repositories reused for TradingView stock/forex tickers. */
+const TV_ICON_URLS: Partial<Record<QuoteTypes, string>> = {
+  [QuoteTypes.STOCK]:
+    'https://raw.githubusercontent.com/nvstly/icons/main/ticker_icons',
+  [QuoteTypes.FOREX]:
+    'https://raw.githubusercontent.com/nvstly/icons/main/forex_icons',
+};
 
 export async function getApiUrl(
   service: QuoteTypes,
@@ -25,6 +58,13 @@ export async function getApiUrl(
   if (!ticker) {
     throw new Error('No ticker provided');
   }
+
+  // TradingView types resolve to a chart URL (used for long-press redirect).
+  if (usesTradingView(service, region, ticker)) {
+    const symbol = await resolveSymbol(ticker, service, region);
+    return { uri: tradingViewUrl(symbol), selectors: {}, symbol };
+  }
+
   let endpoint =
     API_PROVIDERS[baseProvider].endpoints[
       service as keyof (typeof API_PROVIDERS)[typeof baseProvider]['endpoints']
@@ -91,6 +131,26 @@ export async function fetchStockData(
   showIcon = true,
   currency: Currency = Currency.USD,
 ) {
+  if (!ticker) {
+    throw new Error('No ticker provided');
+  }
+
+  // TradingView path (non-US stocks, ETFs, forex, commodities, futures,
+  // funds, bonds) — resolve + scanner quote, with a symbol-page fallback.
+  if (usesTradingView(service, region, ticker)) {
+    const quote = await fetchTradingViewQuote(ticker, service, region);
+    const iconUrl = showIcon ? TV_ICON_URLS[service] || '' : '';
+    const icon = await getIcon(quote.ticker, iconUrl, service, false);
+    return {
+      name: quote.name,
+      ticker: quote.ticker,
+      icon,
+      price: quote.price,
+      change: quote.change,
+      percentageChange: quote.percentageChange,
+    };
+  }
+
   const { uri, selectors, symbol } = await getApiUrl(
     service,
     region,

@@ -11,6 +11,12 @@ Prefix your message with one of the following:
 - [Security] in case of vulnerabilities.
 -->
 
+## v1.13.0 - 2026-07-20
+
+[Changed] Replaced investing.com with [TradingView](https://www.tradingview.com/) as the data source for non-US stocks, ETFs, forex, commodities, futures, funds and bonds. investing.com began blocking all non-interactive requests behind Cloudflare (2026-07-16), breaking those quotes. US stocks (Finviz) and crypto (CoinMarketCap) are unchanged.
+[Added] Search/autocomplete in the Property Inspector — start typing a company name, ticker or symbol and pick a match. You can also enter a TradingView `EXCHANGE:SYMBOL` directly.
+[Fixed] Commodities, forex, futures, EU/Asia stocks, ETFs, funds and bonds showing the yellow triangle / failing to load.
+
 ## v1.12.2 - 2026-06-26
 
 [Fixed] Crypto prices showing NaN — CoinMarketCap stopped server-rendering values into the page DOM. Prices and 24h changes are now read from the page's embedded JSON data (no JavaScript required), which is also more resilient to layout changes. EUR crypto prices are converted from USD using the live EUR/USD rate.
