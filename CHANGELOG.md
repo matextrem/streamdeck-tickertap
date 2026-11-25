@@ -11,6 +11,10 @@ Prefix your message with one of the following:
 - [Security] in case of vulnerabilities.
 -->
 
+## Unreleased
+
+[Fixed] US stocks showing as green/rising when they were down — Finviz now displays the percentage change without its minus sign, so the sign is taken from the dollar change.
+
 ## v1.13.0 - 2026-07-20
 
 [Changed] Replaced investing.com with [TradingView](https://www.tradingview.com/) as the data source for non-US stocks, ETFs, forex, commodities, futures, funds and bonds. investing.com began blocking all non-interactive requests behind Cloudflare (2026-07-16), breaking those quotes. US stocks (Finviz) and crypto (CoinMarketCap) are unchanged.

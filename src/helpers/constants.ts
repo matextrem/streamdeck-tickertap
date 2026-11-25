@@ -94,9 +94,15 @@ export const API_PROVIDERS: ApiProvidersConfig = {
       percentageChange: {
         selector: '.quote-price_change',
         extractor: (element: CheerioElement) => {
+          // Finviz shows the percentage unsigned, e.g. "-4.84 (0.98%)", so
+          // take the sign from the dollar change.
           const text = element.first().text();
-          const match = text.match(/Percentage change\s*\(?(-?[\d.,]+)/i);
-          return match ? match[1] : '';
+          const match = text.match(/Percentage change\s*\(?([-+]?[\d.,]+)/i);
+          if (!match) return '';
+          const pct = Math.abs(parseFloat(match[1].replace(/,/g, '')));
+          const dollar = text.match(/Dollar change\s*(-?[\d.,]+)/i);
+          const negative = dollar ? dollar[1].startsWith('-') : match[1].startsWith('-');
+          return String(negative ? -pct : pct);
         },
       },
     },
