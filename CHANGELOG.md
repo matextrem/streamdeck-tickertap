@@ -11,7 +11,7 @@ Prefix your message with one of the following:
 - [Security] in case of vulnerabilities.
 -->
 
-## Unreleased
+## v1.13.1 - 2026-11-25
 
 [Fixed] US stocks showing as green/rising when they were down — Finviz now displays the percentage change without its minus sign, so the sign is taken from the dollar change.
 
