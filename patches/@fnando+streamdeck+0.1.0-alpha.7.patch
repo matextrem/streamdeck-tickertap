@@ -454,6 +454,19 @@ index 7507176..1d2bbff 100644
              ["FontUnderline", this.underline, this.underline],
              ["FontStyle", this.fontStyle, this.fontStyle],
              ["TitleAlignment", this.align, this.align],
+diff --git a/node_modules/@fnando/streamdeck/dist/cli/bundle.js b/node_modules/@fnando/streamdeck/dist/cli/bundle.js
+index 228d23b..e4dbd30 100644
+--- a/node_modules/@fnando/streamdeck/dist/cli/bundle.js
++++ b/node_modules/@fnando/streamdeck/dist/cli/bundle.js
+@@ -38,7 +38,7 @@ const assertFile = (name, rootDir) => {
+ };
+ const assertImageSize = (name, size, distDir) => {
+     try {
+-        const dimensions = (0, image_size_1.default)(path_1.default.join(distDir, name));
++        const dimensions = (0, image_size_1.default)(fs_1.default.readFileSync(path_1.default.join(distDir, name)));
+         if (dimensions.width === size && dimensions.height === size) {
+             return;
+         }
 diff --git a/node_modules/@fnando/streamdeck/dist/events.d.ts b/node_modules/@fnando/streamdeck/dist/events.d.ts
 index f4e5bed..989e19f 100644
 --- a/node_modules/@fnando/streamdeck/dist/events.d.ts
